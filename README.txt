@@ -1,0 +1,33 @@
+Контакты ESP32 (по назначению):
+   TFT дисплей ST7735
+IO_23 TFT SDA
+IO_19 TFT SCK
+IO_2  TFT CS
+IO_21 TFT A0
+
+====  I2S ==========
+IO_26 BCK
+IO_22 LRCK 
+IO_25 DATA  
+
+=== I2c (связь с ADAU и PCF8574)
+IO_5 SDA
+IO_17 SCL
+
+---  MP3 модуль ---
+IO_16  MP3_TXD -> MP3 RxD
+IO_4  MP3_RXD -> MP3 TxD
+
+
+--- Входы
+IO_32 Аналоговый вход опроса состояния регуляторов
+IO_18 Вход IR датчика ДУ
+Sensor_VP Enc1
+Sensor_VN Enc2
+
+
+Звуковые входы
+MP3
+AUX1
+AUX2
+FM
