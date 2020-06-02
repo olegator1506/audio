@@ -1,0 +1,8 @@
+#!/bin/sh
+openocd -d2 -s /home/artem/.platformio/packages/tool-openocd-esp32/share/openocd/scripts \
+-f interface/ftdi/esp32_devkitj_v1.cfg -f board/esp-wroom-32.cfg \
+-c "program_esp32 {{$1}} 0x10000 verify" \
+-c "program_esp32 {{.pio/build/esp32cam/bootloader.bin}} 0x1000 verify" \
+-c "program_esp32 {{.pio/build/esp32cam/partitions.bin}} 0x8000 verify" \
+-c "program_esp32 build/storage.bin 0x110000 verify" \
+ -c "reset run; shutdown"

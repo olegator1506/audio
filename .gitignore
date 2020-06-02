@@ -1,0 +1,6 @@
+**/temp
+samples
+docs
+**/build
+**/.pio
+

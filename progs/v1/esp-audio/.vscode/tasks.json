@@ -1,0 +1,170 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "ESP32-IDF: build",
+            "type": "shell",
+            "command": "idf.py",
+            "args": [
+                "build"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "env": {
+                    "IDF_PATH": "/home/artem/work/esp/esp-idf"
+                }
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "group": "build"
+        },
+        {
+            "label": "ESP32: clean",
+            "command": "idf",
+            "type": "shell",
+            "args": [
+                "clean"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": [
+                "$go"
+            ]
+        },
+        {
+            "label": "ESP32:flash app",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-c",
+                "\"program_esp32 build/${workspaceFolderBasename}.bin 0x10000 verify\""
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "ESP32-Prog:flash app",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-d2",
+                "-s",
+                "/home/artem/.platformio/packages/tool-openocd-esp32/share/openocd/scripts",
+                "-f",
+                "interface/ftdi/esp32_devkitj_v1.cfg",
+                "-f",
+                "board/esp-wroom-32.cfg",
+                "-c",
+                "\"program_esp32 build/${workspaceFolderBasename}.bin 0x10000 verify\"",
+                "-c",
+                "reset run; shutdown"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "ESP32-Prog:flash all",
+            "type": "shell",
+            "command": "openocd",
+            "args": [
+                "-d2",
+                "-s",
+                "/home/artem/.platformio/packages/tool-openocd-esp32/share/openocd/scripts",
+                "-f",
+                "interface/ftdi/esp32_devkitj_v1.cfg",
+                "-f",
+                "board/esp-wroom-32.cfg",
+                "-c",
+                "\"program_esp32 build/${workspaceFolderBasename}.bin 0x10000 verify\"",
+                "-c",
+                "\"program_esp32 build/bootloader/bootloader.bin 0x1000 verify\"",
+                "-c",
+                "\"program_esp32 build/partition_table/partition-table.bin 0x8000 verify\"",
+                "-c",
+                "\"program_esp32 build/storage.bin 0x110000 verify\"",
+                "-c",
+                "reset run; shutdown"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Run(build-flash-monitor",
+            "type": "shell",
+            "command": "./run",
+            "args": [],
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "ESP32:monitor",
+            "type": "process",
+            "command": "idf",
+            "args": [
+                "-p",
+                "/dev/ttyUSB1",
+                "monitor"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "ESP32:menuconfig",
+            "type": "process",
+            "command": "idf",
+            "args": [
+                "menuconfig"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "openocd",
+            "type": "shell",
+            "isBackground": true,
+            "options": {
+                "cwd": "./"
+            },
+            "command": "openocd -s $HOME/.platformio/packages/tool-openocd-esp32/share/openocd/scripts -f interface/ftdi/esp32_devkitj_v1.cfg -f board/esp-wroom-32.cfg"
+        }
+    ]
+}

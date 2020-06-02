@@ -1,0 +1,45 @@
+Sigma Studio Version 4.5. Build 0, Rev 1779
+
+Analog Devices Compiler for the 3rd generation SigmaDSP core.
+Build date = 10/28/2019 at 4:52 AM
+
+## Summary ##
+(Note: Estimates are based on a 48 kHz sample rate)
+
+Instructions used:
+323	(out of a possible 1024 )
+Modulo Data RAM used (X Memory):
+131	(out of a possible 4096 )
+Non Modulo Data RAM used (X Memory):
+0	(out of a possible 4096 )
+Parameter RAM used (Y Memory):
+140	(out of a possible 1024 )
+
+Instance                      		Mips	Inst	Data	Coeff	Other
+                              			(max)
+                              		198	198	91	116
+ESC1                          		21	21	12	7
+Beginning                     		19	19	0	1
+PeakEnv2                      		18	18	6	2
+PeakEnv1                      		18	18	6	2
+SafeLoadCode                  		15	15	0	7
+DCB2                          		6	6	7	1
+DCB1                          		6	6	7	1
+End                           		5	5	0	0
+Input1                        		4	4	0	0
+ReadBack1                     		3	3	1	1
+ReadBack2                     		3	3	1	1
+Gain1                         		3	3	0	1
+Output2                       		2	2	0	0
+Output1                       		2	2	0	0
+
+Subroutines called:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                      			323	323	131	140
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+(%)                          			32%	32%	3%	14%
+
+Files written:  
+program_data.dat - load file for downloading code using ADI loader
+hex_program_data.dat - load file for downloading code using microcontroller 
+ParamAddress.dat - Parameter RAM locations for schematic instances

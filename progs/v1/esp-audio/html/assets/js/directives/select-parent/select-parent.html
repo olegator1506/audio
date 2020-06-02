@@ -1,0 +1,20 @@
+<div>
+    <input id="parent-field-tn" type="hidden" ng-model="value"/>
+    <div ng-show="!editMode">
+        <input type="text" disabled="true" ng-model="value" title="{{title}}"/>
+        <button type="button" id="btn-parent-edit" ng-click="startEdit()" class="btn btn-primary btn-ms" title="Изменить">
+            <i class ='glyphicon glyphicon-edit'></i>
+        </button>
+        <div>{{title}}</div>
+    </div>
+    <div ng-show="editMode"class="dropdown">
+        <input type="text" ng-model="mask" ng-change="changeMask()"  size="20" autocomplete="off" id="arm713-1-analog" data-toggle="dropdown" aria-expanded="true"/>
+        <ul class="dropdown-menu" style="display:block !important;" role="menu" ng-if="variants.length">
+            <li role="presentation" ng-repeat="variant in variants" ><a role="menuitem" tabindex="-1" href="" ng-click="selectVariant(variant)">{{variant.descr}}</a></li>
+        </ul>
+        <button type="button" id="btn-parent-edit" ng-click="editMode = false" class="btn btn-primary btn-ms" title="Отмена">
+            <i class ='glyphicon glyphicon-remove'></i>
+        </button>
+    </div>
+</div>
+

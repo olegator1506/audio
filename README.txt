@@ -18,6 +18,9 @@ IO_17 SCL
 IO_16  MP3_TXD -> MP3 RxD
 IO_4  MP3_RXD -> MP3 TxD
 
+-- Управление коммутатором каналов
+IO_14 ChSel0
+IO_12 ChSel1
 
 --- Входы
 IO_32 Аналоговый вход опроса состояния регуляторов
@@ -26,8 +29,18 @@ Sensor_VP Enc1
 Sensor_VN Enc2
 
 
-Звуковые входы
-MP3
-AUX1
-AUX2
-FM
+Звуковые входы (CD4052)
+0 AUX1
+1 AUX2
+2 MP3
+3 FM
+
+Разъем фронтальной платы
+1 Vcc
+2 Gnd
+3 EncA
+4 EncB
+5 SDA
+6 SCL
+7 Volume
+8 -

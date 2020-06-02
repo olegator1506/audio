@@ -1,0 +1,27 @@
+<div id="simple_search" ng-if="config">
+    <form class="navbar-form navbar-right" role="form">
+        <div class="form-group">
+            <select class="form-control" name="filter_field" size="1" id="search_form_field" ng-model="filterField" ng-change="onChange()">
+                <option ng-repeat="opt in filterFieldOpts" value="{{opt.id}}">{{opt.title}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <select class="form-control" name="filter_opp" size="1" id="search_form_opp" ng-model="filterOpp" ng-change="onChange()">
+                <option ng-repeat="opp in config.config.compare_opp" value="{{opp.id}}">{{opp.title}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input class="form-control" placeholder="Поиск" type="text" id="search_form_value" name="filter_value" size="30" ng-model="filter_value"/>
+        </div>
+        <div class="form-group">
+            <button  type="submit" class="btn btn-default" ng-click="onChange()" title="Найти">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+            <button  class="btn btn-primary" ng-click="openAdvanced()" title="Расширенный поиск">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </button>
+        </div>
+    </form>
+</div>
+
+

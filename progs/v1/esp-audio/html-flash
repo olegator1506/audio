@@ -1,0 +1,20 @@
+#!/bin/sh
+### Пформируем и прошиваем SPIFFS образ из папки html
+proggen=~/work/esp/esp-idf/components/spiffs/spiffsgen.py
+imgfile=build/storage.bin
+# Следующий параметр должен совпадать с параметром CONFIG_SPIFFS_OBJ_NAME_LEN в sdkconfig (или в menuconfig Component config -->> SPIFFS configuration -->> Set SPIFFS Maximum Name Length)
+max_len_size=64
+img_size=1048576
+$proggen --obj-name-len $max_len_size $img_size html $imgfile
+if [ $? -ne 0 ]
+then
+    echo "Exit"
+    exit 1
+fi
+echo "Flash storage"
+openocd -d2 -s ~/.platformio/packages/tool-openocd-esp32/share/openocd/scripts \
+-f interface/ftdi/esp32_devkitj_v1.cfg \
+-f board/esp-wroom-32.cfg \
+-c "program_esp32 ${imgfile} 0x110000 verify" \
+-c "reset run; shutdown"
+ 

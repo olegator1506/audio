@@ -1,0 +1,404 @@
+
+/*-- !Общие конфигурации. --*/
+/*--------------------------*/
+:focus {
+    outline: 0 !important;
+}
+
+pre {
+    border: 0px;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 0px;
+    padding:0px 10px;
+    background: none;
+}
+
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,207cca+35,7db9e8+100 */
+
+
+hr {
+    margin: 5px 0px;
+}
+/*-----------------------------*/
+.addition-links {
+    width:100%;
+    outline: 0;
+}
+
+.addition-links ul {
+    display:inline-block;
+    vertical-align:text-top;
+    text-align:left;
+    border-right:2px solid #ccc;
+    padding-right: 20px;
+    padding-left: 0px;
+    margin-left: 20px;
+    height:150px;
+    width:350px;
+}
+
+.addition-links ul:last-child {
+    border:none;
+}
+
+.addition-links ul > span {
+    display: block;
+    text-indent: 1px;
+    font-weight: bold;
+    background:linear-gradient(90deg,rgba(0,20,150,0.2),rgba(40,30,30,0.0));
+    margin-bottom: 10px;
+    border-radius: 3px;
+    font-size: 16px;
+    width:350px;
+}
+
+.addition-links li {
+    list-style: none;
+    display: block;
+    max-width: 380px;
+    margin-right: 10px;
+    margin-bottom:10px;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.addition-links > li > a {
+    padding-bottom: 5px;
+    font-weight: bold;
+}
+
+.addition-links  li:hover {
+    background-color: #337AB7;
+}
+
+.addition-links li:hover > a {
+    color:white;
+}
+
+/*-----------------------------*/
+/*-- #Навигация по разделам. --*/
+
+
+
+
+/*--        !Таблицы           --*/
+/*-------------------------------*/
+.table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td  {
+    border:1px solid #777 !important;
+}
+
+.table {
+    margin-left: 0px;
+    padding-right: 25px;
+    margin: 0;
+}
+
+.table > tbody> tr > td:first-child, .table > thead > tr > th:first-child
+{
+    min-width:80px;
+    width:90px;
+    padding-right: 0px;
+}
+.table-bordered tr:nth-child(even) td {
+    background-color: #ddd !important;
+}
+
+th {
+/*    color:#ffffff; */
+}
+/*
+.table_8021 > th {
+         color:black;
+}
+*/
+#advanced {
+    margin-bottom: 20px;
+}
+
+
+div.err-message {
+    color: red;
+}
+/*------------------------------*/
+/*--        #Таблицы          --*/
+
+/*--    !Формы редактирования  --*/
+/*------------------------------*/
+
+p.form-title {
+    margin-left: 25px;
+}
+
+table {
+    margin-left: 25px;
+}
+
+table > tbody > tr > td > select, table > tbody > tr > td > input {
+    margin:2px 0px;
+
+}
+
+.subtable {
+    margin-left: 0px;
+}
+
+
+table > tbody > tr > td:first-child {
+    padding-right: 25px;
+}
+
+
+/*------------------------------*/
+/*--    #Формы редактирования  --*/
+
+
+
+/*--    !Поля ввода и кнопки  --*/
+/*------------------------------*/
+div > input[type="text"]  {
+    border-top:2px inset #fff;
+    border-left:2px inset white;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-radius: 2px;
+    border-radius:3px;
+    height:30px;
+    vertical-align:top;
+}
+
+input:focus{
+    border-color:#0088CC;
+}
+
+button, input[type="button"], input[type="reset"], input[type="submit"] {
+    display: inline-block;
+    margin: 0 0 0 5px;
+    padding: 2px 10px;
+    border-radius:5px;
+    border: none;
+    background: #0088CC;
+    color: white;
+    vertical-align: top;
+}
+
+button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover {
+    box-shadow: 1px 1px 10px rgba(20,150,250,0.9);
+}
+
+button:active, input[type="button"]:active, input[type="reset"]:active, input[type="submit"]:active {
+    box-shadow: 1px 1px 10px rgba(0,0,0,0.9);
+    color:rgba(0,0,0,0.6);
+}
+.navbar-action-btn {
+    padding: 5px;
+    background-color: transparent;
+    margin-left: 5px;
+}
+/*-- !Переключатель страниц   --*/
+/*------------------------------*/
+.total_page {
+    margin-left: 30px;
+    font-weight: bold;
+}
+
+.page_switch {
+    display:inline-block;
+    width:500px;
+    padding:10px;
+    margin:0px auto;
+    margin-bottom: 0px;
+    text-align: left;
+}
+
+.page_switch strong, .page_switch a{
+    display:inline-block;
+    min-width:30px;
+    padding:0 10px;
+    margin:0px;
+    height:30px;
+    background-color:transparent;
+    text-align:left;
+    vertical-align:middle;
+    line-height:40px;
+    text-decoration:none;
+    font-weight:bold;
+    outline: 0;
+}
+
+.pagination {
+    margin: 10px 10px 5px;
+}
+
+.page_switch span {
+    margin-right:20px;
+}
+
+.page_switch .cur_page {
+    text-align: center;
+    vertical-align:baseline;
+    border-color:2px solid black;
+}
+
+.page_switch .prev {
+    margin-right:10px;
+    background: url("ic_chevron_left_36px.svg");
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size: 80%;
+}
+
+.page_switch .next {
+    margin-left:10px;
+    background: url("ic_chevron_right_36px.svg");
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size: 80%;
+}
+
+.page_switch .first-page{
+    margin:0px 10px;
+    background: url("ic__double_chevron_left_36px.svg");
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size:80%;
+}
+
+.page_switch .last-page {
+    margin:0px 10px;
+    background:url("ic__double_chevron_right_36px.svg");
+    background-repeat:no-repeat;
+    background-position:50% 50%;
+    background-size:80%;
+}
+
+.page_switch .prev:hover,.page_switch .next:hover, .page_switch .last-page:hover, .page_switch .first-page:hover {
+    box-shadow: 0px 0px 2px black;
+}
+
+.page_switch .prev:active,.page_switch .next:active, .page_switch .last-page:active, .page_switch .first-page:active {
+    background-color:#ccc;
+    box-shadow: 0px 0px 1px black;
+}
+
+select[name="page_num"]{
+    width:50px;
+    padding:0px;
+    margin:0px 10px;
+    vertical-align: middle;
+}
+
+
+.page_switch > input {
+    vertical-align: baseline;
+}
+
+
+/*------------------------------*/
+/*-- #Переключатель страниц   --*/
+
+
+
+/*--        !Иконки          --*/
+/*-----------------------------*/
+.controls {
+    width:15px;
+    height:15px;
+    margin-right:5px;
+    cursor: pointer;
+}
+
+/*-----------------------------*/
+/*--        #Иконки          --*/
+
+
+
+
+/*--!Число записей на странице--*/
+/*------------------------------*/
+span.row_count {
+    display: inline-block;
+    width:400px;
+    text-align: right;
+    padding: 10px;
+}
+
+span.row_count > a {
+    height: 26px;
+    padding:5px;
+    background-color:transparent;
+}
+
+span.row_count > span {
+    background-color:#0088CC;
+    border-radius: 4px;
+    height: 26px;
+    padding:5px;
+    color:white;
+}
+
+/*------------------------------*/
+/*--#Число записей на странице--*/
+
+
+
+
+/*------------------------------*/
+/*--    #Режимы отображения   --*/
+#show_options {
+    display: none;
+    width: 51.5%;
+    height: auto;
+
+}
+
+#show_options ul {
+    list-style: none;
+    -webkit-column-count:5;
+    -moz-column-count:5;
+    column-count: 5;
+    -webkit-column-width:250px;
+    -moz-column-width:250px;
+    column-width: 250px;
+    padding-left:25px;
+}
+
+
+#show_options div:nth-child(4n) {
+    display: inline-block;
+    margin-right: 100px;
+    text-align: left;
+}
+
+table#advanced  td {
+    vertical-align: baseline;
+}
+
+/*------------------------------*/
+/*--    #Режимы отображения   --*/
+
+
+
+/*--    #Расширенный поиск    --*/
+/*------------------------------*/
+.advanced_searcher  {
+    margin-left:25px;
+}
+
+
+.advanced_searcher > table > tbody > tr > td > input {
+    margin:0px 0px 0px 0px;
+    height: 20px;
+}
+
+.advanced_searcher > table > tbody > tr > td > select {
+    margin:0px 5px 0px 20px;
+    height: 20px;
+    vertical-align:middle;
+}
+/*------------------------------*/
+/*--    #Расширенный поиск    --*/
+
+.alert {
+    position: 50% 50%;
+}
+body { padding-top: 60px; }

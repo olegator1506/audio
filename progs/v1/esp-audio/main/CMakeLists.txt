@@ -1,0 +1,15 @@
+idf_component_register(SRCS 
+    "main.c" 
+    "mp3.c" 
+    "channel.c" 
+    "display.c"
+    "st7735.c"
+    "fonts.c" 
+    "cmd-uart.c"
+    "i2s.c"
+    "bt_main.c"
+    "bt_app_av.c"
+    "bt_app_core.c"
+    "vu-meter.c"
+    INCLUDE_DIRS "."
+)

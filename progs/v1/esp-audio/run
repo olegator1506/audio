@@ -1,0 +1,35 @@
+#!/bin/sh
+dir=`pwd`
+projectName=`basename $dir`
+cd ~/work/esp/esp-idf
+/bin/sh . ./export.sh
+cd $dir
+
+# ~/work/esp/esp-idf/tools/idf.py build
+# if [ $? -ne 0 ]
+#then
+#    echo "Exit"
+#    exit 1
+#fi
+echo "Flash app"
+#openocd -d2 -s ~/.platformio/packages/tool-openocd-esp32/share/openocd/scripts \
+#-f interface/ftdi/esp32_devkitj_v1.cfg \
+#-f board/esp-wroom-32.cfg \
+#-c "program_esp32 build/${projectName}.bin 0x10000 verify" \
+#-c "reset run; shutdown"
+
+#esptool.py -p /dev/ttyUSB1 -b 460800 --before default_reset --after hard_reset write_flash \
+#--flash_mode dio --flash_size detect --flash_freq 40m \
+#0x10000 build/i2s.bin
+
+idf -p /dev/ttyUSB1 -b 460800 flash
+
+ if [ $? -ne 0 ]
+then
+    echo "Exit"
+    exit 1
+fi
+echo "Start monitor"
+#cu -l /dev/ttyUSB1 -s 115200
+idf.py -p /dev/ttyUSB1 monitor
+
