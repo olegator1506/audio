@@ -3,6 +3,7 @@
 #include "lwip/sockets.h"
 #include "lwip/sys.h"
 #include <lwip/netdb.h>
+#include <esp_task_wdt.h>
 #include "net.h"
 #include "adau17x.h"
 
@@ -15,8 +16,36 @@
 
 static const char *TAG="tcp_server";
 static const char *taskName="tcp_server";
-static TaskHandle_t taskHandle = NULL,clientTaskHandle=NULL;
-static int clientSocket = 0;
+static TaskHandle_t taskHandle = NULL;
+
+
+static esp_err_t execAdauWrite(uint16_t address,uint16_t length,int socket){
+    uint8_t *buf = malloc(length);
+    ESP_LOGI(TAG,"Write start. Address %02X length %d",address,length);
+    if(!buf) {
+        ESP_LOGE(TAG,"Malloc error");
+        return ESP_FAIL;
+    }
+    int bytesReceived = recv(socket, buf, length, 0);
+    if (bytesReceived < 0) {
+        ESP_LOGE(TAG, "Error occurred during receiving data: errno %d", errno);
+        free(buf);
+        return ESP_FAIL;
+    } else if (bytesReceived == 0) {
+        ESP_LOGW(TAG, "Client task: Connection closed");
+        free(buf);
+        return ESP_FAIL;
+    } else if(bytesReceived != length) {
+        ESP_LOGW(TAG, "Not enough data received (%d bytes, expected %d)",bytesReceived, length);
+        free(buf);
+        return ESP_FAIL;
+    }
+//    esp_err_t result = adauWrite(address, buf, length);
+    esp_err_t result = ESP_OK;
+    free(buf);
+    ESP_LOGI(TAG,"Write end. Address %02X length %d",address,length);
+    return result;
+}
 
 esp_err_t execAdauRead(uint16_t address,uint16_t length,int socket){
   uint8_t *buf;
@@ -40,73 +69,46 @@ esp_err_t execAdauRead(uint16_t address,uint16_t length,int socket){
   return success ?ESP_OK : ESP_FAIL;
 }
 
-void execAdauWrite(int address, uint8_t *buf, int length) {
-    adauWrite(address, buf, length);
-}
 
-
-static void clientTask(void *pvParameters){
-    int *saddr = (int *)pvParameters;
-    int socket = *saddr;
+static bool handleConnection(int socket){
     uint16_t len,addr;
     uint8_t header[8],command;
     int bytesReceived;
-    uint8_t *buf;
     while(1){
         bytesReceived = recv(socket, header, HEADER_SIZE, MSG_PEEK);
 //        ESP_LOGI(TAG,"Bytes available %d",bytesReceived);
         if (bytesReceived < 0) {
             ESP_LOGE(TAG, "Client task: Error occurred during receiving: errno %d", errno);
-            break;
+            return false;
         } else if (bytesReceived == 0) {
             ESP_LOGW(TAG, "Client task: Connection closed");
-            break;
+            return false;
         } else { // Получены данные
 //            ESP_LOGI(TAG,"Client task: Got packet size %d",bytesReceived); 
             if(bytesReceived < HEADER_SIZE)  continue;
+            recv(socket, header, HEADER_SIZE, 0);
         	command = header[0];
         	len = (header[4] << 8) | header[5];
 	        addr = (header[6] << 8) | header[7];
-            ESP_LOGI(TAG,"Request: cmd:%02x addr:%04X length: %04X",command,addr,len);
+//            ESP_LOGI(TAG,"Request: cmd:%02x addr:%04X length: %04X",command,addr,len);
             if(command == COMMAND_READ) { // чтение из ADAU
-                recv(socket, header, HEADER_SIZE, 0);
                 execAdauRead(addr,len,socket);
-                continue;
-            }  
-            buf = (uint8_t *)malloc(len+HEADER_SIZE);
-            bytesReceived = recv(socket, buf, len + HEADER_SIZE, MSG_PEEK);
-            if(bytesReceived < (len+8)) {
-                free(buf);
-                continue;
-            }    
-            recv(socket, header, HEADER_SIZE, 0);
-            recv(socket, buf, len, 0);
-            execAdauWrite(addr,buf,len);
-            free(buf);
+            } else execAdauWrite(addr,len,socket); 
+            return true;
         }
     }
-    ESP_LOGI(TAG,"Connection closed");
-    shutdown(socket, 0);
-    close(socket);
-    clientSocket = 0;
-    vTaskDelete(NULL);
 }
 
-static void closeConnection(void) {
-    if(!clientTaskHandle) return;
-    if(clientSocket == 0) return;
-    ESP_LOGI(TAG,"Close connection");
-    vTaskDelete(clientTaskHandle);
-    shutdown(clientSocket, 0);
-    close(clientSocket);
-    clientSocket = 0;
+static void closeConnection(int socket) {
+    shutdown(socket, 0);
+    close(socket);
 }
 static void tcpServerTask(void *pvParameters)
 {
     char addr_str[128];
     int addr_family;
     int ip_protocol;
-
+    int sock = -1;
 
     struct sockaddr_in dest_addr;
     dest_addr.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -142,7 +144,7 @@ static void tcpServerTask(void *pvParameters)
         if(!wifiConnected()) goto CLEAN_UP;
         struct sockaddr_in6 source_addr; // Large enough for both IPv4 or IPv6
         uint addr_len = sizeof(source_addr);
-        int sock = accept(listen_sock, (struct sockaddr *)&source_addr, &addr_len);
+        sock = accept(listen_sock, (struct sockaddr *)&source_addr, &addr_len);
         if (sock  < 0) {
             ESP_LOGE(TAG, "Unable to accept connection: errno %d", errno);
             break;
@@ -155,13 +157,16 @@ static void tcpServerTask(void *pvParameters)
             inet6_ntoa_r(source_addr.sin6_addr, addr_str, sizeof(addr_str) - 1);
         }
         ESP_LOGI(TAG, "Connection accepted ip address: %s", addr_str);
-        closeConnection();
-        clientSocket = sock;
-        xTaskCreate(clientTask,"client_task", 2048,&clientSocket,2,&clientTaskHandle);
+        while(handleConnection(sock)) {
+            esp_task_wdt_reset();
+        }
+        closeConnection(sock);
+        sock = -1;
     }
 
 CLEAN_UP:
-    if(clientSocket >=0) closeConnection();
+    if(sock >=0)
+        closeConnection(sock);
     ESP_LOGI(TAG,"Server stopped");
     close(listen_sock);
     vTaskDelete(NULL);
@@ -190,7 +195,7 @@ esp_err_t tcpServerStop(void){
         ESP_LOGE(TAG,"Stop failed: task not started");    
         return ESP_FAIL;
     } 
-    closeConnection();   
+//    closeConnection();   
     vTaskDelete(taskHandle);
     return ESP_OK;
 }
