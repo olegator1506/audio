@@ -40,8 +40,8 @@ static esp_err_t execAdauWrite(uint16_t address,uint16_t length,int socket){
         free(buf);
         return ESP_FAIL;
     }
-//    esp_err_t result = adauWrite(address, buf, length);
-    esp_err_t result = ESP_OK;
+    esp_err_t result = adauWrite(address, buf, length);
+//    esp_err_t result = ESP_OK;
     free(buf);
     ESP_LOGI(TAG,"Write end. Address %02X length %d",address,length);
     return result;

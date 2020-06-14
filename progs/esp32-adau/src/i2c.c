@@ -36,9 +36,9 @@ esp_err_t i2cInit(void){
     int i2c_master_port = I2C_PORT_NUM;
     i2c_config_t conf;
     conf.mode = I2C_MODE_MASTER;
-    conf.sda_io_num = 18;
+    conf.sda_io_num = I2C_SDA_PIN;
     conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
-    conf.scl_io_num = 19;
+    conf.scl_io_num = I2C_SCL_PIN;
     conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
     conf.master.clk_speed = I2C_FR;
     i2c_param_config(i2c_master_port, &conf);

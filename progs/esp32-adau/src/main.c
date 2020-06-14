@@ -31,8 +31,10 @@ void app_main(void)
     ESP_ERROR_CHECK(i2cInit());
     ESP_ERROR_CHECK(adauInit());
     ESP_ERROR_CHECK(netInit());
+    while(1){
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
+    }
 }
-
 /* 
 void app_main(void)
 {
