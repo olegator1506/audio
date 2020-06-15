@@ -12,25 +12,36 @@
    CONDITIONS OF ANY KIND, either express or implied.
 */
 #include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h" 
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/queue.h>
 #include <esp_log.h>
+#include <esp_event.h>
 #include <string.h>
-#include "nvs_flash.h"
+#include <nvs_flash.h>
 // Project includes
+#include "common.h"
 #include "i2c.h"
 #include "adau17x.h"
 #include "net.h"
+#include "bt.h"
 
 static const char *TAG="main";
+extern void i2sInit(void);
 
+QueueHandle_t mainQ;
+TMainEvent evt;
 
 void app_main(void)
 {
+    mainQ = xQueueCreate( 50, sizeof( TMainEvent ) );
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(i2cInit());
     ESP_ERROR_CHECK(adauInit());
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
     ESP_ERROR_CHECK(netInit());
+    i2sInit();
+    btInit();
     while(1){
         vTaskDelay(2000 / portTICK_PERIOD_MS);
     }

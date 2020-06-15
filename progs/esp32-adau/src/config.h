@@ -11,5 +11,7 @@
 #define I2C_TIMEOUT 1000
 // I2c chip addresses
 #define I2C_ADDRESS_ADAU 0x38
+//Bluetooth
+#define BT_DEV_NAME "ESP_ADAU"
 
 #endif
