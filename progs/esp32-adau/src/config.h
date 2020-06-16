@@ -13,5 +13,9 @@
 #define I2C_ADDRESS_ADAU 0x38
 //Bluetooth
 #define BT_DEV_NAME "ESP_ADAU"
+// i2S output
+#define I2S_BCK_PIN 26
+#define I2S_DATA_PIN 22
+#define I2S_LRCK_PIN 25
 
 #endif

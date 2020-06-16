@@ -34,7 +34,7 @@ TMainEvent evt;
 
 void app_main(void)
 {
-    mainQ = xQueueCreate( 50, sizeof( TMainEvent ) );
+     mainQ = xQueueCreate( 50, sizeof( TMainEvent ) );
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(i2cInit());
     ESP_ERROR_CHECK(adauInit());

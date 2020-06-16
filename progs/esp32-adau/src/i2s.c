@@ -1,20 +1,12 @@
 #include "freertos/FreeRTOS.h"
 #include "driver/i2s.h"
 
-#define I2S_BCK_PIN 26
-#define I2S_DATA_PIN 25
-// Так должно быть 
-#define I2S_LRCK_PIN 22
-// А это из-за кривой микрухи
-//#define I2S_LRCK_PIN 27
+#include "config.h"
+
 
 void i2sInit(void) {
     i2s_config_t i2s_config = {
-#ifdef CONFIG_EXAMPLE_A2DP_SINK_OUTPUT_INTERNAL_DAC
-        .mode = I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_DAC_BUILT_IN,
-#else
         .mode = I2S_MODE_MASTER | I2S_MODE_TX,                                  // Only TX
-#endif
         .sample_rate = 44100,
         .bits_per_sample = 16,
         .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,                           //2-channels
