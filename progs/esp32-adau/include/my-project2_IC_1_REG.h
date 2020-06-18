@@ -1,7 +1,7 @@
 /*
- * File:           C:\work\audio\progs\adau\sigma-projects\my-project2\my-project2_IC_1_REG.h
+ * File:           E:\my-project2\my-project2_IC_1_REG.h
  *
- * Created:        Tuesday, May 19, 2020 5:32:29 AM
+ * Created:        Thursday, June 18, 2020 8:06:08 PM
  * Description:    my-project2:IC 1 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -248,7 +248,7 @@
 /* CRC Ideal_1  - Registers (IC 1) */
 #define REG_CRC_IDEAL_1_IC_1_ADDR                 0x40C0
 #define REG_CRC_IDEAL_1_IC_1_BYTE                 1
-#define REG_CRC_IDEAL_1_IC_1_VALUE                0x17
+#define REG_CRC_IDEAL_1_IC_1_VALUE                0x7F
 
 /* CRC Ideal_2  - Registers (IC 1) */
 #define REG_CRC_IDEAL_2_IC_1_ADDR                 0x40C1
@@ -258,12 +258,12 @@
 /* CRC Ideal_3  - Registers (IC 1) */
 #define REG_CRC_IDEAL_3_IC_1_ADDR                 0x40C2
 #define REG_CRC_IDEAL_3_IC_1_BYTE                 1
-#define REG_CRC_IDEAL_3_IC_1_VALUE                0x7F
+#define REG_CRC_IDEAL_3_IC_1_VALUE                0x3
 
 /* CRC Ideal_4  - Registers (IC 1) */
 #define REG_CRC_IDEAL_4_IC_1_ADDR                 0x40C3
 #define REG_CRC_IDEAL_4_IC_1_BYTE                 1
-#define REG_CRC_IDEAL_4_IC_1_VALUE                0x1
+#define REG_CRC_IDEAL_4_IC_1_VALUE                0x34
 
 /* CRC Enable  - Registers (IC 1) */
 #define REG_CRC_ENABLE_IC_1_ADDR                  0x40C4
@@ -298,7 +298,7 @@
 /* Watchdog Register Value 1  - Registers (IC 1) */
 #define REG_WATCHDOG_REGISTER_VALUE_1_IC_1_ADDR   0x40D1
 #define REG_WATCHDOG_REGISTER_VALUE_1_IC_1_BYTE   1
-#define REG_WATCHDOG_REGISTER_VALUE_1_IC_1_VALUE  0x4
+#define REG_WATCHDOG_REGISTER_VALUE_1_IC_1_VALUE  0x0
 
 /* Watchdog Register Value 2  - Registers (IC 1) */
 #define REG_WATCHDOG_REGISTER_VALUE_2_IC_1_ADDR   0x40D2
@@ -328,7 +328,7 @@
 /* Sample Rate Setting  - Registers (IC 1) */
 #define REG_SAMPLE_RATE_SETTING_IC_1_ADDR         0x40EB
 #define REG_SAMPLE_RATE_SETTING_IC_1_BYTE         1
-#define REG_SAMPLE_RATE_SETTING_IC_1_VALUE        0x1
+#define REG_SAMPLE_RATE_SETTING_IC_1_VALUE        0x7
 
 /* Routing Matrix Inputs  - Registers (IC 1) */
 #define REG_ROUTING_MATRIX_INPUTS_IC_1_ADDR       0x40F2
@@ -875,7 +875,7 @@
 #define R44_DEJITTER_IC_1_SHIFT                   0
 
 /* CRC Ideal_1 (IC 1) */
-#define R45_CRC_IDEAL_1_IC_1                      0x17   /* 00010111b	[7:0] */
+#define R45_CRC_IDEAL_1_IC_1                      0x7F   /* 01111111b	[7:0] */
 #define R45_CRC_IDEAL_1_IC_1_MASK                 0xFF
 #define R45_CRC_IDEAL_1_IC_1_SHIFT                0
 
@@ -885,12 +885,12 @@
 #define R46_CRC_IDEAL_2_IC_1_SHIFT                0
 
 /* CRC Ideal_3 (IC 1) */
-#define R47_CRC_IDEAL_3_IC_1                      0x7F   /* 01111111b	[7:0] */
+#define R47_CRC_IDEAL_3_IC_1                      0x03   /* 00000011b	[7:0] */
 #define R47_CRC_IDEAL_3_IC_1_MASK                 0xFF
 #define R47_CRC_IDEAL_3_IC_1_SHIFT                0
 
 /* CRC Ideal_4 (IC 1) */
-#define R48_CRC_IDEAL_4_IC_1                      0x01   /* 00000001b	[7:0] */
+#define R48_CRC_IDEAL_4_IC_1                      0x34   /* 00110100b	[7:0] */
 #define R48_CRC_IDEAL_4_IC_1_MASK                 0xFF
 #define R48_CRC_IDEAL_4_IC_1_SHIFT                0
 
@@ -925,7 +925,7 @@
 #define R54_WATCHDOG_ENABLE_IC_1_SHIFT            0
 
 /* Watchdog Register Value 1 (IC 1) */
-#define R55_WATCHDOG_VALUE_1_IC_1                 0x04   /* 00000100b	[7:0] */
+#define R55_WATCHDOG_VALUE_1_IC_1                 0x00   /* 00000000b	[7:0] */
 #define R55_WATCHDOG_VALUE_1_IC_1_MASK            0xFF
 #define R55_WATCHDOG_VALUE_1_IC_1_SHIFT           0
 
@@ -955,7 +955,7 @@
 #define R60_NON_MODULO_2_IC_1_SHIFT               0
 
 /* Sample Rate Setting (IC 1) */
-#define R61_CORE_DSP_SAMPLING_RATE_IC_1           0x1    /* 0001b	[3:0] */
+#define R61_CORE_DSP_SAMPLING_RATE_IC_1           0x7    /* 0111b	[3:0] */
 #define R61_CORE_DSP_SAMPLING_RATE_IC_1_MASK      0xF
 #define R61_CORE_DSP_SAMPLING_RATE_IC_1_SHIFT     0
 

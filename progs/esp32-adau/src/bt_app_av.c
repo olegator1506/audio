@@ -27,6 +27,7 @@
 #include "sys/lock.h"
 
 #include "common.h"
+#include "adau17x.h"
 
 // AVRCP used transaction label
 #define APP_RC_CT_TL_GET_CAPS            (0)
@@ -145,12 +146,14 @@ static void bt_av_hdl_a2d_evt(uint16_t event, void *p_param)
             evt.code = MY_EVENT_BT_STATE;
             evt.param = 0;
             xQueueSend(mainQ, (void *)&evt,10);
+            adauI2sOff();
             esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
             bt_i2s_task_shut_down();
         } else if (a2d->conn_stat.state == ESP_A2D_CONNECTION_STATE_CONNECTED){
             evt.code = MY_EVENT_BT_STATE;
             evt.param = 1;
             xQueueSend(mainQ, (void *)&evt,10);
+            adauI2sOn();
             esp_bt_gap_set_scan_mode(ESP_BT_NON_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
             bt_i2s_task_start_up();
             volume_set_by_local_host(BT_DEFAULT_VOLUME);

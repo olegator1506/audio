@@ -238,3 +238,24 @@ esp_err_t adauInit(void) {
   return ESP_OK;
 }
 
+static esp_err_t _i2sSwitch(bool state){
+
+  uint8_t param0[4] = {0,0,0,0}, param1[4] = {0,0,0,0};
+  if(state) 
+    param1[1] = 0x80;
+  else
+    param0[1] = 0x80;
+  ESP_LOGI(TAG,"I2s input switch %s",state ? "ON":"OFF");
+  if(adauWrite(MOD_NX2_1_ALG0_STAGE0_STEREOSWITCHNOSLEW_ADDR,param0,4) != ESP_OK ) return ESP_FAIL;
+  if(adauWrite(MOD_NX2_1_ALG0_STAGE1_STEREOSWITCHNOSLEW_ADDR,param1,4) != ESP_OK ) return ESP_FAIL;
+  return ESP_OK;
+}
+
+esp_err_t adauI2sOn(void){
+  return _i2sSwitch(true);
+}
+
+esp_err_t adauI2sOff(void){
+  return _i2sSwitch(false);
+}
+

@@ -1,8 +1,8 @@
 /*
  * File:           defines.h
  *
- * Created:        Wednesday, May 06, 2020 10:48:01 PM
- * Description:    my-project1 IC default download data definitions.
+ * Created:        Thursday, June 18, 2020 8:06:08 PM
+ * Description:    my-project2 IC default download data definitions.
  *
  * This software is distributed in the hope that it will be useful,
  * but is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
@@ -19,7 +19,7 @@
 #ifndef __DEFINES_H__
 #define __DEFINES_H__
 
-#define BufferSize_IC_1     	5615
+#define BufferSize_IC_1     	6487
 #define NumTransactions_IC_1	39
 
 

@@ -11,4 +11,7 @@ extern esp_err_t adauOutVol(int level, bool line);
 extern float adau523toFloat(uint8_t *data);
 extern esp_err_t adauEqSet(uint8_t band, int8_t level);
 extern esp_err_t  adauReadLevel(float *left, float *right);
+extern esp_err_t adauI2sOn(void);
+extern esp_err_t adauI2sOff(void);
+
 #endif
