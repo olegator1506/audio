@@ -156,7 +156,7 @@ static void bt_av_hdl_a2d_evt(uint16_t event, void *p_param)
             adauI2sOn();
             esp_bt_gap_set_scan_mode(ESP_BT_NON_CONNECTABLE, ESP_BT_NON_DISCOVERABLE);
             bt_i2s_task_start_up();
-            volume_set_by_local_host(BT_DEFAULT_VOLUME);
+//            volume_set_by_local_host(BT_DEFAULT_VOLUME);
         }
         break;
     }

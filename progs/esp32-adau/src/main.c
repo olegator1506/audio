@@ -42,7 +42,6 @@ void app_main(void)
     ESP_ERROR_CHECK(netInit());
     i2sInit();
     btInit();
-    adauI2sOff();
     while(1){
         if(xQueueReceive(mainQ,(void *)&evt,10)) {
             ESP_LOGI(TAG, "Got Event code %d param %u",evt.code,evt.param);

@@ -229,14 +229,6 @@ esp_err_t adauReadLevel(float *left, float *right){
   *right = adau523toFloat(data);
   return ESP_OK;
 }
-esp_err_t adauInit(void) {
-    default_download_IC_1();
-//    adauAuxInGain(7);
-// настройки гроскости (перенести в проект !)
-    adauOutVol(30,true);
-    adauOutVol(63,false);
-  return ESP_OK;
-}
 
 static esp_err_t _i2sSwitch(bool state){
 
@@ -259,3 +251,12 @@ esp_err_t adauI2sOff(void){
   return _i2sSwitch(false);
 }
 
+esp_err_t adauInit(void) {
+    default_download_IC_1();
+//    adauAuxInGain(7);
+// настройки гроскости (перенести в проект !)
+    adauOutVol(30,true);
+    adauOutVol(63,false);
+    adauI2sOff();
+  return ESP_OK;
+}
