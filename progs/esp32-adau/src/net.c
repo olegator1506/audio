@@ -26,6 +26,9 @@ static bool _wifiConnected = false;
 extern esp_err_t tcpServerStart();
 extern esp_err_t tcpServerStop();
 
+extern esp_err_t otaStart();
+extern esp_err_t otaStop();
+
 
 /*
 static void disconnect_handler(void* arg, esp_event_base_t event_base, 
@@ -65,6 +68,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         _wifiConnected = false;
         tcpServerStop();
 //        stop_webserver();
+        otaStop();
         esp_wifi_connect();
         xEventGroupClearBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
         s_retry_num++;
@@ -76,6 +80,7 @@ static void event_handler(void* arg, esp_event_base_t event_base,
         ESP_LOGI(TAG,"WiFi connected");
 //        start_webserver();
         tcpServerStart();
+        otaStart();
 
 #ifdef USE_MQTT
             mqttReconnect();

@@ -196,5 +196,6 @@ esp_err_t tcpServerStop(void){
     } 
 //    closeConnection();   
     vTaskDelete(taskHandle);
+    taskHandle = NULL;
     return ESP_OK;
 }
