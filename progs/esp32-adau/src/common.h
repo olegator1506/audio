@@ -15,6 +15,9 @@
 #define     MY_EVENT_CONTROL_CMD 11
 #define     MY_EVENT_BT_STATE 12
 #define     MY_EVENT_BT_ATTR 13
+#define     MY_EVENT_BUTTON_PRESSED 14
+#define     MY_EVENT_BUTTON_RELEASED 15
+
 #define KEEPALIVE_PERIOD 60
 
 typedef enum {

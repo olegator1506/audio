@@ -35,7 +35,7 @@ static esp_err_t validate_image_header(esp_app_desc_t *new_app_info)
     return ESP_OK;
 }
 
-void otaTask(void *pvParameter)
+static void _otaTask(void *pvParameter)
 {
     ESP_LOGI(TAG, "Starting Advanced OTA example");
 
@@ -113,10 +113,12 @@ esp_err_t otaStart(void){
         ESP_LOGE(TAG,"Start failed: task already started");    
         return ESP_FAIL;
     }    
-    if(xTaskCreate(&_otaTask, "OTA task", 1024, NULL, 5, &taskHandle ) != pdPASS) {
+#ifdef USE_OTA    
+    if(xTaskCreate(&_otaTask, "OTA task", 1024 * 8, NULL, 5, &taskHandle ) != pdPASS) {
         ESP_LOGE(TAG,"Start failed: error creating task ");    
         return ESP_FAIL;
     }
+#endif
     return ESP_OK;
 }
 
