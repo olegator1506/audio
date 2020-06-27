@@ -5,8 +5,8 @@
 #define WIFI_SSID "AndroidAP_4239"
 #define WIFI_PASSWORD "DoYr1941?"
 // I2c
-#define I2C_SDA_PIN 18
-#define I2C_SCL_PIN 19
+#define I2C_SDA_PIN 12
+#define I2C_SCL_PIN 14
 #define I2C_FR 100000L
 #define I2C_PORT_NUM 0
 #define I2C_TIMEOUT 1000
