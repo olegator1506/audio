@@ -15,6 +15,7 @@ static uint _raw2Val(uint32_t sum) {
     uint val = round((float)(sum) / (float)(NO_OF_SAMPLES) / 5.);
     return round((float)(val >> 2) / 10.);
 }
+/* 
 void app_main() {
     static const adc_channel_t channel = ADC_CHANNEL_EQ;
     static const adc_atten_t atten = ADC_ATTEN_EQ;
@@ -30,4 +31,4 @@ void app_main() {
         ESP_LOGI("ADC","Sum = %d Val = %d",sum,val);
         vTaskDelay(100 / portTICK_PERIOD_MS);
     }
-} 
+}  */

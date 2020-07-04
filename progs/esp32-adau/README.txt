@@ -1,25 +1,26 @@
 Используемы контакты esp32
 Контакты для вывода (всего 9)
-4 18 19 21 22 23 25 26 27 
+4 -18 -19 -21 -22 -23 -25 -26 -27 
 i2c 12 14
-2
+TFT_LED 2
+
 --free--   4
-12
-14?
+I2C_SDA_PIN 12
+I2C_SCL_PIN 14
 15
 16
 17
-I2C_SDA_PIN 18
-I2C_SCL_PIN 19
---free-- 21
+TFT_RST 18
+TFT_SCK 19
+TFT_A0 21
 I2S_DATA_PIN 22
---free-- 23
+TFT_SDA 23
 I2S_LRCK_PIN 25
 I2S_BCK_PIN 26
---free-- 27
+TFT_LED 27
 MP3_RXD_PIN 32
 MP3_TXD_PIN 33 
-34(input only)
+DAC_PIN 34 Чтение данных с регуляторов
 35(input only)
 36(SVP)(input only)
 39(SVN)(input only)
