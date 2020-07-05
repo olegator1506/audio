@@ -29,6 +29,7 @@
 static const char *TAG="main";
 extern void i2sInit(void);
 extern esp_err_t pcfButtonsInit(void);
+extern esp_err_t irInit(void);
 QueueHandle_t mainQ;
 TMainEvent evt;
 
@@ -41,6 +42,7 @@ void app_main(void)
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     ESP_ERROR_CHECK(netInit());
 //    ESP_ERROR_CHECK(pcfButtonsInit());
+    ESP_ERROR_CHECK(irInit());
     i2sInit();
     btInit();
     while(1){

@@ -28,5 +28,8 @@
 #define PCF_BUTTONS_COUNT 8
 #define PCF_BUTTONS_BITS {0,1,2,3,4,5,6,7}
 #define PCF_BUTTONS_POLL_PERIOD 100
+// IR Remote control
+#define IR_RMT_ADDRESS 0xff00
+#define IR_RMT_PIN 35
 
 #endif
