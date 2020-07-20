@@ -1,3 +1,4 @@
+/*
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_system.h"
@@ -132,3 +133,4 @@ esp_err_t otaStop(void){
     taskHandle = NULL;
     return ESP_OK;
 }
+*/

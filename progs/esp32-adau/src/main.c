@@ -30,6 +30,7 @@
 static const char *TAG="main";
 extern void i2sInit(void);
 extern esp_err_t pcfButtonsInit(void);
+extern esp_err_t irInit(void);
 QueueHandle_t mainQ;
 TMainEvent evt;
 
@@ -47,6 +48,7 @@ void app_main(void)
 //    ESP_ERROR_CHECK(pcfButtonsInit());
 //    i2sInit();
 //    btInit();
+    ESP_ERROR_CHECK(irInit());
     while(1){
         if(xQueueReceive(mainQ,(void *)&evt,10)) {
             ESP_LOGI(TAG, "Got Event code %d param %u",evt.code,evt.param);
