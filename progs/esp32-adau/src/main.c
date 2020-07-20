@@ -25,6 +25,7 @@
 #include "adau17x.h"
 #include "net.h"
 #include "bt.h"
+#include "pcf.h"
 
 static const char *TAG="main";
 extern void i2sInit(void);
@@ -34,20 +35,25 @@ TMainEvent evt;
 
 void app_main(void)
 {
+    float left,right;
      mainQ = xQueueCreate( 50, sizeof( TMainEvent ) );
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(i2cInit());
     ESP_ERROR_CHECK(adauInit());
+    ESP_ERROR_CHECK(pcfInit());
+    
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     ESP_ERROR_CHECK(netInit());
 //    ESP_ERROR_CHECK(pcfButtonsInit());
-    i2sInit();
-    btInit();
+//    i2sInit();
+//    btInit();
     while(1){
         if(xQueueReceive(mainQ,(void *)&evt,10)) {
             ESP_LOGI(TAG, "Got Event code %d param %u",evt.code,evt.param);
 //            channelsEventHandler(evt.code,evt.param);
         } else  vTaskDelay( 1 / portTICK_PERIOD_MS);
+//        adauReadLevel(&left,&right);
+//        ESP_LOGI(TAG,"Level %.1f %.1f",left,right);
     }
 }
 /* 

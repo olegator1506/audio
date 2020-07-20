@@ -1,8 +1,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 // WiFi
-//#define WIFI_SSID "SweetHome"
-#define WIFI_SSID "AndroidAP_4239"
+#define WIFI_SSID "SweetHome"
+//#define WIFI_SSID "AndroidAP_4239"
 #define WIFI_PASSWORD "DoYr1941?"
 // I2c
 #define I2C_SDA_PIN 12
@@ -12,7 +12,7 @@
 #define I2C_TIMEOUT 1000
 // I2c chip addresses
 #define I2C_ADDRESS_ADAU 0x38
-#define I2C_ADDRESS_PCF1 0x20
+#define I2C_ADDRESS_CH_SWITCH 0x20
 //Bluetooth
 #define BT_DEV_NAME "ESP_ADAU"
 // i2S output
