@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="rzSliderDemo">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AngularJS Touch Slider</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="app/lib/bootstrap.min.css">
+    <link rel="stylesheet" href="app/lib/rzslider.min.css"/>
+    <link rel="stylesheet" href="app/app.css"/>
+    <!--<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>-->
+    <script src="app/lib/angular.min.js"></script>
+    <script src="app/lib/ui-bootstrap-tpls.js"></script>
+    <script src="app/lib/rzslider.min.js"></script>
+    <script src="app/app.js"></script>
+
+</head>
+
+<body ng-controller="MainCtrl">
+
+<div class="wrapper">
+<!--
+    <header>
+        <h1>AngularJS Touch Slider</h1>
+    </header>
+-->
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button type="button" class="btn btn-secondary" ng-click="prevFolder()">
+            <span class="glyphicon glyphicon-fast-backward"></span>
+        </button>
+        <button type="button" class="btn btn-secondary" ng-click="prevTrack()">
+            <span class="glyphicon glyphicon-backward"></span>
+        </button>
+        <button type="button" class="btn btn-secondary" ng-click="pause()">
+            <span class="glyphicon glyphicon-pause"></span>
+        </button>
+        <button type="button" class="btn btn-secondary" ng-click="stop()">
+            <span class="glyphicon glyphicon-stop"></span>
+        </button>
+
+        <button type="button" class="btn btn-secondary" ng-click="play()">
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
+        <button type="button" class="btn btn-secondary" ng-click="nextTrack()">
+            <span class="glyphicon glyphicon-forward"></span>
+        </button>
+        <button type="button" class="btn btn-secondary" ng-click="nextFolder()">
+            <span class="glyphicon glyphicon-fast-forward"></span>
+        </button>
+        <button type="button" class="btn btn-secondary">
+            <span class="glyphicon glyphicon-equalizer"></span>
+        </button>
+    </div>
+
+    <article>
+        <div class="row vertical-sliders" style="margin: 20px;">
+            <div class="col-md-6">
+                <rzslider ng-repeat="slider in eqSliders" rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
+
+            </div>
+        </div>
+    </article>
+</div>
+
+</body>
+
+</html>
