@@ -25,7 +25,7 @@
 #include "adau17x.h"
 #include "net.h"
 #include "pcf.h"
-#include "channel.h"
+//#include "channel.h"
 
 
 static const char *TAG="main";
@@ -48,8 +48,9 @@ void app_main(void)
 //    ESP_ERROR_CHECK(pcfButtonsInit());
 //    i2sInit();
 //    btInit();
-    ESP_ERROR_CHECK(irInit());
-    ESP_ERROR_CHECK(channelsInit());
+//    ESP_ERROR_CHECK(irInit());
+//    ESP_ERROR_CHECK(channelsInit());
+    pcfSelAnalogInput(1);
     while(1){
         if(xQueueReceive(mainQ,(void *)&evt,10)) {
             ESP_LOGI(TAG, "Got Event code %d param %u",evt.code,evt.param);

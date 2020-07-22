@@ -5,8 +5,9 @@
 
 #include "config.h"
 #include "i2c.h"
-#include "adau_project.h"
-#include "my-project2_IC_1_PARAM.h"
+#include "sample-direct_IC_1.h"
+//#include "my-project2_IC_1_PARAM.h"
+#include "sample-direct_IC_1_PARAM.h"
 #include "eq/80.h"
 #include "eq/230.h"
 #include "eq/910.h"
@@ -255,8 +256,8 @@ esp_err_t adauInit(void) {
     default_download_IC_1();
 //    adauAuxInGain(7);
 // настройки гроскости (перенести в проект !)
-    adauOutVol(30,true);
-    adauOutVol(63,false);
-    adauI2sOff();
+//    adauOutVol(30,true);
+//    adauOutVol(63,false);
+//    adauI2sOff();
   return ESP_OK;
 }
