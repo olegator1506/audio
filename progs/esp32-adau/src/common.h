@@ -2,6 +2,7 @@
 #define _COMMON_H_
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
+
 #define     MY_EVENT_MP3_CONNECT 1
 #define     MY_EVENT_MP3_DISCONNECT 2
 #define     MY_EVENT_MP3_MEDIA_PLUGIN 3

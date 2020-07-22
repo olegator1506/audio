@@ -24,8 +24,9 @@
 #include "i2c.h"
 #include "adau17x.h"
 #include "net.h"
-#include "bt.h"
 #include "pcf.h"
+#include "channel.h"
+
 
 static const char *TAG="main";
 extern void i2sInit(void);
@@ -42,13 +43,13 @@ void app_main(void)
     ESP_ERROR_CHECK(i2cInit());
     ESP_ERROR_CHECK(adauInit());
     ESP_ERROR_CHECK(pcfInit());
-    
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     ESP_ERROR_CHECK(netInit());
 //    ESP_ERROR_CHECK(pcfButtonsInit());
 //    i2sInit();
 //    btInit();
     ESP_ERROR_CHECK(irInit());
+    ESP_ERROR_CHECK(channelsInit());
     while(1){
         if(xQueueReceive(mainQ,(void *)&evt,10)) {
             ESP_LOGI(TAG, "Got Event code %d param %u",evt.code,evt.param);

@@ -1,0 +1,18 @@
+{
+    "project_name":       "bootloader",
+    "project_path":       "/home/artem/.platformio/packages/framework-espidf/components/bootloader/subproject",
+    "build_dir":          "/home/artem/work/audio/samples/esp32-mp3/.pio/build/esp-wrover-kit/bootloader",
+    "config_file":        "/home/artem/work/audio/samples/esp32-mp3/sdkconfig",
+    "config_defaults":    "",
+    "app_elf":            "bootloader.elf",
+    "app_bin":            "bootloader.bin",
+    "git_revision":       "HEAD-HASH-NOTFOUND",
+    "phy_data_partition": "",
+    "monitor_baud" : "115200",
+    "config_environment" : {
+        "COMPONENT_KCONFIGS" : "/home/artem/.platformio/packages/framework-espidf/components/efuse/Kconfig;/home/artem/.platformio/packages/framework-espidf/components/esp32/Kconfig;/home/artem/.platformio/packages/framework-espidf/components/esp_common/Kconfig;/home/artem/.platformio/packages/framework-espidf/components/log/Kconfig;/home/artem/.platformio/packages/framework-espidf/components/spi_flash/Kconfig",
+        "COMPONENT_KCONFIGS_PROJBUILD" : "/home/artem/.platformio/packages/framework-espidf/components/bootloader/Kconfig.projbuild;/home/artem/.platformio/packages/framework-espidf/components/esptool_py/Kconfig.projbuild;/home/artem/.platformio/packages/framework-espidf/components/partition_table/Kconfig.projbuild"
+    },
+    "build_components" : [ "bootloader", "bootloader_support", "efuse", "esp32", "esp_common", "esp_rom", "esptool_py", "log", "main", "micro-ecc", "partition_table", "soc", "spi_flash", "xtensa", "" ],
+    "build_component_paths" : [ "/home/artem/.platformio/packages/framework-espidf/components/bootloader", "/home/artem/.platformio/packages/framework-espidf/components/bootloader_support", "/home/artem/.platformio/packages/framework-espidf/components/efuse", "/home/artem/.platformio/packages/framework-espidf/components/esp32", "/home/artem/.platformio/packages/framework-espidf/components/esp_common", "/home/artem/.platformio/packages/framework-espidf/components/esp_rom", "/home/artem/.platformio/packages/framework-espidf/components/esptool_py", "/home/artem/.platformio/packages/framework-espidf/components/log", "/home/artem/.platformio/packages/framework-espidf/components/bootloader/subproject/main", "/home/artem/.platformio/packages/framework-espidf/components/bootloader/subproject/components/micro-ecc", "/home/artem/.platformio/packages/framework-espidf/components/partition_table", "/home/artem/.platformio/packages/framework-espidf/components/soc", "/home/artem/.platformio/packages/framework-espidf/components/spi_flash", "/home/artem/.platformio/packages/framework-espidf/components/xtensa", "" ]
+}
