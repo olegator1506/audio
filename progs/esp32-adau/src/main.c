@@ -11,7 +11,7 @@
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
 */
-//#define UNIT_TEST
+#define UNIT_TEST
 #ifndef UNIT_TEST
 #include "config.h"
 #include <stdio.h>
@@ -74,6 +74,7 @@ void app_main(void)
 #include "i2c.h"
 #include "pcf.h"
 #include "adau17x.h"
+#include "i2s.h"
 
 
 
@@ -102,8 +103,8 @@ void testPcfSetAnalogInput(){
 void testAdau(){
     adauSetChipAddress(I2C_ADDRESS_ADAU);
     TEST_ASSERT(adauLoadProgram() == ESP_OK);
-//    TEST_ASSERT(adauI2sOn() == ESP_OK);
-//    TEST_ASSERT(adauI2sOff() == ESP_OK);
+    TEST_ASSERT(adauI2sOff() == ESP_OK);
+    TEST_ASSERT(adauI2sOn() == ESP_OK);
 }
 void app_main(void)
 {
@@ -114,6 +115,8 @@ void app_main(void)
     TEST_ASSERT(pcfInit() == ESP_OK);
     RUN_TEST(testPcfSetAnalogInput);
     RUN_TEST(testAdau);
+    i2sInit(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
+    i2sStartTest();
     UNITY_END();
 }
 
