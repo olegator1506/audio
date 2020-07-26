@@ -1,6 +1,6 @@
 #include "driver/i2c.h"
-#include "config.h"
 
+static int _timeout = 0,_portNum;
 esp_err_t i2cWrite(uint8_t address,uint8_t *data_wr, size_t size)
 {
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
@@ -8,7 +8,7 @@ esp_err_t i2cWrite(uint8_t address,uint8_t *data_wr, size_t size)
     i2c_master_write_byte(cmd, (address << 1) , 1);
     i2c_master_write(cmd, data_wr, size, 1);
     i2c_master_stop(cmd);
-    esp_err_t ret = i2c_master_cmd_begin(I2C_PORT_NUM, cmd, I2C_TIMEOUT / portTICK_RATE_MS);
+    esp_err_t ret = i2c_master_cmd_begin(_portNum, cmd, _timeout / portTICK_RATE_MS);
     i2c_cmd_link_delete(cmd);
     return ret;
 }
@@ -26,21 +26,23 @@ esp_err_t i2cRead(uint8_t address, uint8_t *data_rd, size_t size)
     }
     i2c_master_read_byte(cmd, data_rd + size - 1, 1);
     i2c_master_stop(cmd);
-    esp_err_t ret = i2c_master_cmd_begin(I2C_PORT_NUM, cmd, I2C_TIMEOUT / portTICK_RATE_MS);
+    esp_err_t ret = i2c_master_cmd_begin(_portNum, cmd, _timeout / portTICK_RATE_MS);
     i2c_cmd_link_delete(cmd);
     return ret;
 }
 
 
-esp_err_t i2cInit(void){
-    int i2c_master_port = I2C_PORT_NUM;
+esp_err_t i2cInit(int portNum, int sdaPin,int sclPin,unsigned long frequency,int timeout){
+    _timeout = timeout;
+    _portNum = portNum;
+    int i2c_master_port = portNum;
     i2c_config_t conf;
     conf.mode = I2C_MODE_MASTER;
-    conf.sda_io_num = I2C_SDA_PIN;
+    conf.sda_io_num = sdaPin;
     conf.sda_pullup_en = GPIO_PULLUP_ENABLE;
-    conf.scl_io_num = I2C_SCL_PIN;
+    conf.scl_io_num = sclPin;
     conf.scl_pullup_en = GPIO_PULLUP_ENABLE;
-    conf.master.clk_speed = I2C_FR;
+    conf.master.clk_speed = frequency;
     i2c_param_config(i2c_master_port, &conf);
     return i2c_driver_install(i2c_master_port, conf.mode,0,0,0);
 }

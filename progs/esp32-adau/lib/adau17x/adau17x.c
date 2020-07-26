@@ -5,9 +5,8 @@
 
 #include "config.h"
 #include "i2c.h"
-#include "sample-direct_IC_1.h"
-//#include "my-project2_IC_1_PARAM.h"
-#include "sample-direct_IC_1_PARAM.h"
+#include "projects/sample-direct_IC_1.h"
+#include "projects/sample-direct_IC_1_PARAM.h"
 #include "eq/80.h"
 #include "eq/230.h"
 #include "eq/910.h"
@@ -26,6 +25,9 @@
 #define EQ_LEVEL_MAX 10
 #define EQ_MAX_BAND_NUM 5
 const char *TAG = "adau";
+static uint8_t _address;
+
+char *_adauLoadError = NULL;
 /*
 typedef enum {
   EQ_BAND_80 = 0
@@ -86,7 +88,7 @@ esp_err_t adauWrite(uint16_t addr,const uint8_t *data, size_t len) {
   bw[0] = ( addr >> 8 ) & 0xff;
   bw[1] = addr & 0xff;
   memcpy(bw+2,data,len);
-  res =  i2cWrite(I2C_ADDRESS_ADAU,bw,len+2);
+  res =  i2cWrite(_address,bw,len+2);
   if(res != ESP_OK) 
     ESP_LOGE(TAG,"I2C Write error.");
   free(bw);
@@ -104,11 +106,11 @@ esp_err_t adauRead(uint16_t addr,uint8_t *data, size_t len) {
 
   bw[0] = ( addr >> 8 ) & 0xff;
   bw[1] = addr & 0xff;
-  if(i2cWrite(I2C_ADDRESS_ADAU,bw,2) != ESP_OK) {
+  if(i2cWrite(_address,bw,2) != ESP_OK) {
     ESP_LOGE(TAG,"Read error on I2C write register/memory address.");
     return ESP_FAIL;
   }
-  if(i2cRead(I2C_ADDRESS_ADAU, data,len) != ESP_OK) {
+  if(i2cRead(_address, data,len) != ESP_OK) {
     ESP_LOGE(TAG,"Read error on I2C read data.");
     return ESP_FAIL;
   }
@@ -136,6 +138,8 @@ int32_t SIGMA_WRITE_REGISTER_BLOCK(uint8_t devAddress, uint16_t address, uint16_
 {
 //  DBG("SIGMA WRITE Device addres %02X Register %04X Length %d %02X",devAddress, address,length,pData[0]);
   if(adauWrite(address,pData, length) == ESP_OK)  return 0;
+  _adauLoadError = malloc(256);
+  snprintf(_adauLoadError,255,"Error writing block. Address %04X Size %d", address, length);
   return -1;
 }
 
@@ -252,12 +256,29 @@ esp_err_t adauI2sOff(void){
   return _i2sSwitch(false);
 }
 
-esp_err_t adauInit(void) {
+esp_err_t adauLoadProgram(void){
+    if(_adauLoadError) free(_adauLoadError);
+    _adauLoadError = NULL;
     default_download_IC_1();
+    if(_adauLoadError) {
+      ESP_LOGE(TAG,"Program load error: %s",_adauLoadError);
+      free(_adauLoadError);
+      _adauLoadError = NULL;
+      return ESP_FAIL;
+    }
+    return ESP_OK;
+}
+
+void adauSetChipAddress(uint8_t address) {
+  _address = address;
+}
+esp_err_t adauInit(uint8_t chipAddress) {
+    adauSetChipAddress(chipAddress);
+    if( adauLoadProgram() == ESP_FAIL) return ESP_FAIL;
 //    adauAuxInGain(7);
 // настройки гроскости (перенести в проект !)
 //    adauOutVol(30,true);
 //    adauOutVol(63,false);
-//    adauI2sOff();
+    adauI2sOff();
   return ESP_OK;
 }

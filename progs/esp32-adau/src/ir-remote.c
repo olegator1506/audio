@@ -20,6 +20,8 @@
 #include "common.h"
 
 static const char* TAG = "IR";
+static uint16_t _myAddress;
+static int _pin;
 
 #define RMT_RX_ACTIVE_LEVEL  0   /*!< If we connect with a IR receiver, the data is active low */
 
@@ -159,7 +161,7 @@ static int nec_parse_items(rmt_item32_t* item, int item_num, uint8_t* data)
     if(!data_valid(addr_t)) return -5;
     if(!data_valid(data_t)) return -6;
     ESP_LOGI(TAG,"Addr %04x Data %04x",addr_t, data_t);
-    if((addr_t) != IR_RMT_ADDRESS) return -7; // Чужой пульт
+    if((addr_t) != _myAddress) return -7; // Чужой пульт
     *data = data_t & 0xff;
     return i;
 }
@@ -170,7 +172,7 @@ static void nec_rx_init(void)
 {
     rmt_config_t rmt_rx;
     rmt_rx.channel = RMT_RX_CHANNEL;
-    rmt_rx.gpio_num = IR_RMT_PIN;
+    rmt_rx.gpio_num = _pin;
     rmt_rx.clk_div = RMT_CLK_DIV;
     rmt_rx.mem_block_num = 1;
     rmt_rx.rmt_mode = RMT_MODE_RX;
@@ -237,6 +239,8 @@ void app_main(void)
 //    xTaskCreate(rmt_example_nec_tx_task, "rmt_nec_tx_task", 2048, NULL, 10, NULL);
 }
 */
-esp_err_t irInit(void) {
+esp_err_t irInit(uint16_t address, int pin) {
+    _myAddress = address;
+    _pin = pin;
     return xTaskCreate(rmt_example_nec_rx_task, "rmt_nec_rx_task", 2048, NULL, 10, NULL);
 }

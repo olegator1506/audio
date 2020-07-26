@@ -4,7 +4,7 @@
 #include "config.h"
 
 
-void i2sInit(void) {
+void i2sInit(int bckPin, int lrckPin, int dataPin) {
     i2s_config_t i2s_config = {
         .mode = I2S_MODE_MASTER | I2S_MODE_TX,                                  // Only TX
         .sample_rate = 44100,
@@ -20,9 +20,9 @@ void i2sInit(void) {
 
     i2s_driver_install(0, &i2s_config, 0, NULL);
     i2s_pin_config_t pin_config = {
-        .bck_io_num = I2S_BCK_PIN,
-        .ws_io_num = I2S_LRCK_PIN,
-        .data_out_num = I2S_DATA_PIN,
+        .bck_io_num = bckPin,
+        .ws_io_num = lrckPin,
+        .data_out_num = dataPin,
         .data_in_num = -1                                                       //Not used
     };
     i2s_set_pin(0, &pin_config);

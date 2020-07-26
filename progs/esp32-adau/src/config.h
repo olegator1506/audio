@@ -1,8 +1,8 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 // WiFi
-#define WIFI_SSID "SweetHome"
-//#define WIFI_SSID "AndroidAP_4239"
+//#define WIFI_SSID "SweetHome"
+#define WIFI_SSID "AndroidAP_4239"
 #define WIFI_PASSWORD "DoYr1941?"
 // I2c
 #define I2C_SDA_PIN 12
@@ -31,7 +31,5 @@
 // IR Remote control
 #define IR_RMT_ADDRESS 0xff00
 #define IR_RMT_PIN 35
-
-
 
 #endif

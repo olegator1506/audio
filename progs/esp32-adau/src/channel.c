@@ -8,6 +8,7 @@
 //#include "mp3.h"
 //#include "st7735.h"
 //#include "display.h"
+#include "bt.h"
 #include "freertos/timers.h"
 
 #define TOTAL_CHANNELS 7
@@ -20,9 +21,10 @@
 
 // время прогрева ламп, секунд
 #define WARMING_TIME 10 
-extern void btInit(void);
-extern void btOn(void);
-extern void btOff(void);
+extern void i2sInit(int bckPin, int lrckPin, int dataPin);
+
+//extern void btOn(void);
+//extern void btOff(void);
 
 static bool _muteState = false;
 static bool _ready = false;
@@ -639,7 +641,8 @@ esp_err_t channelsEventHandler(uint8_t code,uint16_t param){
 esp_err_t channelsInit(){
     _selectOutput(MUTE_CHANNEL);    
 //    displayOff();
-    btInit();
+    
+//    btInit();
     
 // Устанавливаем состояния каналов MP3
 /* 
