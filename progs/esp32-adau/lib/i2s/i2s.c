@@ -3,10 +3,56 @@
 #include "freertos/task.h"
 #include <math.h>
 
+#ifdef UNIT_TEST 
+
 #define TEST_SAMPLE_RATE     (36000)
 #define TEST_WAVE_FREQ_HZ    (100)
 #define PI              (3.14159265)
 #define TEST_SAMPLE_PER_CYCLE (TEST_SAMPLE_RATE/TEST_WAVE_FREQ_HZ)
+
+static void meandr(int bits)
+{
+    int *samples_data = malloc(((bits+8)/16)*TEST_SAMPLE_PER_CYCLE*4);
+    unsigned int i;
+    size_t i2s_bytes_write = 0;
+
+    printf("\r\nTest bits=%d free mem=%d, written data=%d\n", bits, esp_get_free_heap_size(), ((bits+8)/16)*TEST_SAMPLE_PER_CYCLE*4);
+
+
+    for(i = 0; i < TEST_SAMPLE_PER_CYCLE; i++) {
+        if (bits == 16) {
+            samples_data[i] =  (i % 2) ? 0x00ff00ff : 0;
+        }    
+    }
+    i2s_set_clk(0, TEST_SAMPLE_RATE, bits, 2);
+    i2s_write(0, samples_data, ((bits+8)/16)*TEST_SAMPLE_PER_CYCLE*4, &i2s_bytes_write, 100);
+    free(samples_data);
+}
+
+
+void i2sTestInternalDac(void) {
+    i2s_config_t i2s_config = {
+        .mode = I2S_MODE_MASTER | I2S_MODE_TX | I2S_MODE_DAC_BUILT_IN,   
+        .sample_rate = 44100,
+        .bits_per_sample = 16,
+        .channel_format = I2S_CHANNEL_FMT_RIGHT_LEFT,                           //2-channels
+        .communication_format = I2S_COMM_FORMAT_I2S_MSB,
+        .dma_buf_count = 6,
+        .dma_buf_len = 60,
+        .intr_alloc_flags = 0,                                                  //Default interrupt priority
+        .tx_desc_auto_clear = true                                              //Auto clear tx descriptor on underflow
+    };
+    i2s_driver_install(0, &i2s_config, 0, NULL);
+    i2s_set_pin(0, NULL);
+    i2s_set_sample_rates(0, 22050);
+    while (1) {
+        meandr(16);
+        vTaskDelay(1000/portTICK_RATE_MS);
+    }
+
+
+}
+#endif
 
 void i2sInit(int bckPin, int lrckPin, int dataPin) {
     i2s_config_t i2s_config = {
@@ -31,7 +77,7 @@ void i2sInit(int bckPin, int lrckPin, int dataPin) {
     };
     i2s_set_pin(0, &pin_config);
 }
-
+/*
 static void setup_triangle_sine_waves(int bits)
 {
     int *samples_data = malloc(((bits+8)/16)*TEST_SAMPLE_PER_CYCLE*4);
@@ -68,28 +114,9 @@ static void setup_triangle_sine_waves(int bits)
 
     }
     i2s_set_clk(0, TEST_SAMPLE_RATE, bits, 2);
-    //Using push
-    // for(i = 0; i < SAMPLE_PER_CYCLE; i++) {
-    //     if (bits == 16)
-    //         i2s_push_sample(0, &samples_data[i], 100);
-    //     else
-    //         i2s_push_sample(0, &samples_data[i*2], 100);
-    // }
-    // or write
-    i2s_write(0, samples_data, ((bits+8)/16)*TEST_SAMPLE_PER_CYCLE*4, &i2s_bytes_write, 100);
+     i2s_write(0, samples_data, ((bits+8)/16)*TEST_SAMPLE_PER_CYCLE*4, &i2s_bytes_write, 100);
 
     free(samples_data);
 }
+*/
 
-
-void i2sStartTest(void){
-    int test_bits = 16;
-    while (1) {
-        setup_triangle_sine_waves(test_bits);
-        vTaskDelay(5000/portTICK_RATE_MS);
-        test_bits += 8;
-        if(test_bits > 32)
-            test_bits = 16;
-
-    }
-}
