@@ -11,7 +11,7 @@
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
 */
-//#define UNIT_TEST
+#define UNIT_TEST
 #ifndef UNIT_TEST
 #include "config.h"
 #include <stdio.h>
@@ -44,8 +44,8 @@ void app_main(void)
      mainQ = xQueueCreate( 50, sizeof( TMainEvent ) );
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(i2cInit( I2C_PORT_NUM, I2C_SDA_PIN, I2C_SCL_PIN,I2C_FR,I2C_TIMEOUT));
-    ESP_ERROR_CHECK(adauInit(I2C_ADDRESS_ADAU));
-    ESP_ERROR_CHECK(pcfInit());
+//    ESP_ERROR_CHECK(adauInit(I2C_ADDRESS_ADAU));
+//    ESP_ERROR_CHECK(pcfInit());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
     ESP_ERROR_CHECK(netInit());
     i2sInit(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
@@ -77,7 +77,7 @@ void app_main(void)
 #include "i2s.h"
 
 
-
+extern void pila(void); 
 
 static const char *TAG="main";
 
@@ -106,18 +106,26 @@ void testAdau(){
     TEST_ASSERT(adauI2sOff() == ESP_OK);
     TEST_ASSERT(adauI2sOn() == ESP_OK);
 }
+void i2sTestPila(void){
+    while(1) {
+        pila();
+    }
+}
+
+
 void app_main(void)
 {
 
     UNITY_BEGIN();
     TEST_ASSERT(i2cInit(I2C_PORT_NUM, I2C_SDA_PIN, I2C_SCL_PIN,I2C_FR,I2C_TIMEOUT) == ESP_OK);
-    RUN_TEST(testI2cWriteRead);
-    TEST_ASSERT(pcfInit() == ESP_OK);
-    RUN_TEST(testPcfSetAnalogInput);
-    RUN_TEST(testAdau);
+//    RUN_TEST(testI2cWriteRead);
+//    TEST_ASSERT(pcfInit() == ESP_OK);
+//    RUN_TEST(testPcfSetAnalogInput);
+//    RUN_TEST(testAdau);
     i2sInit(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
 //    i2sStartTest();
-    i2sTestInternalDac();
+//    i2sTestInternalDac();
+    i2sTestPila();
     UNITY_END();
 }
 

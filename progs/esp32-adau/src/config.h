@@ -19,6 +19,7 @@
 #define I2S_BCK_PIN 26
 #define I2S_DATA_PIN 22
 #define I2S_LRCK_PIN 25
+
 // MP3 module
 #define MP3_TXD_PIN 33 
 #define MP3_RXD_PIN 32
