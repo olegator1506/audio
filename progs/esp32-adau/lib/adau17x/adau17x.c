@@ -272,7 +272,7 @@ esp_err_t adauLoadProgram(void){
 void adauSetChipAddress(uint8_t address) {
   _address = address;
 }
-esp_err_t adauInit(uint8_t chipAddress) {
+esp_err_t adauInit(uint8_t chipAddress) { 
     adauSetChipAddress(chipAddress);
     if( adauLoadProgram() == ESP_FAIL) return ESP_FAIL;
 //    adauAuxInGain(7);

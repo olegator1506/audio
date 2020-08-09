@@ -3,12 +3,30 @@
 #include "freertos/task.h"
 #include <math.h>
 
-#ifdef UNIT_TEST 
+
+
 
 #define TEST_SAMPLE_RATE     (44100)
 #define TEST_WAVE_FREQ_HZ    (100)
 #define PI              (3.14159265)
 #define TEST_SAMPLE_PER_CYCLE (TEST_SAMPLE_RATE/TEST_WAVE_FREQ_HZ)
+
+void meandr(void)
+{
+    static bool state = false;
+    int bits = 16;
+    int *samples_data = malloc(((bits+8)/16)*TEST_SAMPLE_PER_CYCLE * 4);
+    uint16_t i, sample_val;
+    size_t i2s_bytes_write = 0;
+    sample_val = state ? 0xffff :0;
+    for(i = 0; i < TEST_SAMPLE_PER_CYCLE; i++) {
+            samples_data[i] = (sample_val<<16) + sample_val;
+    }
+    i2s_write(0, samples_data, TEST_SAMPLE_PER_CYCLE*4, &i2s_bytes_write, 100);
+    free(samples_data);
+    state = !state;
+}
+
 
 void pila(void)
 {
@@ -18,12 +36,13 @@ void pila(void)
     size_t i2s_bytes_write = 0;
     sample_val = 0;        
     for(i = 0; i < TEST_SAMPLE_PER_CYCLE; i++) {
-            samples_data[i] = (sample_val << 16) + sample_val;
-            sample_val += 0x400;
+            samples_data[i] = (sample_val) ;
+            sample_val += 0x200;
     }
     i2s_write(0, samples_data, ((bits+8)/16)*TEST_SAMPLE_PER_CYCLE*4, &i2s_bytes_write, 100);
     free(samples_data);
 }
+
 
 void i2sTestInternalDac(void) {
     i2s_config_t i2s_config = {
@@ -47,9 +66,6 @@ void i2sTestInternalDac(void) {
 
 
 }
-
-
-#endif
 
 void i2sInit(int bckPin, int lrckPin, int dataPin) {
     i2s_config_t i2s_config = {
