@@ -36,6 +36,7 @@
 
 #include "config.h"
 
+
 /* event for handler "bt_av_hdl_stack_up */
 enum {
     BT_APP_EVT_STACK_UP = 0,
@@ -45,11 +46,12 @@ enum {
 static void bt_av_hdl_stack_evt(uint16_t event, void *p_param);
 
 static const char *TAG="BT_MAIN";
-
+static char *_devName;
 static bool _btStarted = false;
 
-void btInit(void){
+void btInit(const char *devName){
     esp_err_t err;
+    _devName = strdup(devName);
     ESP_ERROR_CHECK(esp_bt_controller_mem_release(ESP_BT_MODE_BLE));
         /* create application task */
     bt_app_task_start_up();
@@ -154,7 +156,7 @@ static void bt_av_hdl_stack_evt(uint16_t event, void *p_param)
     switch (event) {
     case BT_APP_EVT_STACK_UP: {
         /* set up device name */
-        char *dev_name = BT_DEV_NAME;
+        char *dev_name = _devName;
         esp_bt_dev_set_device_name(dev_name);
 
         esp_bt_gap_register_callback(bt_app_gap_cb);

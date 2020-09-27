@@ -11,7 +11,7 @@
 #include "config.h"
 #include "common.h"
 #include "i2c.h"
-
+/*
 static const char *TAG="BUTTONS";
 
 static bool _getState(uint8_t pcfState, uint8_t bit) {
@@ -60,5 +60,5 @@ esp_err_t pcfButtonsInit(void){
     }
     return ESP_OK;
 }
-
+*/
 

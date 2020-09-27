@@ -21,7 +21,7 @@ static TaskHandle_t taskHandle = NULL;
 
 static esp_err_t execAdauWrite(uint16_t address,uint16_t length,int socket){
     uint8_t *buf = malloc(length);
-//    ESP_LOGI(TAG,"Write. ddress %02X length %d",address,length);
+    ESP_LOGI(TAG,"Write. ddress %02X length %d",address,length);
     if(!buf) {
         ESP_LOGE(TAG,"Malloc error");
         return ESP_FAIL;
