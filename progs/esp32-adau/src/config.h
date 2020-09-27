@@ -7,7 +7,7 @@
 // I2c
 #define I2C_SDA_PIN 12
 #define I2C_SCL_PIN 14
-#define I2C_FR 100000L
+#define I2C_FR 200000L
 #define I2C_PORT_NUM 0
 #define I2C_TIMEOUT 1000
 // I2c chip addresses
@@ -16,7 +16,8 @@
 //Bluetooth
 #define BT_DEV_NAME "ESP_ADAU"
 // i2S output
-#define I2S_BCK_PIN 26
+//#define I2S_BCK_PIN 26 // Так не работает i2c (какая связь,не ясно)
+#define I2S_BCK_PIN 26 
 #define I2S_DATA_PIN 22
 #define I2S_LRCK_PIN 25
 

@@ -11,7 +11,7 @@
    software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
    CONDITIONS OF ANY KIND, either express or implied.
 */
-//#define UNIT_TEST
+#define UNIT_TEST
 #ifndef UNIT_TEST
 #include "config.h"
 #include <stdio.h>
@@ -68,6 +68,8 @@ void app_main(void)
 #include <esp_log.h>
 #include <string.h>
 #include <nvs_flash.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
 // Project includes
 #include <unity.h>
 #include "config.h"
@@ -75,7 +77,7 @@ void app_main(void)
 #include "pcf.h"
 #include "adau17x.h"
 #include "i2s.h"
-
+#define TEST_PCF_CICLE_COUNT 10000
 
 extern void pila(void); 
 extern void meandr(void);
@@ -84,8 +86,8 @@ static const char *TAG="main";
 void testI2cWriteRead()
 {
     uint8_t pcfWrByte = 0,pcfRdByte = 0;
-    for( int i=0;i<256;i++){
-        pcfWrByte = i & 0xff;
+    for(int r=0;r<TEST_PCF_CICLE_COUNT;r++){
+        pcfWrByte = r & 0xff;
         TEST_ASSERT(i2cWrite(I2C_ADDRESS_CH_SWITCH,&pcfWrByte,1) == ESP_OK);
         TEST_ASSERT(i2cRead(I2C_ADDRESS_CH_SWITCH,&pcfRdByte,1) == ESP_OK);
         TEST_ASSERT(pcfRdByte == pcfWrByte);
@@ -93,13 +95,15 @@ void testI2cWriteRead()
 }
 void testPcfSetAnalogInput(){
     uint8_t b;
-    for(uint8_t i = 0; i<4; i++){
-        TEST_ASSERT(pcfSelAnalogInput(i) == ESP_OK);
-        TEST_ASSERT(i2cRead(I2C_ADDRESS_CH_SWITCH,&b,1) == ESP_OK);
-        ESP_LOGI(TAG,"Set channel %d Read byte %02X",i,b);
-        TEST_ASSERT(((b >>6) & 0x03)== i);
+    for(int i = 0; i<TEST_PCF_CICLE_COUNT;i++){
+        b = i & 3;
+        TEST_ASSERT(pcfSelAnalogInput(b) == ESP_OK);
+//        TEST_ASSERT(i2cRead(I2C_ADDRESS_CH_SWITCH,&b,1) == ESP_OK);
+//        ESP_LOGI(TAG,"Set channel %d Read byte %02X",i,b);
+//        TEST_ASSERT(((b >>6) & 0x03)== i);
     }
 }
+
 void testAdau(){
     adauSetChipAddress(I2C_ADDRESS_ADAU);
     TEST_ASSERT(adauLoadProgram() == ESP_OK);
@@ -118,20 +122,30 @@ void i2sTestPila(void){
     }
 }
 
-
+void testRegulators(void){
+    for(int pass = 0;pass<TEST_PCF_CICLE_COUNT;pass++){
+        uint8_t ch = pass & 0x07;
+        if(pcfSelRegulator(ch) == ESP_FAIL){
+            ESP_LOGE(TAG,"Test regulators:Error writing byte to PCF chip. Pass= %d Channel = %d",pass,ch);
+            TEST_ASSERT(false);
+        }
+    }
+}
 void app_main(void)
 {
 
     UNITY_BEGIN();
+    ESP_ERROR_CHECK(nvs_flash_init());
     TEST_ASSERT(i2cInit(I2C_PORT_NUM, I2C_SDA_PIN, I2C_SCL_PIN,I2C_FR,I2C_TIMEOUT) == ESP_OK);
-    RUN_TEST(testI2cWriteRead);
-    TEST_ASSERT(pcfInit() == ESP_OK);
-    RUN_TEST(testPcfSetAnalogInput);
-    RUN_TEST(testAdau);
     i2sInit(I2S_BCK_PIN, I2S_LRCK_PIN, I2S_DATA_PIN);
+    TEST_ASSERT(pcfInit() == ESP_OK);
+    RUN_TEST(testI2cWriteRead);
+    RUN_TEST(testPcfSetAnalogInput);
+    RUN_TEST(testRegulators);
+//    RUN_TEST(testAdau);
 //    i2sStartTest();
 //    i2sTestInternalDac();
-    i2sTestPila();
+//    i2sTestPila();
     UNITY_END();
 }
 

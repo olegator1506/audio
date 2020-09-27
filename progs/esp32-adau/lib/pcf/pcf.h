@@ -4,4 +4,5 @@
 #include <esp_err.h>
 extern esp_err_t pcfInit(void);
 extern esp_err_t pcfSelAnalogInput(uint8_t inputNum);
+extern esp_err_t pcfSelRegulator(uint8_t chNum);
 #endif
