@@ -3,7 +3,8 @@
 - Записываем образ
 -  устанавливаем пакеты xorg
     xorg Для работы XWin
-    libasound-dev для компиляции программ использующих ALSA
+    libasound-dev alsaplayer alsaplayer-daemon libalsaplayer-dev для компиляции программ использующих ALSA
+    
 -  активируем I2S интерфейс
   armbian-add-overlay simple-i2s.dts
   здесь simple-i2s.dts - исходный файл оверлея
