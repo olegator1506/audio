@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="audio" Database="" Version="10.0.0">
-  <Project Name="i2c" Path="opi/samples/i2c/i2c.project" Active="No"/>
   <Project Name="dac-ctrl" Path="opi/progs/dac-ctrl/dac-ctrl.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
