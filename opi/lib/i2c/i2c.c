@@ -2,8 +2,10 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
+#include <sys/types.h>
 #include <stdbool.h>
 #include <fcntl.h>
 
@@ -65,7 +67,7 @@ bool i2cWriteCheck(int address, uint8_t byte_wr){
     }
     if(!result) return false;
     for(int retry =0; retry < I2C_RETRY_COUNT;retry++) {
-		if(read(_file,br, 1) != 1) 
+		if(read(_file,br, 1) != 1) {
 			usleep(I2C_RETRY_TIMEOUT);
 			continue;
 		}

@@ -16,6 +16,7 @@
       <File Name="../../lib/i2c/i2c.c"/>
     </VirtualDirectory>
     <File Name="main.c"/>
+    <File Name="config.h"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

@@ -2,18 +2,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "i2c/i2c.h"
+#include "log/log.h"
+#include "config.h"
+
 #define SLAVE_ADDRESS 0x20
+const char *TAG = "Main";
 int main(int argc, char **argv)
 {
+	
 	unsigned char bw,br;
 	int i;
-/*
-	if(!i2cOpen()) {
-		printf("Error opening I2C device\n");
-		exit(1);
-	}
-*/
- 
+	setLogLevelGlobal(LOG_LEVEL);
+	LOGI(TAG,"program started");
 	for(i = 0; i <256; i++) {
 		bw = i & 0xff;
 		if (!i2cWrite(SLAVE_ADDRESS, &bw, 1))
@@ -30,5 +30,6 @@ int main(int argc, char **argv)
 		}
 		if(br != bw) printf("Error: write %02x read %02x", bw,br);
 	}
+	LOGI(TAG,"program finished");
     return 0;
 }

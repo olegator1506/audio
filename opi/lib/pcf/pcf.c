@@ -1,7 +1,9 @@
 /**
  * Модуль обмена с чипами PCF8574
  **/ 
+
 #include "i2c/i2c.h"
+#include "log/log.h"
 
 static const char *TAG = "pcf";
 #define I2C_ADDRESS_CH_SWITCH 0x20
@@ -10,37 +12,39 @@ static const char *TAG = "pcf";
 
 
 static uint8_t _pcfSwitchByte = 0;
-esp_err_t pcfSelAnalogInput(uint8_t inputNum){
+bool pcfSelAnalogInput(uint8_t inputNum){
     if(inputNum >3) {
-        ESP_LOGE(TAG,"Invalid analog input number %d",inputNum);
-        return ESP_FAIL;
+        LOGE(TAG,"Invalid analog input number %d",inputNum);
+        return false;
     }
     uint8_t b = (_pcfSwitchByte & 0x3f) + (inputNum << 6);
-    ESP_LOGI(TAG,"Set analog input #%d PCF byte %02x",inputNum,b);
-    if( b == _pcfSwitchByte) return ESP_OK; // Биты не изменились
-    if(!_i2cWriteCheck(b)) return ESP_FAIL;
+    LOGI(TAG,"Set analog input #%d PCF byte %02x",inputNum,b);
+    if( b == _pcfSwitchByte) return true; // Биты не изменились
+    if(!i2cWriteCheck(I2C_ADDRESS_CH_SWITCH, b)) return false;
     _pcfSwitchByte = b;
-    return ESP_OK;
+    return true;
 }
 
-esp_err_t pcfSelRegulator(uint8_t chNum){
+bool pcfSelRegulator(uint8_t chNum){
     if(chNum >7) {
-        ESP_LOGE(TAG,"Invalid regulator number %d",chNum);
-        return ESP_FAIL;
+        LOGE(TAG,"Invalid regulator number %d",chNum);
+        return false;
     }
     uint8_t b = (_pcfSwitchByte & 0xf8) + chNum;
-    ESP_LOGI(TAG,"Select regulator #%d PCF byte %02x",chNum,b);
-    if( b == _pcfSwitchByte) return ESP_OK; // Биты не изменились
-    if(!_i2cWriteCheck(b)) return ESP_FAIL;
+    LOGI(TAG,"Select regulator #%d PCF byte %02x",chNum,b);
+    if( b == _pcfSwitchByte) return true; // Биты не изменились
+    if(!i2cWriteCheck(I2C_ADDRESS_CH_SWITCH, b)) return false;
     _pcfSwitchByte = b;
-    return ESP_OK;
+    return true;
 }
 
 
 // Инициализация чипов PCF8574 (коммутатор входов+опрос регуляторов, опрос кнопок, управление светодиодами)
-esp_err_t pcfInit(void){
-    ESP_LOGI(TAG,"Init");
+
+bool pcfInit(void){
+    LOGI(TAG,"Init");
     _pcfSwitchByte = 0;
-    if(i2cWrite(I2C_ADDRESS_CH_SWITCH,&_pcfSwitchByte,1) == ESP_FAIL) return ESP_FAIL;
-    return ESP_OK;
+    if(!i2cWrite(I2C_ADDRESS_CH_SWITCH,&_pcfSwitchByte,1)) return false;
+    return true;
 }
+ 
