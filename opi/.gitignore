@@ -3,3 +3,5 @@
 **/.pio
 **/*.d
 **/*.o
+**/Debug
+**/config.*
