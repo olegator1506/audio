@@ -1,16 +1,10 @@
 /**
  * Модуль обмена с чипами PCF8574
  **/ 
-#include <esp_log.h>
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
-#include <config.h>
-#include <i2c.h>
+#include "i2c/i2c.h"
 
 static const char *TAG = "pcf";
 #define I2C_ADDRESS_CH_SWITCH 0x20
-#define I2C_RETRY_COUNT 1
-#define I2C_RETRY_TIMEOUT 1
 
 
 

@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Oleg Artemenko
-Date                   :=09/29/20
+Date                   :=09/30/20
 CodeLitePath           :=/home/artem/.codelite
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/up_up_lib_i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/main.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/up_up_lib_i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_lib_log_log.c$(ObjectSuffix) $(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/main.c$(ObjectSuffix) 
 
 
 
@@ -98,6 +98,22 @@ $(IntermediateDirectory)/up_up_lib_i2c_i2c.c$(DependSuffix): ../../lib/i2c/i2c.c
 
 $(IntermediateDirectory)/up_up_lib_i2c_i2c.c$(PreprocessSuffix): ../../lib/i2c/i2c.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_lib_i2c_i2c.c$(PreprocessSuffix) ../../lib/i2c/i2c.c
+
+$(IntermediateDirectory)/up_up_lib_log_log.c$(ObjectSuffix): ../../lib/log/log.c $(IntermediateDirectory)/up_up_lib_log_log.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/artem/work/audio/opi/lib/log/log.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_lib_log_log.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/up_up_lib_log_log.c$(DependSuffix): ../../lib/log/log.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_lib_log_log.c$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_lib_log_log.c$(DependSuffix) -MM ../../lib/log/log.c
+
+$(IntermediateDirectory)/up_up_lib_log_log.c$(PreprocessSuffix): ../../lib/log/log.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_lib_log_log.c$(PreprocessSuffix) ../../lib/log/log.c
+
+$(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(ObjectSuffix): ../../lib/pcf/pcf.c $(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(DependSuffix)
+	$(CC) $(SourceSwitch) "/home/artem/work/audio/opi/lib/pcf/pcf.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(DependSuffix): ../../lib/pcf/pcf.c
+	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(ObjectSuffix) -MF$(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(DependSuffix) -MM ../../lib/pcf/pcf.c
+
+$(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(PreprocessSuffix): ../../lib/pcf/pcf.c
+	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/up_up_lib_pcf_pcf.c$(PreprocessSuffix) ../../lib/pcf/pcf.c
 
 $(IntermediateDirectory)/main.c$(ObjectSuffix): main.c $(IntermediateDirectory)/main.c$(DependSuffix)
 	$(CC) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
