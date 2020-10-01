@@ -60,14 +60,14 @@ bool i2cWriteCheck(int address, uint8_t byte_wr){
 	_setAddress(address);
 	result = false;
     for(int retry =0; retry < I2C_RETRY_COUNT;retry++) {
-		if(write(_file, byte_wr, 1) == 1) {
+		if(write(_file, &byte_wr, 1) == 1) {
             result = true;break;
         }
 		usleep(I2C_RETRY_TIMEOUT);
     }
     if(!result) return false;
     for(int retry =0; retry < I2C_RETRY_COUNT;retry++) {
-		if(read(_file,br, 1) != 1) {
+		if(read(_file,&br, 1) != 1) {
 			usleep(I2C_RETRY_TIMEOUT);
 			continue;
 		}

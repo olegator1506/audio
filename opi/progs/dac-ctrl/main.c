@@ -7,13 +7,19 @@
 
 #define SLAVE_ADDRESS 0x20
 const char *TAG = "Main";
+
+bool setup(void) {
+	LOGI(TAG,"Initialization");
+	return true;	
+}
+
 int main(int argc, char **argv)
 {
-	
 	unsigned char bw,br;
 	int i;
 	setLogLevelGlobal(LOG_LEVEL);
 	LOGI(TAG,"program started");
+	setup();
 	for(i = 0; i <256; i++) {
 		bw = i & 0xff;
 		if (!i2cWrite(SLAVE_ADDRESS, &bw, 1))
@@ -33,3 +39,9 @@ int main(int argc, char **argv)
 	LOGI(TAG,"program finished");
     return 0;
 }
+ 
+/* 
+int main(int argc, char **argv) {
+	printf("Hello world");
+}
+ */

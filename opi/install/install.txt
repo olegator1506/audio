@@ -18,4 +18,85 @@
   overlays=i2c0
   таким образом после перезагрузки появится устройство /dev/i2c-0
   контакты 3 - SDA 5 - SCL
+------------------------------------------------------------------
+============== Удаленная отладка ===================
+Т.к. Opi имеет ограниченые ресурсы запуск IDE для разработки на ней затруднителен
+Лучше компилировать на более мощном компьютере и отлаживаться удаленно
+Для компиляции устанавливаем пакет gcc-arm-linux-gnueabihf
+sudo apt-get install gcc-arm-linux-gnueabihf
+Компиляцию делаем так
+arm-linux-gnueabi-gcc -c  main.c" -g -O0 -Wall  -o main.o 
+Линкуем :
+arm-linux-gnueabi-gcc -static -march=armv7-a -mcpu=cortex-a7  -o ./Debug/dac-ctrl @"dac-ctrl.txt" -L.
+!Ключ -static указываем для того чтобы разделяемые библиотеки линковались статически, иначе в результирующем файле 
+указывается неверный интерпретатор ld-linux-so вместо ld-linux-armhf, при этом файл получается достаточно 
+большим (~500 Kb)? но для целей отладки это не существенно. 
+Естественно, по окончании разработки программа должна быть пересобрана на Opi обычным образом
+
+Отладка 
+- на основном компьютере должжен быть установлен пакет gdb-multiarch, а на Opi пакет gdbserver 
+- копируем скомпилированный исполняемый файл на Opi любым доступным способом, например по ssh
+  scp my-prog opi:/home/user/work/ 
+- на Opi запускаем программe через gdbserver
+  gdbserver :1025 my-prog
+здесь 1025 - номер tcp порта на коором gdbserver слушает входящие соединения. Если указать порт меньше 1024,
+ то потребуются права root-а
+- Запускаем на основном компе удаленную отладку
+  gdb-multiarch
+  и вводим
+  target remote opi:1025
+В ответ получаем чтото типа
+Remote debugging using pi2:1025
+Reading my-prog from remote target...
+warning: File transfers from remote targets can be slow. Use "set sysroot" to access files locally instead.
+Reading my-prog from remote target...
+Reading symbols from target:my-prog...done.
+0x0001044c in _start ()
+
+====================== Удаленная отладка в VSCode ===========================   
+- Описываем конфигурацию запуска отладки в .vscode/launch.json
+------------------------
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "gcc - Сборка и отладка активного файла",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "./my-prog",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Включить автоматическое форматирование для gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "/usr/bin/gdb-multiarch",
+            "miDebuggerServerAddress": "opi:1025",
+        }
+    ]
+}
+-----------------------
+- Делаем скрипт для копирования исполняемого файла на Opi и удаленного запуска gdb-server
+--------------------------
+#!/bin/sh
+RemoteTargetDir=/temp/
+TargetHost=opi
+GDBServerPort=1025
+ProjectName=my-prog
+OutputFile=./Debug/${ProjectName}
+scp ${OutputFile} ${TargetHost}:${RemoteTargetDir}/
+ssh ${TargetHost} "gdbserver --once :1025 ${RemoteTargetDir}/${ProjectName}"
+-----------------------
+ключ --once указывает закрывать gdbserver после завершения соединения
+Дальше в отдельном окне запускаем данный скрипт и в VSCode запускаем отладку обычным образом (F5)
+
+
+
 
