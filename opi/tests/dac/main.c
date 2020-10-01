@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	unsigned char bw,br;
 	int i;
 	setLogLevelGlobal(LOG_LEVEL);
-	LOGI(TAG,"program started");
+	LOGI(TAG,"Test started");
 	setup();
 	for(i = 0; i <256; i++) {
 		bw = i & 0xff;
@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 		}
 		if(br != bw) printf("Error: write %02x read %02x", bw,br);
 	}
-	LOGI(TAG,"program finished");
+	LOGI(TAG,"Test finished");
     return 0;
 }
  
