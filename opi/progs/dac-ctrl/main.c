@@ -12,6 +12,7 @@ static const char *TAG = "Main";
 bool setup(void) {
 	LOGI(TAG,"Initialization");
 	if(!pcfInit()) return false;
+	if(!pcfSelAnalogInput(1)) return false;
 	if(!adauInit(ADAU_CHIP_ADDRESS)) return false;
 	return true;	
 }
