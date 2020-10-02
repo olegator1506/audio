@@ -42,7 +42,7 @@ bool pcfSelRegulator(uint8_t chNum){
 // Инициализация чипов PCF8574 (коммутатор входов+опрос регуляторов, опрос кнопок, управление светодиодами)
 
 bool pcfInit(void){
-    LOGI(TAG,"Init");
+    DBG(TAG,"Init");
     _pcfSwitchByte = 0;
     if(!i2cWrite(I2C_ADDRESS_CH_SWITCH,&_pcfSwitchByte,1)) return false;
     return true;

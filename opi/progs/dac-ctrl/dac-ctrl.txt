@@ -1,1 +1,1 @@
-./Debug/main.c.o ./Debug/log_log.c.o ./Debug/pcf_pcf.c.o ./Debug/i2c_i2c.c.o
+./Debug/main.c.o ./Debug/log_log.c.o ./Debug/pcf_pcf.c.o ./Debug/i2c_i2c.c.o ./Debug/adau17x_adau17x.c.o

@@ -1,16 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "i2c/i2c.h"
+#include "pcf/pcf.h"
+#include "adau17x/adau17x.h"
 #include "log/log.h"
 #include "config.h"
 
 #define SLAVE_ADDRESS 0x20
-const char *TAG = "Main";
+static const char *TAG = "Main";
 
 bool setup(void) {
 	LOGI(TAG,"Initialization");
-	if(!i2cWriteCheck(SLAVE_ADDRESS,0x40)) return false;
+	if(!pcfInit()) return false;
+	if(!adauInit(ADAU_CHIP_ADDRESS)) return false;
 	return true;	
 }
 

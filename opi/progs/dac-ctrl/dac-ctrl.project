@@ -17,6 +17,10 @@
     </VirtualDirectory>
     <File Name="main.c"/>
     <File Name="config.h"/>
+    <VirtualDirectory Name="adau17x">
+      <File Name="../../lib/adau17x/adau17x.c"/>
+      <File Name="../../lib/adau17x/adau17x.h"/>
+    </VirtualDirectory>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
