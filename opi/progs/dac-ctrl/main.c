@@ -10,8 +10,7 @@ const char *TAG = "Main";
 
 bool setup(void) {
 	LOGI(TAG,"Initialization");
-	uint8_t b = 0x40;
-	if(!i2cWriteCheck(SLAVE_ADDRESS,&b)) return false;
+	if(!i2cWriteCheck(SLAVE_ADDRESS,0x40)) return false;
 	return true;	
 }
 
