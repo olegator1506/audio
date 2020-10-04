@@ -61,8 +61,7 @@ ARCH 	 := -march=armv7-a -mcpu=cortex-a7
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/alsa_alsa.cpp$(ObjectSuffix) 
-
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/alsa_alsa.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) 
 
 
 Objects=$(Objects0) 
@@ -139,6 +138,22 @@ $(IntermediateDirectory)/alsa_alsa.cpp$(DependSuffix): ../../lib/alsa/alsa.cpp
 
 $(IntermediateDirectory)/alsa_alsa.cpp$(PreprocessSuffix): ../../lib/alsa/alsa.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/alsa_alsa.cpp$(PreprocessSuffix) "../../lib/alsa/alsa.cpp"
+
+$(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix): src/classes/channel-base.cpp $(IntermediateDirectory)/classes_channel-base.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/channel-base.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/classes_channel-base.cpp$(DependSuffix): src/classes/channel-base.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_channel-base.cpp$(DependSuffix) -MM "src/classes/channel-base.cpp"
+
+$(IntermediateDirectory)/classes_channel-base.cpp$(PreprocessSuffix): src/classes/channel-base.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_channel-base.cpp$(PreprocessSuffix) "src/classes/channel-base.cpp"
+
+$(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix): src/classes/channels.cpp $(IntermediateDirectory)/classes_channels.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/channels.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/classes_channels.cpp$(DependSuffix): src/classes/channels.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_channels.cpp$(DependSuffix) -MM "src/classes/channels.cpp"
+
+$(IntermediateDirectory)/classes_channels.cpp$(PreprocessSuffix): src/classes/channels.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_channels.cpp$(PreprocessSuffix) "src/classes/channels.cpp"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
