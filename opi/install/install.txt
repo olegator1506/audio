@@ -22,7 +22,7 @@
 ============== Удаленная отладка ===================
 Т.к. Opi имеет ограниченые ресурсы запуск IDE для разработки на ней затруднителен
 Лучше компилировать на более мощном компьютере и отлаживаться удаленно
-Для компиляции устанавливаем пакет gcc-arm-linux-gnueabihf
+Для компиляции устанавливаем пакет gcc-arm-linux-gnueabihf и g++-arm-linux-gnueabih
 sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 Компиляцию делаем так
 arm-linux-gnueabi-gcc -c  main.c" -g -O0 -Wall  -o main.o // для С файлов
