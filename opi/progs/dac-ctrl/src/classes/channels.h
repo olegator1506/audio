@@ -85,5 +85,5 @@ extern void channelBtSetAttr(int attrId, char *attrText);
  esp_err_t channelSwitchPause(void);
 */	
 };
-
+extern TSelector *Selector;
 #endif

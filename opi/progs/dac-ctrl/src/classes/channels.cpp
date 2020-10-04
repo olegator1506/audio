@@ -103,5 +103,5 @@ void TAlsaChannel::select(void)
 
 }
 
-
+TSelector *Selector;
     
