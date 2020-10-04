@@ -1,4 +1,3 @@
-##
 ## Auto Generated makefile by CodeLite IDE
 ## any manual changes will be erased      
 ##
@@ -15,8 +14,8 @@ CurrentFileFullPath    :=
 User                   :=Олег Артеменко
 Date                   :=30/09/20
 CodeLitePath           :="/home/artem/.codelite"
-LinkerName             :=/usr/bin/arm-linux-gnueabi-gcc
-SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
+LinkerName             :=arm-linux-gnueabihf-g++
+SharedObjectLinkerName :=arm-linux-gnueabihf-g++ -shared -fPIC
 ObjectSuffix           :=.o
 DependSuffix           :=.o.d
 PreprocessSuffix       :=.i
@@ -24,7 +23,7 @@ DebugSwitch            :=-g
 IncludeSwitch          :=-I
 LibrarySwitch          :=-l
 OutputSwitch           :=-o 
-LibraryPathSwitch      :=-L
+LibraryPathSwitch      :=-L../../lib
 PreprocessorSwitch     :=-D
 SourceSwitch           :=-c 
 OutputFile             :=$(IntermediateDirectory)/$(ProjectName)
@@ -39,9 +38,9 @@ LinkOptions            :=
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch)../../lib $(IncludeSwitch). 
 IncludePCH             := 
 RcIncludePath          := 
-Libs                   := 
+Libs                   :=-lalsaplayer
 ArLibs                 :=  
-LibPath                := $(LibraryPathSwitch). 
+LibPath                := $(LibraryPathSwitch)
 RemoteTargetDir	       :=/home/artem/work/audio/opi/progs/dac-ctrl
 TargetHost	       :=pi2
 ##
@@ -49,10 +48,10 @@ TargetHost	       :=pi2
 ## AR, CXX, CC, AS, CXXFLAGS and CFLAGS can be overriden using an environment variables
 ##
 AR       := /usr/bin/ar rcu
-CXX      := /usr/bin/g++
-CC       := /usr/bin/arm-linux-gnueabi-gcc
-CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
-CFLAGS   :=  -g -O0 -Wall $(Preprocessors)
+CXX      := /usr/bin/arm-linux-gnueabihf-g++
+CC       := /usr/bin/arm-linux-gnueabihf-gcc
+CXXFLAGS :=  -ggdb -O0 -Wall $(Preprocessors)
+CFLAGS   :=  -ggdb -O0 -Wall $(Preprocessors)
 ASFLAGS  := 
 AS       := /usr/bin/as
 ARCH 	 := -march=armv7-a -mcpu=cortex-a7 
@@ -62,7 +61,7 @@ ARCH 	 := -march=armv7-a -mcpu=cortex-a7
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/alsa_alsa.cpp$(ObjectSuffix) 
 
 
 
@@ -78,7 +77,8 @@ $(OutputFile): $(IntermediateDirectory)/.d $(Objects)
 	@$(MakeDirCommand) $(@D)
 	@echo "" > $(IntermediateDirectory)/.d
 	@echo $(Objects0)  > $(ObjectsFileList)
-	$(LinkerName) $(ARCH) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions) -static
+	$(LinkerName) $(ARCH) $(OutputSwitch)$(OutputFile) @$(ObjectsFileList) $(LibPath) $(Libs) $(LinkOptions)
+
 MakeIntermediateDirs:
 	@test -d ./Debug || $(MakeDirCommand) ./Debug
 
@@ -92,13 +92,13 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/main.c$(ObjectSuffix): main.c $(IntermediateDirectory)/main.c$(DependSuffix)
-	$(CC) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/main.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.c$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/main.c$(DependSuffix): main.c
-	@$(CC) $(CFLAGS) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.c$(ObjectSuffix) -MF$(IntermediateDirectory)/main.c$(DependSuffix) -MM "main.c"
+$(IntermediateDirectory)/main.cpp$(ObjectSuffix): main.cpp $(IntermediateDirectory)/main.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/main.cpp$(DependSuffix) -MM "main.cpp"
 
-$(IntermediateDirectory)/main.c$(PreprocessSuffix): main.c
-	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.c$(PreprocessSuffix) "main.c"
+$(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) "main.cpp"
 
 $(IntermediateDirectory)/log_log.c$(ObjectSuffix): ../../lib/log/log.c $(IntermediateDirectory)/log_log.c$(DependSuffix)
 	$(CC) $(SourceSwitch) "/home/artem/work/audio/opi/lib/log/log.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IncludePath)
@@ -132,6 +132,14 @@ $(IntermediateDirectory)/adau17x_adau17x.c$(DependSuffix): ../../lib/adau17x/ada
 $(IntermediateDirectory)/adau17x_adau17x.c$(PreprocessSuffix): ../../lib/adau17x/adau17x.c
 	$(CC) $(CFLAGS) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/adau17x_adau17x.c$(PreprocessSuffix) "../../lib/adau17x/adau17x.c"
 
+$(IntermediateDirectory)/alsa_alsa.cpp$(ObjectSuffix): ../../lib/alsa/alsa.cpp $(IntermediateDirectory)/alsa_alsa.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/lib/alsa/alsa.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/alsa_alsa.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/alsa_alsa.cpp$(DependSuffix): ../../lib/alsa/alsa.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/alsa_alsa.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/alsa_alsa.cpp$(DependSuffix) -MM "../../lib/alsa/alsa.cpp"
+
+$(IntermediateDirectory)/alsa_alsa.cpp$(PreprocessSuffix): ../../lib/alsa/alsa.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/alsa_alsa.cpp$(PreprocessSuffix) "../../lib/alsa/alsa.cpp"
+
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
 ##
@@ -139,5 +147,10 @@ $(IntermediateDirectory)/adau17x_adau17x.c$(PreprocessSuffix): ../../lib/adau17x
 ##
 clean:
 	$(RM) -r ./Debug/
+
+
+
+
+
 
 

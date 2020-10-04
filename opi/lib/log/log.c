@@ -32,7 +32,7 @@ static bool _needOutput(const char *tag, log_level_t level){
 
 void _log(const char *tag, log_level_t level, const char *format, va_list list)
 {
-	if(_needOutput(tag,level)) return;
+	if(!_needOutput(tag,level)) return;
 	vsnprintf(_buf, LOG_MAX_STRING_LENGTH, format,list);
 	printf("%s: %s\n",_logLevelStr[level],_buf);
 }

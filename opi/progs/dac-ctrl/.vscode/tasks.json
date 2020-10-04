@@ -9,7 +9,7 @@
             "command": "make",
             "args": [
                 "-f",
-                "dac-ctrl-cross.mk",
+                "dac-ctrl.mk",
             ],
             "problemMatcher": [],
             "group": {
@@ -17,6 +17,20 @@
                 "isDefault": true
             }
         },
+        {
+            "label": "Build for OPI",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "-f",
+                "dac-ctrl-cross.mk",
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build"
+            }
+        },
+
         {
             "label": "Clean project",
             "type": "shell",

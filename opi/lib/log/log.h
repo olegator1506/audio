@@ -41,5 +41,8 @@ extern void LOGI(const char *tag,const char *format,...);
 extern void LOGW(const char *tag,const char *format,...);
 extern void VERB(const char *tag,const char *format,...);
 extern void DBG(const char *tag,const char *format,...);
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __ESP_LOG_H__ */

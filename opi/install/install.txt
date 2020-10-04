@@ -23,9 +23,10 @@
 Т.к. Opi имеет ограниченые ресурсы запуск IDE для разработки на ней затруднителен
 Лучше компилировать на более мощном компьютере и отлаживаться удаленно
 Для компиляции устанавливаем пакет gcc-arm-linux-gnueabihf
-sudo apt-get install gcc-arm-linux-gnueabihf
+sudo apt-get install gcc-arm-linux-gnueabihf g++-arm-linux-gnueabihf
 Компиляцию делаем так
-arm-linux-gnueabi-gcc -c  main.c" -g -O0 -Wall  -o main.o 
+arm-linux-gnueabi-gcc -c  main.c" -g -O0 -Wall  -o main.o // для С файлов
+arm-linux-gnueabihf-g++ -c  main.c" -g -O0 -Wall  -o main.o // для С++ файлов
 Линкуем :
 arm-linux-gnueabi-gcc -static -march=armv7-a -mcpu=cortex-a7  -o ./Debug/dac-ctrl @"dac-ctrl.txt" -L.
 !Ключ -static указываем для того чтобы разделяемые библиотеки линковались статически, иначе в результирующем файле 
