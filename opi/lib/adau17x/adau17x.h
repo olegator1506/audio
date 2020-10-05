@@ -1,6 +1,6 @@
 #ifndef __ADAU17X_H__
 #define __ADAU17X_H__
-
+#include <stdint.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -13,6 +13,8 @@ bool adauDspOn(void);
 bool adauDspReload(void);
 bool adauOutVol(int level, bool line);
 float adau523toFloat(uint8_t *data);
+int32_t floatToDsp( float x );
+int32_t dbToDsp( float x );
 bool adauEqSet(uint8_t band, int8_t level);
 bool  adauReadLevel(float *left, float *right);
 bool adauI2sOn(void);

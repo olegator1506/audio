@@ -1,7 +1,7 @@
 #ifndef _CHANNELS_H_
 #define _CHANNELS_H_
 
-#define TOTAL_CHANNELS 3
+#define TOTAL_CHANNELS 4
 
 typedef enum {
     CH_TYPE_AUX, // Дополнительные входы ( один на передней панели и два на задней
@@ -56,15 +56,17 @@ class TSelector {
 protected:
 	int _selectedChNum; 
 	TChannel *_channels[TOTAL_CHANNELS];
+	const char *_tag; 
 public:
 	TSelector();
 //	char *errorMessaage;
 //	bool error(const char *message);
-	bool selectNext();
-	bool select(int chNum);
-	bool unselect(int);
-	bool isAvailable(int chNum);
-	int count(void);
+	void selectNext();
+	void selectPrev();
+	void select(int chNum);
+//	bool unselect(int);
+//	bool isAvailable(int chNum);
+//	int count(void);
  
 /*
     channelsEventHandler(uint8_t code,uint16_t param);
