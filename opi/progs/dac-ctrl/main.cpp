@@ -16,6 +16,10 @@
 #include "src/classes/channels.h"
 
 
+#include <math.h>
+
+//#define LOCAL_DEBUG 1
+
 #define CMD_INVALID -1
 #define CMD_CHSEL_NEXT 0
 #define CMD_CHSEL_PREV 1
@@ -36,25 +40,38 @@ static const char *TAG = "Main";
 
 int alsaSessionNum;
 
+#ifdef LOCAL_DEBUG
 bool setup(void) {
 	DBG(TAG,"Initialization");
+	pcfInit();
+	adauInit(ADAU_CHIP_ADDRESS);
+	Selector = new TSelector();
+	return true;	
+}
+#else
+bool setup(void) {
+	DBG(TAG,"Initialization");
+/*
 	if(!ap_find_session(ALSA_PLAYER_SESSION_NAME,&alsaSessionNum)) {
 		LOGE(TAG,"AlsaPlayer not started");
 		return false;
 	}
+*/
 	DBG(TAG,"AP session ID =%d\n", alsaSessionNum);
 	if(!pcfInit()) return false;
-	if(!pcfSelAnalogInput(1)) return false;
+//	if(!pcfSelAnalogInput(1)) return false;
 	if(!adauInit(ADAU_CHIP_ADDRESS)) return false;
 	Selector = new TSelector();
 	return true;	
 }
+#endif
 
 void handleConnection(int fd){
 	char buf[TCP_BUFFER_SIZE+1], *p,*args, *cmd;
 	int ret,cmdCode,i; 
 	while((ret = read(fd, buf, TCP_BUFFER_SIZE)) > 0) {
-		p = strchr(buf, '\n');
+		p = strchr(buf, '\r');
+		if(!p) p = strchr(buf, '\n');
 		if(p) *p = '\0';
 		else buf[ret] = '\0';
 		DBG(TAG, " Got packet: %s-",buf);
@@ -79,7 +96,7 @@ void handleConnection(int fd){
 			case CMD_CHSEL_NEXT:
 				Selector->selectNext();
 				break;
-			case CMD_CHSEL_PREV;	
+			case CMD_CHSEL_PREV:	
 				Selector->selectPrev();
 				break;
 		}
@@ -105,7 +122,9 @@ bool initServer(void){
     servaddr.sin_family = AF_INET; 
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY); 
     servaddr.sin_port = htons(TCP_PORT); 
-  
+	int reuse = 1;
+	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int));
+
     // Binding newly created socket to given IP and verification 
     if ((bind(sockfd, (SA*)&servaddr, sizeof(servaddr))) != 0) { 
         LOGE(TAG, "socket bind failed...\n"); 
@@ -140,16 +159,31 @@ bool initServer(void){
 	}
  }
 
+
+float exp10f( float x ) {
+    return powf( 10.f, x );
+}
+
+
 int main(int argc, char **argv)
 {
+
 	setLogLevelGlobal(LOG_LEVEL);
 	LOGI(TAG,"program started");
-/* 	if(!setup()) {
+ 	if(!setup()) {
 		puts("Initialization error"); 
 	}
- */	LOGI(TAG,"program started");
+	LOGI(TAG,"program started");
 	initServer();
 	LOGI(TAG,"program finished");
     return 0;
+
+/*
+	float f = atof(argv[1]);	
+	int32_t i = dB_to_dsp(f);
+	uint8_t *p = (uint8_t *) &i;
+	for(int i=0;i<4;i++)
+		printf("%02x ",p[i]);
+*/
 }
 

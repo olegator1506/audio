@@ -37,7 +37,13 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
         .type = CH_TYPE_LINEIN,
         .name = "LINE",
         .auxNum = 0,
-    }
+    },
+    { // Линейный дифференциальный вход
+        .type = CH_TYPE_ALSA,
+        .name = "ALSA",
+        .auxNum = 0,
+    },
+
 	
 };
 
@@ -88,6 +94,7 @@ void TAlsaChannel::select(void)
 
 // Класс TSelector 
  TSelector::TSelector(void){
+	 _tag = "Selector";
 	for(int i =0; i<TOTAL_CHANNELS; i++)
 		switch(_channelsConfig[i].type){
 			case CH_TYPE_AUX:
@@ -100,8 +107,29 @@ void TAlsaChannel::select(void)
 				_channels[i] = new TAlsaChannel(_channelsConfig[i].name);
 				break;
 			}
-
+	_selectedChNum = 0;		
+	_channels[_selectedChNum]->select();
 }
+void TSelector::select(int chNum){
+	if((chNum >= TOTAL_CHANNELS) || (chNum < 0)) {
+		LOGE(_tag,"Invalid channel number %d",chNum);
+	}
+	DBG(_tag,"Select channel #%d",chNum); 
+	if(chNum == _selectedChNum) return;
+	_channels[_selectedChNum]->unselect(); 
+	_selectedChNum = chNum;
+	_channels[_selectedChNum]->select(); 
+}
+void TSelector::selectNext(void){
+	int num = (_selectedChNum == (TOTAL_CHANNELS-1)) ? 0 : (_selectedChNum +1);
+	select(num);
+}
+
+void TSelector::selectPrev(void){
+	int num = (_selectedChNum == 0) ? (TOTAL_CHANNELS - 1) : (_selectedChNum - 1);
+	select(num);
+}
+
 
 TSelector *Selector;
     

@@ -67,6 +67,15 @@ float adau523toFloat(uint8_t *data){
   return result;
 }
 
+int32_t floatToDsp( float x ) {
+    return (int32_t)( x * 0x1p23f );
+    // for older compilers you may need to write (float)( 1 << 24 ) instead of 0x1p24f
+}
+
+int32_t dbToDsp( float x ) {
+    return float_to_dsp( exp10f( x / 20.f ) );
+}
+
 
 
 /**
