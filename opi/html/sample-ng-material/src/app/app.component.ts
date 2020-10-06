@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DacRqService } from './dac-rq.service';
+import { ChannelConfig } from './model';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +13,11 @@ export class AppComponent {
   playPauseIcon = 'play_arrow';
   isPlaying = false;
   btnColor = "";
+  dataSource : DacRqService;
+  channels : ChannelConfig[];
+  constructor(){
+    this.dataSource = new DacRqService();
+  }
   play(){
     this.isPlaying = true;
     this.playPauseIcon = 'pause';
@@ -23,6 +30,9 @@ export class AppComponent {
     if(this.isPlaying) this.pause();
     else this.play();
   };
+  ngOnInit() {
+    this.channels = this.dataSource.getChannels();
+  }
 }
 class Test extends AppComponent {
 
