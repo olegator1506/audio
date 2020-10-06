@@ -2,6 +2,7 @@
 #include <string.h>
 #include <log/log.h>
 #include <stdio.h>
+#include <math.h>
 #include "i2c/i2c.h"
 #include "projects/test1_IC_1.h"
 #include "projects/test1_IC_1_PARAM.h"
@@ -14,7 +15,7 @@
 
 
 
-
+extern float exp10f(float x);
 
 
 
@@ -73,7 +74,7 @@ int32_t floatToDsp( float x ) {
 }
 
 int32_t dbToDsp( float x ) {
-    return float_to_dsp( exp10f( x / 20.f ) );
+    return floatToDsp( exp10f( x / 20.f ) );
 }
 
 
