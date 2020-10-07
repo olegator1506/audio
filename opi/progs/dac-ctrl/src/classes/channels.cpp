@@ -134,5 +134,16 @@ bool TSelector::setEq(int band, int value){
 	DBG(_tag,"Set equakizer band %d = %d",band,value);
 	return adauEqSet(band, value);
 }
+ bool TSelector::reload(void){
+	if(!adauLoadProgram()) return false;
+	int num = _selectedChNum;
+	_selectedChNum = -1;
+	select(num);
+	return true;
+}
+bool TSelector::eqReset(void) {
+	return adauEqReset();
+}
+
 TSelector *Selector;
     

@@ -25,12 +25,17 @@
 #define CMD_CHSEL_PREV 1
 #define CMD_CHSEL_NUM 2
 #define CMD_EQ 3
+#define CMD_ADAU_RELOAD 4
+#define CMD_EQ_RESET 5
+
 
 const char *commands[] = {
 	"ch_sel_next",
 	"ch_sel_prev",
 	"ch_sel_num",
 	"eq",
+	"adau_reload",
+	"eq_reset",
 	NULL
 };
 
@@ -118,7 +123,12 @@ void handleConnection(int fd){
 				argWords = splitArg(args,2);
 				Selector->setEq(atoi(argWords[0]), atoi(argWords[1]));
 				break;
-					
+			case CMD_ADAU_RELOAD:
+				Selector->reload();	
+				break;
+			case CMD_EQ_RESET:
+				Selector->eqReset();
+				break;
 		}
 	} 
 }

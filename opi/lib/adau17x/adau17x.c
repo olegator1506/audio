@@ -206,7 +206,7 @@ bool adauEqSet(uint8_t band, int8_t level) {
   if(band > EQ_MAX_BAND_NUM) {
     LOGE(TAG,"Invalid EQ band number %d",band);
     return false;
-  }  
+  } 
   paramAddr = 0x12 + (band * 5);
   DBG(TAG,"EQ set band %d level %d",band,level);
   if(level < EQ_LEVEL_MIN) level = EQ_LEVEL_MIN;
@@ -216,6 +216,13 @@ bool adauEqSet(uint8_t band, int8_t level) {
   DBG(TAG,"Addr %04X Offs %d", paramAddr, offs);
   return adauSafeLoad(data,paramAddr,(const uint32_t)5);
 }
+// Устанавливает все полосы эквалайзера в 0
+bool adauEqReset(void){
+  for(int i =0;i<=EQ_MAX_BAND_NUM; i++)
+    if(!adauEqSet(i,0)) return false;
+  return true;  
+}
+
 /*
 bool adauReadLevel(float *left, float *right){
   uint8_t data[4];
