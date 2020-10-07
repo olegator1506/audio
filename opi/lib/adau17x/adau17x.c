@@ -207,12 +207,13 @@ bool adauEqSet(uint8_t band, int8_t level) {
     LOGE(TAG,"Invalid EQ band number %d",band);
     return false;
   }  
-  paramAddr = 12 + (band * 5);
+  paramAddr = 0x12 + (band * 5);
   DBG(TAG,"EQ set band %d level %d",band,level);
   if(level < EQ_LEVEL_MIN) level = EQ_LEVEL_MIN;
   if(level > EQ_LEVEL_MAX) level = EQ_LEVEL_MAX;
   int offs = (level - EQ_LEVEL_MIN) * 20;
   const uint8_t *data = _eqData[band] + offs; 
+  DBG(TAG,"Addr %04X Offs %d", paramAddr, offs);
   return adauSafeLoad(data,paramAddr,(const uint32_t)5);
 }
 /*

@@ -9,7 +9,8 @@
 #include "1k.h"
 #include "2k.h"
 #include "4k.h"
-#include "8k.h"
+//#include "8k.h"
+#include "10k.h"
 #include "16k.h"
 
 #define EQ_LEVEL_MIN -15 
@@ -24,7 +25,8 @@ const uint8_t *_eqData[] = {
   eqBand1k,
   eqBand2k,
   eqBand4k,
-  eqBand8k,
+//  eqBand8k,
+    eqBand10k,
   eqBand16k
 };
 #endif
