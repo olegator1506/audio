@@ -316,9 +316,16 @@
     </a>
 </div>
 <div class="content" role="main">
-  <span *ngFor="let item of channels">{{item.name}}</span>
   <div class="row">
-    <span>xxx</span>
+    <mat-button-toggle-group appearance="legacy" [value]="selectedChannelNum" (change)="onChannelButtonClick($event)">
+      <mat-button-toggle *ngFor="let item of channels" 
+      [checked]="isChannelSelected(item.num)"
+      [value]="item.num">{{item.name}}
+    </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  Selected Num = {{selectedChannelNum}}
+  <div class="row">
 
     <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
 

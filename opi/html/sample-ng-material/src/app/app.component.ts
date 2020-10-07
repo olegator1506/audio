@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DacRqService } from './dac-rq.service';
 import { ChannelConfig } from './model';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +16,18 @@ export class AppComponent {
   btnColor = "";
   dataSource : DacRqService;
   channels : ChannelConfig[];
+  selectedChannelNum: number;
+  source : any;
   constructor(){
     this.dataSource = new DacRqService();
+    this.selectedChannelNum = 1;
+  }
+
+  onChannelButtonClick(obj : MatButtonToggleChange){
+    this.selecteChannelNum(obj.value);
+  }
+  isChannelSelected(chNum:number) {
+    return (chNum == this.selectedChannelNum);
   }
   play(){
     this.isPlaying = true;
