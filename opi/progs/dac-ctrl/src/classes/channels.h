@@ -67,6 +67,7 @@ public:
 //	bool unselect(int);
 //	bool isAvailable(int chNum);
 //	int count(void);
+	bool setEq(int band, int value);
  
 /*
     channelsEventHandler(uint8_t code,uint16_t param);

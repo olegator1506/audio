@@ -4,25 +4,15 @@
 #include <stdio.h>
 #include <math.h>
 #include "i2c/i2c.h"
-#include "projects/test1_IC_1.h"
-#include "projects/test1_IC_1_PARAM.h"
-#include "eq/80.h"
-#include "eq/230.h"
-#include "eq/910.h"
-#include "eq/3k6.h"
-#include "eq/10k.h"
-#include "eq/14k.h"
+#include "projects/my-project2_IC_1.h"
+#include "projects/my-project2_IC_1_PARAM.h"
+#include "eq/v2/eq.h"
 
-
-
-extern float exp10f(float x);
-
-
+float exp10f( float x ) {
+    return powf( 10.f, x );
+}
 
 // Абсолютные значения положения движков эквалайзера (0 - середина)
-#define EQ_LEVEL_MIN -10 
-#define EQ_LEVEL_MAX 10
-#define EQ_MAX_BAND_NUM 5
 const char *TAG = "adau";
 static uint8_t _address;
 
@@ -33,14 +23,6 @@ typedef enum {
 } TEqBand;
 */
 
-const uint8_t *_eqData[] = {
-  eqBand80,
-  eqBand230,
-  eqBand910,
-  eqBand3k6,
-  eqBand10k,
-  eqBand14k
-};
 
 static char *_dbgDataStr(const uint8_t *data, int len) {
   static char s[255];

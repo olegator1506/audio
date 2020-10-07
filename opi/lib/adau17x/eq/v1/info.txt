@@ -1,0 +1,1 @@
+Q = 1.41 FS = 44100 Max = 10 dB Min = -10 dB Step = 1 Db

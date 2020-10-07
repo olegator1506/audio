@@ -130,6 +130,9 @@ void TSelector::selectPrev(void){
 	select(num);
 }
 
-
+bool TSelector::setEq(int band, int value){
+	DBG(_tag,"Set equakizer band %d = %d",band,value);
+	return adauEqSet(band, value);
+}
 TSelector *Selector;
     
