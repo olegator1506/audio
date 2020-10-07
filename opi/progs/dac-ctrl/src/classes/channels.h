@@ -63,7 +63,7 @@ public:
 //	bool error(const char *message);
 	void selectNext();
 	void selectPrev();
-	void select(int chNum);
+	void select(int chNum, bool force = false);
 //	bool unselect(int);
 //	bool isAvailable(int chNum);
 //	int count(void);
