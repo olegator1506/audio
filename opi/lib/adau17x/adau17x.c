@@ -257,8 +257,12 @@ bool adauI2sOff(void){
 bool adauI2sGain(float val) {
   DBG(TAG,"Set I2S gain = %5.1f",val);
   int32_t intVal = floatToDsp(val);
-  uint8_t bb[4];
-  _changeByteOrder(intVal,bb);
+  uint8_t *bf,bb[4],b;
+  bf = (uint8_t *) &intVal;
+  for(int i =0; i<4;i++) {
+      b = bf[i];
+      bb[3-i] = b;
+  } 
   if(!adauWrite(8, bb,4)) return false;
   if(!adauWrite(9, bb,4)) return false; 
   return true;
