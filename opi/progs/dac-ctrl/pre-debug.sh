@@ -11,4 +11,4 @@ ssh ${TargetHost}  rm ${RemoteTargetDir}/${ProjectName}
 # Copy new binary to target host
 scp ${OutputFile} ${TargetHost}:${RemoteTargetDir}/
 #ssh ${TargetHost} "nohup gdbserver :1025 ${RemoteTargetDir}/${ProjectName} > /dev/null 2>&1 &"
-ssh ${TargetHost} "nohup gdbserver --once :1025 ${RemoteTargetDir}/${ProjectName}"
+ssh ${TargetHost} "gdbserver --once :1025 ${RemoteTargetDir}/${ProjectName}"

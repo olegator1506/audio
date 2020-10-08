@@ -1,7 +1,7 @@
 /*
- * File:           E:\projects\IC 1_my-project2\my-project2_IC_1_REG.h
+ * File:           E:\projects\my-project2_IC_1_REG.h
  *
- * Created:        Wednesday, October 07, 2020 7:37:05 PM
+ * Created:        Wednesday, October 07, 2020 10:38:32 PM
  * Description:    my-project2:IC 1 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -248,17 +248,17 @@
 /* CRC Ideal_1  - Registers (IC 1) */
 #define REG_CRC_IDEAL_1_IC_1_ADDR                 0x40C0
 #define REG_CRC_IDEAL_1_IC_1_BYTE                 1
-#define REG_CRC_IDEAL_1_IC_1_VALUE                0x28
+#define REG_CRC_IDEAL_1_IC_1_VALUE                0x58
 
 /* CRC Ideal_2  - Registers (IC 1) */
 #define REG_CRC_IDEAL_2_IC_1_ADDR                 0x40C1
 #define REG_CRC_IDEAL_2_IC_1_BYTE                 1
-#define REG_CRC_IDEAL_2_IC_1_VALUE                0x0
+#define REG_CRC_IDEAL_2_IC_1_VALUE                0x7F
 
 /* CRC Ideal_3  - Registers (IC 1) */
 #define REG_CRC_IDEAL_3_IC_1_ADDR                 0x40C2
 #define REG_CRC_IDEAL_3_IC_1_BYTE                 1
-#define REG_CRC_IDEAL_3_IC_1_VALUE                0xE
+#define REG_CRC_IDEAL_3_IC_1_VALUE                0x51
 
 /* CRC Ideal_4  - Registers (IC 1) */
 #define REG_CRC_IDEAL_4_IC_1_ADDR                 0x40C3
@@ -875,17 +875,17 @@
 #define R44_DEJITTER_IC_1_SHIFT                   0
 
 /* CRC Ideal_1 (IC 1) */
-#define R45_CRC_IDEAL_1_IC_1                      0x28   /* 00101000b	[7:0] */
+#define R45_CRC_IDEAL_1_IC_1                      0x58   /* 01011000b	[7:0] */
 #define R45_CRC_IDEAL_1_IC_1_MASK                 0xFF
 #define R45_CRC_IDEAL_1_IC_1_SHIFT                0
 
 /* CRC Ideal_2 (IC 1) */
-#define R46_CRC_IDEAL_2_IC_1                      0x00   /* 00000000b	[7:0] */
+#define R46_CRC_IDEAL_2_IC_1                      0x7F   /* 01111111b	[7:0] */
 #define R46_CRC_IDEAL_2_IC_1_MASK                 0xFF
 #define R46_CRC_IDEAL_2_IC_1_SHIFT                0
 
 /* CRC Ideal_3 (IC 1) */
-#define R47_CRC_IDEAL_3_IC_1                      0x0E   /* 00001110b	[7:0] */
+#define R47_CRC_IDEAL_3_IC_1                      0x51   /* 01010001b	[7:0] */
 #define R47_CRC_IDEAL_3_IC_1_MASK                 0xFF
 #define R47_CRC_IDEAL_3_IC_1_SHIFT                0
 

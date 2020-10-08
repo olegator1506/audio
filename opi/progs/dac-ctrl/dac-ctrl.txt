@@ -1,1 +1,1 @@
-./Debug/main.cpp.o ./Debug/up_up_lib_pcf_pcf.c.o ./Debug/up_up_lib_log_log.c.o ./Debug/up_up_lib_i2c_i2c.c.o ./Debug/src_classes_channel-base.cpp.o ./Debug/up_up_lib_adau17x_adau17x.c.o ./Debug/src_classes_channels.cpp.o
+./Debug/main.cpp.o ./Debug/log_log.c.o ./Debug/pcf_pcf.c.o ./Debug/i2c_i2c.c.o ./Debug/adau17x_adau17x.c.o ./Debug/alsa_alsa.cpp.o ./Debug/classes_channel-base.cpp.o ./Debug/classes_channels.cpp.o

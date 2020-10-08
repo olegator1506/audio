@@ -254,6 +254,16 @@ bool adauI2sOff(void){
   return _i2sSwitch(false);
 }
 
+bool adauI2sGain(float val) {
+  DBG(TAG,"Set I2S gain = %5.1f",val);
+  int32_t intVal = floatToDsp(val);
+  uint8_t bb[4];
+  _changeByteOrder(intVal,bb);
+  if(!adauWrite(8, bb,4)) return false;
+  if(!adauWrite(9, bb,4)) return false; 
+  return true;
+}
+
 bool adauLoadProgram(void){
     if(_adauLoadError) free(_adauLoadError);
     _adauLoadError = NULL;

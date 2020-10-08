@@ -88,6 +88,7 @@ void TAlsaChannel::select(void)
 {
 	DBG(_tag,"select");
 	adauI2sOn();
+	adauI2sGain(0.5);
 }
 	
 
