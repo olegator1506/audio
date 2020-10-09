@@ -20,9 +20,6 @@
       <File Name="../../lib/adau17x/adau17x.c"/>
       <File Name="../../lib/adau17x/adau17x.h"/>
     </VirtualDirectory>
-    <VirtualDirectory Name="alsa">
-      <File Name="../../lib/alsa/alsa.cpp"/>
-    </VirtualDirectory>
     <VirtualDirectory Name="classes">
       <File Name="src/classes/channel-base.cpp"/>
       <File Name="src/classes/channels.cpp"/>

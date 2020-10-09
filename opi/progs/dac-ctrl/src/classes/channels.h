@@ -63,10 +63,13 @@ public:
 //	bool error(const char *message);
 	void selectNext();
 	void selectPrev();
-	void select(int chNum);
+	void select(int chNum, bool force = false);
 //	bool unselect(int);
 //	bool isAvailable(int chNum);
 //	int count(void);
+	bool setEq(int band, int value);
+	bool reload(void);
+	bool eqReset(void);
  
 /*
     channelsEventHandler(uint8_t code,uint16_t param);

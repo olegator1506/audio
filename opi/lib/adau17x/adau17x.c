@@ -2,26 +2,17 @@
 #include <string.h>
 #include <log/log.h>
 #include <stdio.h>
+#include <math.h>
 #include "i2c/i2c.h"
-#include "projects/test1_IC_1.h"
-#include "projects/test1_IC_1_PARAM.h"
-#include "eq/80.h"
-#include "eq/230.h"
-#include "eq/910.h"
-#include "eq/3k6.h"
-#include "eq/10k.h"
-#include "eq/14k.h"
+#include "projects/my-project2_IC_1.h"
+#include "projects/my-project2_IC_1_PARAM.h"
+#include "eq/v2/eq.h"
 
-
-
-
-
-
+float exp10f( float x ) {
+    return powf( 10.f, x );
+}
 
 // Абсолютные значения положения движков эквалайзера (0 - середина)
-#define EQ_LEVEL_MIN -10 
-#define EQ_LEVEL_MAX 10
-#define EQ_MAX_BAND_NUM 5
 const char *TAG = "adau";
 static uint8_t _address;
 
@@ -32,14 +23,6 @@ typedef enum {
 } TEqBand;
 */
 
-const uint8_t *_eqData[] = {
-  eqBand80,
-  eqBand230,
-  eqBand910,
-  eqBand3k6,
-  eqBand10k,
-  eqBand14k
-};
 
 static char *_dbgDataStr(const uint8_t *data, int len) {
   static char s[255];
@@ -73,7 +56,7 @@ int32_t floatToDsp( float x ) {
 }
 
 int32_t dbToDsp( float x ) {
-    return float_to_dsp( exp10f( x / 20.f ) );
+    return floatToDsp( exp10f( x / 20.f ) );
 }
 
 
@@ -223,15 +206,23 @@ bool adauEqSet(uint8_t band, int8_t level) {
   if(band > EQ_MAX_BAND_NUM) {
     LOGE(TAG,"Invalid EQ band number %d",band);
     return false;
-  }  
-  paramAddr = 12 + (band * 5);
+  } 
+  paramAddr = 0x12 + (band * 5);
   DBG(TAG,"EQ set band %d level %d",band,level);
   if(level < EQ_LEVEL_MIN) level = EQ_LEVEL_MIN;
   if(level > EQ_LEVEL_MAX) level = EQ_LEVEL_MAX;
   int offs = (level - EQ_LEVEL_MIN) * 20;
   const uint8_t *data = _eqData[band] + offs; 
+  DBG(TAG,"Addr %04X Offs %d", paramAddr, offs);
   return adauSafeLoad(data,paramAddr,(const uint32_t)5);
 }
+// Устанавливает все полосы эквалайзера в 0
+bool adauEqReset(void){
+  for(int i =0;i<=EQ_MAX_BAND_NUM; i++)
+    if(!adauEqSet(i,0)) return false;
+  return true;  
+}
+
 /*
 bool adauReadLevel(float *left, float *right){
   uint8_t data[4];
@@ -261,6 +252,20 @@ bool adauI2sOn(void){
 
 bool adauI2sOff(void){
   return _i2sSwitch(false);
+}
+
+bool adauI2sGain(float val) {
+  DBG(TAG,"Set I2S gain = %5.1f",val);
+  int32_t intVal = floatToDsp(val);
+  uint8_t *bf,bb[4],b;
+  bf = (uint8_t *) &intVal;
+  for(int i =0; i<4;i++) {
+      b = bf[i];
+      bb[3-i] = b;
+  } 
+  if(!adauWrite(8, bb,4)) return false;
+  if(!adauWrite(9, bb,4)) return false; 
+  return true;
 }
 
 bool adauLoadProgram(void){

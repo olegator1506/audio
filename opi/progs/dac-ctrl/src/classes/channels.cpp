@@ -88,6 +88,7 @@ void TAlsaChannel::select(void)
 {
 	DBG(_tag,"select");
 	adauI2sOn();
+	adauI2sGain(0.5);
 }
 	
 
@@ -110,13 +111,14 @@ void TAlsaChannel::select(void)
 	_selectedChNum = 0;		
 	_channels[_selectedChNum]->select();
 }
-void TSelector::select(int chNum){
+void TSelector::select(int chNum, bool force){
 	if((chNum >= TOTAL_CHANNELS) || (chNum < 0)) {
 		LOGE(_tag,"Invalid channel number %d",chNum);
 	}
 	DBG(_tag,"Select channel #%d",chNum); 
-	if(chNum == _selectedChNum) return;
-	_channels[_selectedChNum]->unselect(); 
+	if((chNum == _selectedChNum) && !force) return;
+	if(chNum != _selectedChNum)
+	    _channels[_selectedChNum]->unselect(); 
 	_selectedChNum = chNum;
 	_channels[_selectedChNum]->select(); 
 }
@@ -130,6 +132,18 @@ void TSelector::selectPrev(void){
 	select(num);
 }
 
+bool TSelector::setEq(int band, int value){
+	DBG(_tag,"Set equakizer band %d = %d",band,value);
+	return adauEqSet(band, value);
+}
+ bool TSelector::reload(void){
+	if(!adauLoadProgram()) return false;
+	select(_selectedChNum,true);
+	return true;
+}
+bool TSelector::eqReset(void) {
+	return adauEqReset();
+}
 
 TSelector *Selector;
     

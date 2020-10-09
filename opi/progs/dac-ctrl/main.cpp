@@ -24,13 +24,22 @@
 #define CMD_CHSEL_NEXT 0
 #define CMD_CHSEL_PREV 1
 #define CMD_CHSEL_NUM 2
+#define CMD_EQ 3
+#define CMD_ADAU_RELOAD 4
+#define CMD_EQ_RESET 5
+
 
 const char *commands[] = {
 	"ch_sel_next",
 	"ch_sel_prev",
 	"ch_sel_num",
+	"eq",
+	"adau_reload",
+	"eq_reset",
 	NULL
 };
+
+
 
 #define SA struct sockaddr 
 
@@ -66,8 +75,19 @@ bool setup(void) {
 }
 #endif
 
+char **splitArg(char *args,int num){
+	static char *pch[10],*p;
+	p = strtok (args, " ");
+	for(int i = 0; i<num;i++){
+		if(p == NULL) return NULL;
+		pch[i] = p;
+		p = strtok (NULL, " ");		
+	}
+	return pch;	
+}
+
 void handleConnection(int fd){
-	char buf[TCP_BUFFER_SIZE+1], *p,*args, *cmd;
+	char buf[TCP_BUFFER_SIZE+1], *p,*args, *cmd, **argWords;
 	int ret,cmdCode,i; 
 	while((ret = read(fd, buf, TCP_BUFFER_SIZE)) > 0) {
 		p = strchr(buf, '\r');
@@ -99,6 +119,16 @@ void handleConnection(int fd){
 			case CMD_CHSEL_PREV:	
 				Selector->selectPrev();
 				break;
+			case CMD_EQ:
+				argWords = splitArg(args,2);
+				Selector->setEq(atoi(argWords[0]), atoi(argWords[1]));
+				break;
+			case CMD_ADAU_RELOAD:
+				Selector->reload();	
+				break;
+			case CMD_EQ_RESET:
+				Selector->eqReset();
+				break;
 		}
 	} 
 }
@@ -122,8 +152,8 @@ bool initServer(void){
     servaddr.sin_family = AF_INET; 
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY); 
     servaddr.sin_port = htons(TCP_PORT); 
-	int reuse = 1;
-	setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int));
+    int reuse = 1;
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(int));
 
     // Binding newly created socket to given IP and verification 
     if ((bind(sockfd, (SA*)&servaddr, sizeof(servaddr))) != 0) { 
@@ -160,11 +190,6 @@ bool initServer(void){
  }
 
 
-float exp10f( float x ) {
-    return powf( 10.f, x );
-}
-
-
 int main(int argc, char **argv)
 {
 
@@ -178,12 +203,5 @@ int main(int argc, char **argv)
 	LOGI(TAG,"program finished");
     return 0;
 
-/*
-	float f = atof(argv[1]);	
-	int32_t i = dB_to_dsp(f);
-	uint8_t *p = (uint8_t *) &i;
-	for(int i=0;i<4;i++)
-		printf("%02x ",p[i]);
-*/
 }
 

@@ -16,9 +16,11 @@ float adau523toFloat(uint8_t *data);
 int32_t floatToDsp( float x );
 int32_t dbToDsp( float x );
 bool adauEqSet(uint8_t band, int8_t level);
+bool adauEqReset(void);
 bool  adauReadLevel(float *left, float *right);
 bool adauI2sOn(void);
 bool adauI2sOff(void);
+bool adauI2sGain(float val);
 bool adauLoadProgram(void);
 #ifdef __cplusplus
 }

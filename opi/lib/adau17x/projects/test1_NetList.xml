@@ -20,22 +20,70 @@
             <Algorithm name="ICSigma200In1" friendlyname="Analog+Digital Inputs" cell="Input1 ">
                 <Link pin="O_C0_A0_P1_out" dir="out" link="Link0" />
                 <Link pin="O_C0_A0_P2_out" dir="out" link="Link1" />
-                <Link pin="O_C0_A0_P3_out" dir="out" link="Link2" />
-                <Link pin="O_C0_A0_P4_out" dir="out" link="Link3" />
+                <Link pin="O_C0_A0_P3_out" dir="out" link="Link4" />
+                <Link pin="O_C0_A0_P4_out" dir="out" link="Link5" />
+            </Algorithm>
+            <Algorithm name="Gain1940AlgNS1" friendlyname="Gain (no slew)" cell="Gain1 ">
+                <Link pin="I_C50_A0_P1_in" dir="in" link="Link4" />
+                <Link pin="O_C50_A0_P2_out" dir="out" link="Link6" />
+            </Algorithm>
+            <Algorithm name="Gain1940AlgNS2" friendlyname="Gain (no slew)" cell=" ">
+                <Link pin="I_C55_A0_P1_in" dir="in" link="Link5" />
+                <Link pin="O_C55_A0_P2_out" dir="out" link="Link7" />
             </Algorithm>
             <Algorithm name="stereomux1940ns1" friendlyname="Stereo" cell="Nx2-1 ">
                 <Link pin="I_C21_A0_P3_in" dir="in" link="Link0" />
                 <Link pin="I_C21_A0_P4_in" dir="in" link="Link1" />
-                <Link pin="I_C21_A0_P5_in" dir="in" link="Link2" />
-                <Link pin="I_C21_A0_P6_in" dir="in" link="Link3" />
-                <Link pin="O_C21_A0_P1_out" dir="out" link="Link4" />
-                <Link pin="O_C21_A0_P2_out" dir="out" link="Link5" />
+                <Link pin="I_C21_A0_P5_in" dir="in" link="Link6" />
+                <Link pin="I_C21_A0_P6_in" dir="in" link="Link7" />
+                <Link pin="O_C21_A0_P1_out" dir="out" link="Link2" />
+                <Link pin="O_C21_A0_P2_out" dir="out" link="Link3" />
+            </Algorithm>
+            <Algorithm name="DCBlockAlgDoublePrec1" friendlyname="DC Blocking" cell="DCB1 ">
+                <Link pin="I_C40_A0_P1_in" dir="in" link="Link2" />
+                <Link pin="O_C40_A0_P2_out" dir="out" link="Link17" />
+            </Algorithm>
+            <Algorithm name="DCBlockAlgDoublePrec2" friendlyname="DC Blocking" cell="DCB2 ">
+                <Link pin="I_C45_A0_P1_in" dir="in" link="Link3" />
+                <Link pin="O_C45_A0_P2_out" dir="out" link="Link16" />
+            </Algorithm>
+            <Algorithm name="MonoEnvelopePeakAlg1" friendlyname="Mono Envelope Peak" cell="PeakEnv1 ">
+                <Link pin="I_C87_A0_P1_in" dir="in" link="Link17" />
+                <Link pin="O_C87_A0_P2_out" dir="out" link="Link8" />
+            </Algorithm>
+            <Algorithm name="MonoEnvelopePeakAlg2" friendlyname="Mono Envelope Peak" cell="PeakEnv2 ">
+                <Link pin="I_C92_A0_P1_in" dir="in" link="Link16" />
+                <Link pin="O_C92_A0_P2_out" dir="out" link="Link9" />
+            </Algorithm>
+            <Algorithm name="EQ1940DualS1" friendlyname="2 Channel - Single Precision" cell=" ">
+                <Link pin="I_C97_A0_P1_in" dir="in" link="Link17" />
+                <Link pin="I_C97_A0_P2_in" dir="in" link="Link16" />
+                <Link pin="O_C97_A0_P3_out" dir="out" link="Link10" />
+                <Link pin="O_C97_A0_P4_out" dir="out" link="Link11" />
+            </Algorithm>
+            <Algorithm name="ReadBackAlgSigma2001" friendlyname="Data Capture Register Readback Sigma200" cell="ReadBack1 ">
+                <Link pin="I_C139_A0_P1_in" dir="in" link="Link8" />
+            </Algorithm>
+            <Algorithm name="ReadBackAlgSigma2003" friendlyname="Data Capture Register Readback Sigma200" cell="ReadBack2_2 ">
+                <Link pin="I_C143_A0_P1_in" dir="in" link="Link9" />
+            </Algorithm>
+            <Algorithm name="BassBAlg_stereo1" friendlyname="Stereo Dynamic Bass Boost" cell=" ">
+                <Link pin="I_C124_A0_P1_in" dir="in" link="Link10" />
+                <Link pin="I_C124_A0_P2_in" dir="in" link="Link11" />
+                <Link pin="O_C124_A0_P3_out" dir="out" link="Link12" />
+                <Link pin="O_C124_A0_P4_out" dir="out" link="Link13" />
+            </Algorithm>
+            <Algorithm name="StdRMSCompressorAlg1" friendlyname="Standard Stereo RMS" cell=" ">
+                <Link pin="I_C156_A0_P1_in" dir="in" link="Link12" />
+                <Link pin="I_C156_A0_P2_in" dir="in" link="Link13" />
+                <Link pin="O_C156_A0_P3_out" dir="out" link="Link14" />
+                <Link pin="O_C156_A0_P4_out" dir="out" link="Link15" />
             </Algorithm>
             <Algorithm name="ICSigmaLP1Out1" friendlyname="1761 output" cell="Output1 ">
-                <Link pin="I_C11_A0_P1_in" dir="in" link="Link4" />
+                <Link pin="I_C11_A0_P1_in" dir="in" link="Link14" />
             </Algorithm>
             <Algorithm name="ICSigmaLP1Out2" friendlyname="1761 output" cell="Output1_2 ">
-                <Link pin="I_C13_A0_P1_in" dir="in" link="Link5" />
+                <Link pin="I_C13_A0_P1_in" dir="in" link="Link15" />
             </Algorithm>
         </Schematic>
     </IC>
