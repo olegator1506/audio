@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DacRqService } from './dac-rq.service';
 import { ChannelConfig } from './model';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,18 @@ export class AppComponent {
   playPauseIcon = 'play_arrow';
   isPlaying = false;
   btnColor = "";
-  dataSource : DacRqService;
   channels : ChannelConfig[];
-  constructor(){
-    this.dataSource = new DacRqService();
+  selectedChannelNum: number;
+  source : any;
+  constructor(private dataSource : DacRqService){
+    this.selectedChannelNum = 1;
+  }
+
+  onChannelButtonClick(obj : MatButtonToggleChange){
+    this.selectedChannelNum = obj.value;
+  }
+  isChannelSelected(chNum:number) {
+    return (chNum == this.selectedChannelNum);
   }
   play(){
     this.isPlaying = true;
@@ -31,7 +40,11 @@ export class AppComponent {
     else this.play();
   };
   ngOnInit() {
-    this.channels = this.dataSource.getChannels();
+    this.dataSource.getConfig()
+    .subscribe((resp : ChannelConfig[]) => {
+      this.channels = resp.channels;
+    });
+
   }
 }
 class Test extends AppComponent {

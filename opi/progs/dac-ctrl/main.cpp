@@ -27,6 +27,7 @@
 #define CMD_EQ 3
 #define CMD_ADAU_RELOAD 4
 #define CMD_EQ_RESET 5
+#define CMD_GET_STAT 5
 
 
 const char *commands[] = {
@@ -36,6 +37,7 @@ const char *commands[] = {
 	"eq",
 	"adau_reload",
 	"eq_reset",
+	"get_state"
 	NULL
 };
 
@@ -129,6 +131,8 @@ void handleConnection(int fd){
 			case CMD_EQ_RESET:
 				Selector->eqReset();
 				break;
+			case CMD_GET_STATE:
+				Selector->getStateJson(void).c_str();	
 		}
 	} 
 }
