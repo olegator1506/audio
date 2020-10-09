@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <time.h>
+#include <jsoncpp/json/json.h>
 #include "log/log.h"
 #include "pcf/pcf.h"
 #include "adau17x/adau17x.h"
@@ -143,6 +144,11 @@ bool TSelector::setEq(int band, int value){
 }
 bool TSelector::eqReset(void) {
 	return adauEqReset();
+}
+
+string TSelector::getState(void){
+	Json::Value root;
+	root["channelCount"]= TOTAL_CHANNELS;
 }
 
 TSelector *Selector;
