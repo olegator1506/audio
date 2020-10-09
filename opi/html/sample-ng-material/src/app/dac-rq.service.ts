@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
 import { ChannelConfig } from './model'
-import { Observable, of } from 'rxjs';
-//import { Observable } from "rxjs/Observable";
-//import "rxjs/add/observable/from";
+import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DacRqService {
   private _channels : ChannelConfig[] = [
     new ChannelConfig(0,"AUX1",'AUX',1,false),
@@ -14,9 +11,11 @@ export class DacRqService {
     new ChannelConfig(2,"LINE",'LINEIN',0,false),
     new ChannelConfig(2,"ALSA",'ALSA',0,true)
   ];
-  constructor() { }
-  getChannels(): ChannelConfig[] {
-//    return Observable.from(this._channels);
+  constructor(private http: HttpClient) { }
+  getChannels() : ChannelConfig[]{
     return this._channels;
+  }  
+  getConfig() {
+    return this.http.get("http://localhost/audio/responder.php");
   }
 }

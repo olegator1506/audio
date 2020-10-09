@@ -14,17 +14,15 @@ export class AppComponent {
   playPauseIcon = 'play_arrow';
   isPlaying = false;
   btnColor = "";
-  dataSource : DacRqService;
   channels : ChannelConfig[];
   selectedChannelNum: number;
   source : any;
-  constructor(){
-    this.dataSource = new DacRqService();
+  constructor(private dataSource : DacRqService){
     this.selectedChannelNum = 1;
   }
 
   onChannelButtonClick(obj : MatButtonToggleChange){
-    this.selecteChannelNum(obj.value);
+    this.selectedChannelNum = obj.value;
   }
   isChannelSelected(chNum:number) {
     return (chNum == this.selectedChannelNum);
@@ -42,7 +40,11 @@ export class AppComponent {
     else this.play();
   };
   ngOnInit() {
-    this.channels = this.dataSource.getChannels();
+    this.dataSource.getConfig()
+    .subscribe((resp : ChannelConfig[]) => {
+      this.channels = resp.channels;
+    });
+
   }
 }
 class Test extends AppComponent {
