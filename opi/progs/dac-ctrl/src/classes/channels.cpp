@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <time.h>
+#include <jsoncpp/json/json.h>
 #include "log/log.h"
 #include "pcf/pcf.h"
 #include "adau17x/adau17x.h"
@@ -54,6 +55,13 @@ TChannel::TChannel(const char *name){
 	DBG(_tag,"Construct %s", name);
 
 };
+
+Json::value TChannel::getStateJson(){
+	_jsonState.clear();
+	_jsonState["name"]=_name;
+	_jsonState["selected"]=_selected;
+	return _jsonState;
+}
 
 
 TAuxChannel::TAuxChannel(const char *name, int inputNum) : TChannel(name)
@@ -145,5 +153,11 @@ bool TSelector::eqReset(void) {
 	return adauEqReset();
 }
 
+Json::value TSelector::getState(void){
+	_jsonState.clear();
+	Json::value channels;
+	for(int i=0;i<TOTAL_CHANNELS;i++)
+		channels.append(_channels->getStateJson());
+}
 TSelector *Selector;
     

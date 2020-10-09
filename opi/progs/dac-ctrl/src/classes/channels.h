@@ -1,6 +1,6 @@
 #ifndef _CHANNELS_H_
 #define _CHANNELS_H_
-
+#include <jsoncpp/json/json.h>
 #define TOTAL_CHANNELS 4
 
 typedef enum {
@@ -18,10 +18,12 @@ protected:
 		const char *_tag;
 		std::string _name;
 		bool _selected;
+		Json::Value _jsonState;
 public:
 	TChannel(const char *name);
 	virtual void select(void) {_selected = true;}
 	virtual void unselect(void) {_selected = false;}
+	virtual Json::value getStateJson();
 };
 
 // Аналоговый канал (AUX вход
@@ -45,9 +47,11 @@ public:
 // Воспроизведение файлов через AlsaPlayer
 class TAlsaChannel : public TChannel {
 protected:
+
 public:
 	TAlsaChannel(const char *name);
  	void select(void);
+
 };
 
 
@@ -57,6 +61,7 @@ protected:
 	int _selectedChNum; 
 	TChannel *_channels[TOTAL_CHANNELS];
 	const char *_tag; 
+	Json::Value _jsonState;
 public:
 	TSelector();
 //	char *errorMessaage;
@@ -70,7 +75,7 @@ public:
 	bool setEq(int band, int value);
 	bool reload(void);
 	bool eqReset(void);
- 
+	Json::value getStateJson();
 /*
     channelsEventHandler(uint8_t code,uint16_t param);
 	bool play(void);
