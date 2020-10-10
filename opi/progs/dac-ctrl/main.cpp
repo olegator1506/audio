@@ -8,6 +8,9 @@
 #include <string.h>
 #include <string>
 #include <unistd.h>
+#include <jsoncpp/json/json.h>
+#include <iostream>
+
 #include "pcf/pcf.h"
 #include "adau17x/adau17x.h"
 #include "log/log.h"
@@ -18,7 +21,7 @@
 
 #include <math.h>
 
-//#define LOCAL_DEBUG 1
+#define LOCAL_DEBUG 1
 
 #define CMD_INVALID -1
 #define CMD_CHSEL_NEXT 0
@@ -27,7 +30,7 @@
 #define CMD_EQ 3
 #define CMD_ADAU_RELOAD 4
 #define CMD_EQ_RESET 5
-#define CMD_GET_STAT 5
+#define CMD_GET_STATE 6
 
 
 const char *commands[] = {
@@ -37,7 +40,7 @@ const char *commands[] = {
 	"eq",
 	"adau_reload",
 	"eq_reset",
-	"get_state"
+	"get_state",
 	NULL
 };
 
@@ -132,7 +135,13 @@ void handleConnection(int fd){
 				Selector->eqReset();
 				break;
 			case CMD_GET_STATE:
-				Selector->getStateJson(void).c_str();	
+				Json::StyledWriter styledWriter;
+				Json::Value conf = Selector->getStateJson();
+				std::string s = styledWriter.write(conf);
+				const char *c = s.c_str(); 
+				puts(c);
+				break;
+
 		}
 	} 
 }

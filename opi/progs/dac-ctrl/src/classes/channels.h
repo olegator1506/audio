@@ -16,6 +16,7 @@ typedef enum {
 class TChannel {
 protected:
 		const char *_tag;
+		const char *_typeString;
 		std::string _name;
 		bool _selected;
 		Json::Value _jsonState;
@@ -23,13 +24,13 @@ public:
 	TChannel(const char *name);
 	virtual void select(void) {_selected = true;}
 	virtual void unselect(void) {_selected = false;}
-	virtual Json::value getStateJson();
+	virtual Json::Value getStateJson();
 };
 
 // Аналоговый канал (AUX вход
 class TAuxChannel : public TChannel {
 protected:
-	int _auxNum;	
+	int _auxNum;
 public:
 	TAuxChannel(const char *name, int inputNum);
  	void select(void);
@@ -47,7 +48,6 @@ public:
 // Воспроизведение файлов через AlsaPlayer
 class TAlsaChannel : public TChannel {
 protected:
-
 public:
 	TAlsaChannel(const char *name);
  	void select(void);
@@ -75,7 +75,7 @@ public:
 	bool setEq(int band, int value);
 	bool reload(void);
 	bool eqReset(void);
-	Json::value getStateJson();
+	Json::Value getStateJson(void);
 /*
     channelsEventHandler(uint8_t code,uint16_t param);
 	bool play(void);

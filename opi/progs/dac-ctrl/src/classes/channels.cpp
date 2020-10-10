@@ -52,13 +52,15 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 TChannel::TChannel(const char *name){
 	_name = name;
 	_selected = false;
+	_typeString = "";
 	DBG(_tag,"Construct %s", name);
 
 };
 
-Json::value TChannel::getStateJson(){
+Json::Value TChannel::getStateJson(){
 	_jsonState.clear();
 	_jsonState["name"]=_name;
+	_jsonState["type"]=_typeString;
 	_jsonState["selected"]=_selected;
 	return _jsonState;
 }
@@ -68,6 +70,7 @@ TAuxChannel::TAuxChannel(const char *name, int inputNum) : TChannel(name)
 {
 	_tag = "AuxChannel";
 	_auxNum = inputNum;
+	_typeString = "aux";
 }	
 
 void TAuxChannel::select(void) {
@@ -80,6 +83,7 @@ void TAuxChannel::select(void) {
 TDiffChannel::TDiffChannel(const char *name) : TChannel(name)
 {
 	_tag = "DiffChannel";
+	_typeString = "line";
 }	
 void TDiffChannel::select(void) {
 	adauI2sOff();
@@ -90,6 +94,7 @@ void TDiffChannel::select(void) {
 TAlsaChannel::TAlsaChannel(const char *name) : TChannel(name)
 {
 	_tag = "AlsaChannel";
+	_typeString = "file";
 }
 
 void TAlsaChannel::select(void)
@@ -153,11 +158,13 @@ bool TSelector::eqReset(void) {
 	return adauEqReset();
 }
 
-Json::value TSelector::getState(void){
+Json::Value TSelector::getStateJson(void){
 	_jsonState.clear();
-	Json::value channels;
+	Json::Value channels;
 	for(int i=0;i<TOTAL_CHANNELS;i++)
-		channels.append(_channels->getStateJson());
+		channels.append(_channels[i]->getStateJson());
+	_jsonState["channels"] = channels;	
+	return _jsonState;	
 }
 TSelector *Selector;
     
