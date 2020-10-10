@@ -24,8 +24,12 @@
       <File Name="src/classes/channel-base.cpp"/>
       <File Name="src/classes/channels.cpp"/>
       <File Name="src/classes/channels.h"/>
+      <File Name="src/classes/selector.h"/>
+      <File Name="src/classes/selector.cpp"/>
     </VirtualDirectory>
     <File Name="main.cpp"/>
+    <File Name="src/commands.h"/>
+    <File Name="src/tcp-server.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

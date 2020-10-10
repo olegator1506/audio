@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_tcp-server.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix) 
 
 
 
@@ -98,6 +98,14 @@ $(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
 
 $(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) "main.cpp"
+
+$(IntermediateDirectory)/src_tcp-server.cpp$(ObjectSuffix): src/tcp-server.cpp $(IntermediateDirectory)/src_tcp-server.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/tcp-server.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_tcp-server.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_tcp-server.cpp$(DependSuffix): src/tcp-server.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_tcp-server.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_tcp-server.cpp$(DependSuffix) -MM "src/tcp-server.cpp"
+
+$(IntermediateDirectory)/src_tcp-server.cpp$(PreprocessSuffix): src/tcp-server.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_tcp-server.cpp$(PreprocessSuffix) "src/tcp-server.cpp"
 
 $(IntermediateDirectory)/log_log.c$(ObjectSuffix): ../../lib/log/log.c $(IntermediateDirectory)/log_log.c$(DependSuffix)
 	$(CC) $(SourceSwitch) "/home/artem/work/audio/opi/lib/log/log.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IncludePath)
@@ -146,6 +154,14 @@ $(IntermediateDirectory)/classes_channels.cpp$(DependSuffix): src/classes/channe
 
 $(IntermediateDirectory)/classes_channels.cpp$(PreprocessSuffix): src/classes/channels.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_channels.cpp$(PreprocessSuffix) "src/classes/channels.cpp"
+
+$(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix): src/classes/selector.cpp $(IntermediateDirectory)/classes_selector.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/selector.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/classes_selector.cpp$(DependSuffix): src/classes/selector.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_selector.cpp$(DependSuffix) -MM "src/classes/selector.cpp"
+
+$(IntermediateDirectory)/classes_selector.cpp$(PreprocessSuffix): src/classes/selector.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_selector.cpp$(PreprocessSuffix) "src/classes/selector.cpp"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)
