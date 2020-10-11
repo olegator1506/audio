@@ -21,6 +21,7 @@ protected:
 		std::string _name;
 		bool _selected;
 		Json::Value _jsonState;
+
 public:
 	TChannel(const char *name);
 	virtual void select(void) {_selected = true;}

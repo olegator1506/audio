@@ -23,6 +23,11 @@ Json::Value TChannel::getStateJson(){
 	_jsonState["type"]=_typeString;
 	_jsonState["selected"]=_selected;
 	_jsonState["auxNum"]=0;
+	_jsonState["track_support"]=false;
+	_jsonState["player_support"]=false;
+	Json::Value jval;
+	_jsonState["track"] = jval;
+	_jsonState["player"] = jval;	
 	return _jsonState;
 }
 

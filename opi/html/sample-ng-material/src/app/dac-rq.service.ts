@@ -16,6 +16,6 @@ export class DacRqService {
     return this._channels;
   }  
   getConfig()  {
-    return this.http.get("http://localhost:8000/?cmd=get_state");
+    return this.http.get("http://192.168.253.10:8000/?cmd=get_state");
   }
 }
