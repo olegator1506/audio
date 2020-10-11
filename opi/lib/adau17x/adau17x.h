@@ -1,6 +1,7 @@
 #ifndef __ADAU17X_H__
 #define __ADAU17X_H__
 #include <stdint.h>
+#include <sys/types.h>
 #ifdef __cplusplus
 extern "C" {
 #endif

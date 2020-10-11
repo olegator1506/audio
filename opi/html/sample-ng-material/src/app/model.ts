@@ -8,3 +8,18 @@ export class ChannelConfig {
     public support_tracks?:boolean
   ){}  
 }
+
+export class DacData {
+  constructor(
+    public channels?:ChannelConfig[]
+  ){}  
+
+}
+
+export class DacResponse {
+  constructor(
+    public result?:string,
+    public data?:DacData
+  ){}  
+}
+

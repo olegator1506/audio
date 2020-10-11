@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DacRqService } from './dac-rq.service';
-import { ChannelConfig } from './model';
+import { ChannelConfig, DacResponse } from './model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 @Component({
@@ -40,12 +40,20 @@ export class AppComponent {
     else this.play();
   };
   ngOnInit() {
+/*
     this.dataSource.getConfig()
     .subscribe((resp : ChannelConfig[]) => {
       this.channels = resp.channels;
     });
-
+*/    
   }
+  testFunc(){
+    this.dataSource.getConfig()
+    .subscribe((resp : DacResponse) => {
+      this.channels = resp.data.channels;
+    });
+  }
+
 }
 class Test extends AppComponent {
 

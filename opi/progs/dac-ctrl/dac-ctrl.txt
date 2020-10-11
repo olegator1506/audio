@@ -1,1 +1,1 @@
-./Debug/main.cpp.o ./Debug/src_tcp-server.cpp.o ./Debug/log_log.c.o ./Debug/pcf_pcf.c.o ./Debug/i2c_i2c.c.o ./Debug/adau17x_adau17x.c.o ./Debug/classes_channel-base.cpp.o ./Debug/classes_channels.cpp.o ./Debug/classes_selector.cpp.o
+./Debug/main.cpp.o ./Debug/src_http-server.cpp.o ./Debug/log_log.c.o ./Debug/pcf_pcf.c.o ./Debug/i2c_i2c.c.o ./Debug/adau17x_adau17x.c.o ./Debug/classes_channel-base.cpp.o ./Debug/classes_channels.cpp.o ./Debug/classes_selector.cpp.o ./Debug/classes_eq.cpp.o ./Debug/mongoose_mongoose.cpp.o

@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Олег Артеменко
-Date                   :=10/10/20
+Date                   :=11/10/20
 CodeLitePath           :="/home/artem/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -60,7 +60,8 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_tcp-server.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_http-server.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix) \
+	$(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) 
 
 
 
@@ -99,13 +100,13 @@ $(IntermediateDirectory)/main.cpp$(DependSuffix): main.cpp
 $(IntermediateDirectory)/main.cpp$(PreprocessSuffix): main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/main.cpp$(PreprocessSuffix) "main.cpp"
 
-$(IntermediateDirectory)/src_tcp-server.cpp$(ObjectSuffix): src/tcp-server.cpp $(IntermediateDirectory)/src_tcp-server.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/tcp-server.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_tcp-server.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/src_tcp-server.cpp$(DependSuffix): src/tcp-server.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_tcp-server.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_tcp-server.cpp$(DependSuffix) -MM "src/tcp-server.cpp"
+$(IntermediateDirectory)/src_http-server.cpp$(ObjectSuffix): src/http-server.cpp $(IntermediateDirectory)/src_http-server.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/http-server.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_http-server.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_http-server.cpp$(DependSuffix): src/http-server.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/src_http-server.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/src_http-server.cpp$(DependSuffix) -MM "src/http-server.cpp"
 
-$(IntermediateDirectory)/src_tcp-server.cpp$(PreprocessSuffix): src/tcp-server.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_tcp-server.cpp$(PreprocessSuffix) "src/tcp-server.cpp"
+$(IntermediateDirectory)/src_http-server.cpp$(PreprocessSuffix): src/http-server.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_http-server.cpp$(PreprocessSuffix) "src/http-server.cpp"
 
 $(IntermediateDirectory)/log_log.c$(ObjectSuffix): ../../lib/log/log.c $(IntermediateDirectory)/log_log.c$(DependSuffix)
 	$(CC) $(SourceSwitch) "/home/artem/work/audio/opi/lib/log/log.c" $(CFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IncludePath)
@@ -162,6 +163,22 @@ $(IntermediateDirectory)/classes_selector.cpp$(DependSuffix): src/classes/select
 
 $(IntermediateDirectory)/classes_selector.cpp$(PreprocessSuffix): src/classes/selector.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_selector.cpp$(PreprocessSuffix) "src/classes/selector.cpp"
+
+$(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix): src/classes/eq.cpp $(IntermediateDirectory)/classes_eq.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/eq.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/classes_eq.cpp$(DependSuffix): src/classes/eq.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_eq.cpp$(DependSuffix) -MM "src/classes/eq.cpp"
+
+$(IntermediateDirectory)/classes_eq.cpp$(PreprocessSuffix): src/classes/eq.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_eq.cpp$(PreprocessSuffix) "src/classes/eq.cpp"
+
+$(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix): ../../lib/mongoose/mongoose.cpp $(IntermediateDirectory)/mongoose_mongoose.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/lib/mongoose/mongoose.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/mongoose_mongoose.cpp$(DependSuffix): ../../lib/mongoose/mongoose.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/mongoose_mongoose.cpp$(DependSuffix) -MM "../../lib/mongoose/mongoose.cpp"
+
+$(IntermediateDirectory)/mongoose_mongoose.cpp$(PreprocessSuffix): ../../lib/mongoose/mongoose.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/mongoose_mongoose.cpp$(PreprocessSuffix) "../../lib/mongoose/mongoose.cpp"
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

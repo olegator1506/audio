@@ -16,6 +16,6 @@ export class DacRqService {
     return this._channels;
   }  
   getConfig() {
-    return this.http.get("http://localhost/audio/responder.php");
+    return this.http.get("http://localhost:8000/?cmd=get_state");
   }
 }

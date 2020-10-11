@@ -22,6 +22,7 @@ Json::Value TChannel::getStateJson(){
 	_jsonState["name"]=_name;
 	_jsonState["type"]=_typeString;
 	_jsonState["selected"]=_selected;
+	_jsonState["auxNum"]=0;
 	return _jsonState;
 }
 

@@ -9,13 +9,13 @@ protected:
 	TChannel *_channels[TOTAL_CHANNELS];
 	const char *_tag; 
 	Json::Value _jsonState;
+	char _errorMessage[255];
 public:
 	TSelector();
-//	char *errorMessaage;
 //	bool error(const char *message);
 	void selectNext();
 	void selectPrev();
-	void select(int chNum, bool force = false);
+	bool select(int chNum, bool force = false);
 //	bool unselect(int);
 //	bool isAvailable(int chNum);
 //	int count(void);
@@ -23,6 +23,7 @@ public:
 	bool reload(void);
 	bool eqReset(void);
 	Json::Value getStateJson(void);
+	char *lastError(void){ return _errorMessage;}
 /*
     channelsEventHandler(uint8_t code,uint16_t param);
 	bool play(void);

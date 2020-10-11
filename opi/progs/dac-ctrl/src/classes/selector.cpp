@@ -1,6 +1,8 @@
+#include <stdio.h>
 #include "selector.h"
 #include "log/log.h"
 #include "adau17x/adau17x.h"
+#include "eq.h"
 
 typedef struct {
     TChannelType type; 
@@ -60,17 +62,21 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 			}
 	_selectedChNum = 0;		
 	_channels[_selectedChNum]->select();
+	Eq = new TEq();
 }
-void TSelector::select(int chNum, bool force){
+bool TSelector::select(int chNum, bool force){
 	if((chNum >= TOTAL_CHANNELS) || (chNum < 0)) {
 		LOGE(_tag,"Invalid channel number %d",chNum);
+		snprintf(_errorMessage,255,"Invalid channel number %d",chNum);
+		return false;
 	}
 	DBG(_tag,"Select channel #%d",chNum); 
-	if((chNum == _selectedChNum) && !force) return;
+	if((chNum == _selectedChNum) && !force) return true;
 	if(chNum != _selectedChNum)
 	    _channels[_selectedChNum]->unselect(); 
 	_selectedChNum = chNum;
 	_channels[_selectedChNum]->select(); 
+	return true;
 }
 void TSelector::selectNext(void){
 	int num = (_selectedChNum == (TOTAL_CHANNELS-1)) ? 0 : (_selectedChNum +1);
@@ -101,6 +107,7 @@ Json::Value TSelector::getStateJson(void){
 	for(int i=0;i<TOTAL_CHANNELS;i++)
 		channels.append(_channels[i]->getStateJson());
 	_jsonState["channels"] = channels;	
+	_jsonState["selected_num"] = _selectedChNum;
 	return _jsonState;	
 }
 TSelector *Selector;

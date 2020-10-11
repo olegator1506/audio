@@ -26,10 +26,16 @@
       <File Name="src/classes/channels.h"/>
       <File Name="src/classes/selector.h"/>
       <File Name="src/classes/selector.cpp"/>
+      <File Name="src/classes/eq.h"/>
+      <File Name="src/classes/eq.cpp"/>
     </VirtualDirectory>
     <File Name="main.cpp"/>
     <File Name="src/commands.h"/>
-    <File Name="src/tcp-server.cpp"/>
+    <VirtualDirectory Name="mongoose">
+      <File Name="../../lib/mongoose/mongoose.cpp"/>
+      <File Name="../../lib/mongoose/mongoose.h"/>
+    </VirtualDirectory>
+    <File Name="src/http-server.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>
