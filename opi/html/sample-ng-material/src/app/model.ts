@@ -9,9 +9,21 @@ export class ChannelConfig {
   ){}  
 }
 
+export class EqState {
+  constructor(
+    public band_count?:number,
+    public max_value?:number,
+    public min_value?:number,
+    public labels?:string[],
+    public values?:number[]
+  ){}  
+}
+
 export class DacData {
   constructor(
-    public channels?:ChannelConfig[]
+    public channels?:ChannelConfig[],
+    public eq?:EqState,
+    public selected_channel_num?:number
   ){}  
 
 }

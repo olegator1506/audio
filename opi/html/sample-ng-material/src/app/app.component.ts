@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DacRqService } from './dac-rq.service';
-import { ChannelConfig, DacResponse } from './model';
+import { ChannelConfig, DacResponse, DacData } from './model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 @Component({
@@ -14,18 +14,16 @@ export class AppComponent {
   playPauseIcon = 'play_arrow';
   isPlaying = false;
   btnColor = "";
-  channels : ChannelConfig[];
-  selectedChannelNum: number;
+  dacConfig : DacData;
   source : any;
   constructor(private dataSource : DacRqService){
-    this.selectedChannelNum = 1;
   }
 
   onChannelButtonClick(obj : MatButtonToggleChange){
-    this.selectedChannelNum = obj.value;
+//    this.selectedChannelNum = obj.value;
   }
   isChannelSelected(chNum:number) {
-    return (chNum == this.selectedChannelNum);
+    return (chNum == this.dacConfig.selected_channel_num);
   }
   play(){
     this.isPlaying = true;
@@ -40,17 +38,18 @@ export class AppComponent {
     else this.play();
   };
   ngOnInit() {
-/*
     this.dataSource.getConfig()
-    .subscribe((resp : ChannelConfig[]) => {
-      this.channels = resp.channels;
+    .subscribe((resp : DacResponse) => {
+      this.dacConfig = resp.data;
     });
-*/    
+  }
+  errorHandler(){
+
   }
   testFunc(){
     this.dataSource.getConfig()
     .subscribe((resp : DacResponse) => {
-      this.channels = resp.data.channels;
+      this.dacConfig = resp.data;
     });
   }
 

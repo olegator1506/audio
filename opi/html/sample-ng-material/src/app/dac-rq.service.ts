@@ -15,7 +15,7 @@ export class DacRqService {
   getChannels() : ChannelConfig[]{
     return this._channels;
   }  
-  getConfig() {
+  getConfig()  {
     return this.http.get("http://localhost:8000/?cmd=get_state");
   }
 }

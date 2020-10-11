@@ -100,18 +100,26 @@ static void _handleRequest(struct mg_connection *fd, int ev, void *p){
 			else 
 				_sendErrorResponse(fd, 500, Selector->lastError());	
 			break;
-/*
+
 			case CMD_EQ:
 				int bandNum,val;
 				if(mg_get_http_var(query,"band",dst,255) <= 0) {
 					_sendErrorResponse(fd, 500, "Invalid request: band number not specified");
 					return;
 				}
-
-				int bandNum argWords = splitArg(args,2);
-				Selector->setEq(atoi(argWords[0]), atoi(argWords[1]));
+				bandNum = atoi(dst);
+				if(mg_get_http_var(query,"value",dst,255) <= 0) {
+					_sendErrorResponse(fd, 500, "Invalid request: EQ value not specified");
+					return;
+				}
+				val = atoi(dst);
+				if(!Selector->setEq(bandNum,val)) {
+					_sendErrorResponse(fd, 500, Selector->lastError());
+					return;
+				}
 				_sendSuccessResponse(fd, data);
 				break;
+/*
 			case CMD_ADAU_RELOAD:
 				Selector->reload();	
 				_sendSuccessResponse(fd, data);

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "selector.h"
 #include "log/log.h"
 #include "adau17x/adau17x.h"
@@ -90,7 +91,11 @@ void TSelector::selectPrev(void){
 
 bool TSelector::setEq(int band, int value){
 	DBG(_tag,"Set equakizer band %d = %d",band,value);
-	return adauEqSet(band, value);
+	if(!Eq->set(band, value)) {
+		strcpy(_errorMessage,Eq->lastError());
+		return false;
+	}
+	return true;
 }
  bool TSelector::reload(void){
 	if(!adauLoadProgram()) return false;
@@ -107,7 +112,8 @@ Json::Value TSelector::getStateJson(void){
 	for(int i=0;i<TOTAL_CHANNELS;i++)
 		channels.append(_channels[i]->getStateJson());
 	_jsonState["channels"] = channels;	
-	_jsonState["selected_num"] = _selectedChNum;
+	_jsonState["selected_channel_num"] = _selectedChNum;
+	_jsonState["eq"] = Eq->getStateJson();
 	return _jsonState;	
 }
 TSelector *Selector;

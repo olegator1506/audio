@@ -288,6 +288,9 @@
       right: 120px;
       transform: rotate(-5deg);
     }
+    .eq-label {
+      width: 48px;
+    }
   }
 
   @media screen and (max-width: 575px) {
@@ -316,16 +319,17 @@
     </a>
 </div>
 <div class="content" role="main">
-
+<!-- кнопки выбора канала -->
     <div class="row">
-    <mat-button-toggle-group appearance="legacy" [value]="selectedChannelNum" (change)="onChannelButtonClick($event)">
-      <mat-button-toggle *ngFor="let item of channels" 
-      [checked]="isChannelSelected(item.num)"
-      [value]="item.num">{{item.name}}
+    <mat-button-toggle-group appearance="legacy" [value]="dacConfig.selected_channel_num" (change)="onChannelButtonClick($event)">
+      <mat-button-toggle *ngFor="let ch of dacConfig.channels;let num = index" 
+      [checked]="isChannelSelected(num)"
+      [value]="ch.num">{{ch.name}}
     </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
-  Selected Num = {{selectedChannelNum}}
+  <!-- // кнопки выбора канала -->
+<!-- Проигрыватель -->
   <div class="row">
 
     <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
@@ -342,14 +346,20 @@
       <mat-icon>fast_forward</mat-icon>
     </button>
   </div>  
-
-  <div class="row">
-    <mat-slider thumbLabel tickInterval="1" vertical min="-10" max="10" step="1" value="0"></mat-slider>
-    <mat-slider thumbLabel tickInterval="1" vertical min="-10" max="10" step="1" value="0"></mat-slider>
-    <mat-slider thumbLabel tickInterval="1" vertical min="-10" max="10" step="1" value="0"></mat-slider>
-    <mat-slider thumbLabel tickInterval="1" vertical min="-10" max="10" step="1" value="0"></mat-slider>
-    <mat-slider thumbLabel tickInterval="1" vertical min="-10" max="10" step="1" value="0"></mat-slider>
+<!-- // Проигрыватель -->
+<!-- Эквалайзер -->
+<div class="row">
+    <mat-slider *ngFor="let ch of dacConfig.eq.labels;let num = index"
+      thumbLabel tickInterval="1" vertical step="1"
+      min="{{dacConfig.eq.min_value}}" 
+      max="{{dacConfig.eq.max_value}}"  
+      value="{{dacConfig.eq.values[num]}}">
+    </mat-slider>
   </div>
+  <div class="row">
+    <label *ngFor="let lab of dacConfig.eq.labels" >{{lab}}&nbsp;&nbsp;</label>
+  </div>
+<!-- // Эквалайзер -->
   <button (click)="testFunc()">Test</button>"
 
   <svg id="clouds" alt="Gray Clouds Background" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
