@@ -321,10 +321,13 @@
 <div class="content" role="main">
 <!-- кнопки выбора канала -->
     <div class="row">
-    <mat-button-toggle-group appearance="legacy" [value]="dacConfig.selected_channel_num" (change)="onChannelButtonClick($event)">
+    <span>Sel# = {{selectedChannel}}</span>   
+    <mat-button-toggle-group appearance="legacy" [value]="dacConfig.selected_channel_num">
       <mat-button-toggle *ngFor="let ch of dacConfig.channels;let num = index" 
       [checked]="isChannelSelected(num)"
-      [value]="ch.num">{{ch.name}}
+      [value]="ch.num"
+      (click)="onClickChannel(num)" 
+      >{{ch.name}}
     </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
@@ -353,7 +356,9 @@
       thumbLabel tickInterval="1" vertical step="1"
       min="{{dacConfig.eq.min_value}}" 
       max="{{dacConfig.eq.max_value}}"  
-      value="{{dacConfig.eq.values[num]}}">
+      value="{{dacConfig.eq.values[num]}}"
+      (change)="onEqChange($event,num)"
+      >
     </mat-slider>
   </div>
   <div class="row">

@@ -1,2 +1,0 @@
-#include "log/log.h"
-#define LOG_LEVEL LOG_ERROR

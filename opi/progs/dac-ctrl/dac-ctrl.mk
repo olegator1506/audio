@@ -39,8 +39,8 @@ LinkOptions            :=
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch)../../lib $(IncludeSwitch). 
 IncludePCH             := 
 RcIncludePath          := 
-Libs                   := $(LibrarySwitch)alsaplayer $(LibrarySwitch)asound $(LibrarySwitch)pthread $(LibrarySwitch)jsoncpp 
-ArLibs                 :=  "alsaplayer" "asound" "pthread" "jsoncpp" 
+Libs                   := $(LibrarySwitch)alsaplayer  $(LibrarySwitch)pthread $(LibrarySwitch)jsoncpp 
+ArLibs                 :=  "alsaplayer" "pthread" "jsoncpp" 
 LibPath                := $(LibraryPathSwitch). 
 
 ##

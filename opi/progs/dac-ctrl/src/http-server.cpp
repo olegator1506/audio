@@ -84,19 +84,19 @@ static void _handleRequest(struct mg_connection *fd, int ev, void *p){
 	switch(cmdCode) {
 		case CMD_CHSEL_NEXT:
 			Selector->selectNext();
-			_sendSuccessResponse(fd, data);
+			_sendSuccessResponse(fd, Selector->getStateJson());
 			break;
 		case CMD_CHSEL_PREV:	
 			Selector->selectPrev();
-			_sendSuccessResponse(fd, data);
+			_sendSuccessResponse(fd, Selector->getStateJson());
 			break;
 		case CMD_CHSEL_NUM:
-			if(mg_get_http_var(query,"cmd",dst,255) <= 0) {
+			if(mg_get_http_var(query,"num",dst,255) <= 0) {
 				_sendErrorResponse(fd, 500, "Invalid request:channel number not specified");
 				return;
 			}
 			if(Selector->select(atoi(dst)))
-				_sendSuccessResponse(fd, data);
+				_sendSuccessResponse(fd, Selector->getStateJson());
 			else 
 				_sendErrorResponse(fd, 500, Selector->lastError());	
 			break;
@@ -117,7 +117,7 @@ static void _handleRequest(struct mg_connection *fd, int ev, void *p){
 					_sendErrorResponse(fd, 500, Selector->lastError());
 					return;
 				}
-				_sendSuccessResponse(fd, data);
+				_sendSuccessResponse(fd, Selector->getStateJson());
 				break;
 /*
 			case CMD_ADAU_RELOAD:

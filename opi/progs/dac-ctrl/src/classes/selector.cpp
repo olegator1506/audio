@@ -35,11 +35,17 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
         .name = "LINE",
         .auxNum = 0,
     },
-    { // Линейный дифференциальный вход
+    { // Воспроизведение файлов через AlsaPlayer
         .type = CH_TYPE_ALSA,
         .name = "ALSA",
         .auxNum = 0,
     },
+    { // Воспроизведение аудиопотока Spotify
+        .type = CH_TYPE_SPOTIFY,
+        .name = "SPOTIFY",
+        .auxNum = 0,
+    }
+
 
 	
 };
@@ -60,7 +66,10 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 			case CH_TYPE_ALSA:
 				_channels[i] = new TAlsaChannel(_channelsConfig[i].name);
 				break;
-			}
+			case CH_TYPE_SPOTIFY:
+				_channels[i] = new TSpotify(_channelsConfig[i].name);
+				break;
+		}
 	_selectedChNum = 0;		
 	_channels[_selectedChNum]->select();
 	Eq = new TEq();

@@ -16,11 +16,24 @@ export class AppComponent {
   btnColor = "";
   dacConfig : DacData;
   source : any;
+  selectedChannel:number;
   constructor(private dataSource : DacRqService){
   }
-
-  onChannelButtonClick(obj : MatButtonToggleChange){
-//    this.selectedChannelNum = obj.value;
+/*
+  onChannelGroupChange(obj){
+    var newChannel = obj.value;
+    this.dataSource.selectChannel(newChannel)
+    .subscribe((resp : DacResponse) => {
+      this.dacConfig = resp.data;
+      this.selectedChannel = resp.data.selected_channel_num;
+    });
+  }
+*/  
+  onClickChannel(num:number) {
+    this.dataSource.selectChannel(num)
+    .subscribe((resp : DacResponse) => {
+      this.dacConfig = resp.data;
+    });
   }
   isChannelSelected(chNum:number) {
     return (chNum == this.dacConfig.selected_channel_num);
@@ -45,6 +58,13 @@ export class AppComponent {
   }
   errorHandler(){
 
+  }
+  onEqChange($event,num) {
+    var val = $event.value;
+    this.dataSource.setEq(num,val)
+    .subscribe((resp : DacResponse) =>{
+      this.dacConfig = resp.data;
+    });
   }
   testFunc(){
     this.dataSource.getConfig()
