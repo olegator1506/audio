@@ -14,7 +14,7 @@ TEq::TEq(void){
 void TEq::reset(){
 	for(int i=0; i< EQ_TOTAL_CHANNELS;i++){
 		_values[i] = 0;
-		adauEqSet(i,_values[i]);
+//		adauEqSet(i,_values[i]);
 	}
 	
 }
