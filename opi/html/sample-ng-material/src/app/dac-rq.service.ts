@@ -15,7 +15,8 @@ export class DacRqService {
     new ChannelConfig(2,"ALSA",'ALSA',0,true)
   ];
   constructor(private http: HttpClient) { 
-    this._baseUrl = "http://localhost:8000/";
+    var l = location;
+    this._baseUrl = `${location.protocol}//${location.hostname}:8000`;
   }
   getChannels() : ChannelConfig[]{
     return this._channels;
