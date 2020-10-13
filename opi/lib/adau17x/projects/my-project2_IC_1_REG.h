@@ -1,7 +1,7 @@
 /*
  * File:           E:\projects\my-project2_IC_1_REG.h
  *
- * Created:        Wednesday, October 07, 2020 10:38:32 PM
+ * Created:        Tuesday, October 13, 2020 8:39:32 PM
  * Description:    my-project2:IC 1 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
