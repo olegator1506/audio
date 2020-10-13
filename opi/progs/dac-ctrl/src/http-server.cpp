@@ -27,15 +27,14 @@ static const char *commands[] = {
 
 static const char *TAG ="httpServer";
 static struct mg_mgr mgr;
+static sig_atomic_t s_signal_received = 0;
 
-/*
-static void _sendResponse(struct mg_connection *connection, int code, Json::Value response) {
-	Json::StyledWriter styledWriter;
-	std::string s = styledWriter.write(response);
-	const char *c = s.c_str(); 
-	send(socket,c,strlen(c),0);
+static void signal_handler(int sig_num) {
+  signal(sig_num, signal_handler);  // Reinstantiate signal handler
+  s_signal_received = sig_num;
 }
-*/
+
+
 static void _sendErrorResponse(struct mg_connection *connection, int code, const char *format,...){
 	char msg[257];
 
@@ -57,12 +56,11 @@ static void _sendSuccessResponse(struct mg_connection *connection, Json::Value d
 	mg_send(connection, c, strlen(c));
 }
 
-static void _handleRequest(struct mg_connection *fd, int ev, void *p){
-	char dst[255];
+
+static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp){
+	char dst[256];
 	int cmdCode;
 	Json::Value data;
-	if (ev != MG_EV_HTTP_REQUEST) return;
-	struct http_message *pp = (struct http_message *)p;
     const struct mg_str *query = &(pp->query_string);
     if(mg_get_http_var(query,"cmd",dst,255) <= 0) {
 		_sendErrorResponse(fd, 500, "Invalid request: command not specified");
@@ -135,11 +133,27 @@ static void _handleRequest(struct mg_connection *fd, int ev, void *p){
 				_sendSuccessResponse(fd, data);
 				break;
 	}
+
+}
+
+static void _handleRequest(struct mg_connection *fd, int ev, void *p){
+	switch(ev) {
+		case MG_EV_HTTP_REQUEST:
+			_handleHttpRequest(fd, (struct http_message *)p);
+			return;
+		case MG_EV_WEBSOCKET_HANDSHAKE_DONE:
+			DBG(TAG,"Ws connection established");
+			return;	
+		case MG_EV_WEBSOCKET_FRAME:	
+			DBG(TAG,"Ws got new frame");
+			return;	
+	}
 }
 
 
 bool serverRun(void) {
-  for (;;) {
+  while (s_signal_received == 0)
+  {
     mg_mgr_poll(&mgr, 1000);
   }
   mg_mgr_free(&mgr);
@@ -161,6 +175,11 @@ bool initServer(void){
   mg_set_protocol_http_websocket(nc);
 //  s_http_server_opts.document_root = ".";  // Serve current directory
 //  s_http_server_opts.enable_directory_listing = "yes";
+  signal(SIGTERM, signal_handler);
+  signal(SIGINT, signal_handler);
+  setvbuf(stdout, NULL, _IOLBF, 0);
+  setvbuf(stderr, NULL, _IOLBF, 0);
+
 	return true;
 }
  
