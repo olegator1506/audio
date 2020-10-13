@@ -157,6 +157,7 @@ bool serverRun(void) {
     mg_mgr_poll(&mgr, 1000);
   }
   mg_mgr_free(&mgr);
+  return true;    
 }
 
 bool initServer(void){

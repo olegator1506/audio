@@ -100,6 +100,9 @@ TSpotify::TSpotify(const char *name) : TChannel(name){
 void TSpotify::select(void){
 //	exec
 	TChannel::select();
+	DBG(_tag,"select");
+	adauI2sOn();
+	adauI2sGain(0.5);
 	_start();
 }
     
