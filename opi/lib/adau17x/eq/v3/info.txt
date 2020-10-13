@@ -1,0 +1,1 @@
+Bands = 5 Q = -.71 FS = 192000 Max = 15 dB Min = -15 dB Step = 1 Db

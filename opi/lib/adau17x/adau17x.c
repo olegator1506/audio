@@ -6,7 +6,7 @@
 #include "i2c/i2c.h"
 #include "projects/my-project2_IC_1.h"
 #include "projects/my-project2_IC_1_PARAM.h"
-#include "eq/v2/eq.h"
+#include "eq/v3/eq.h"
 
 float exp10f( float x ) {
     return powf( 10.f, x );
