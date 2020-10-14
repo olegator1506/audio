@@ -6,15 +6,19 @@
 #include "1k.h"
 #include "4k.h"
 #include "10k.h"
+#include "14k.h"
+
 
 #define EQ_LEVEL_MIN -15 
 #define EQ_LEVEL_MAX 15
-#define EQ_MAX_BAND_NUM 4
+#define EQ_MAX_BAND_NUM 5
 const uint8_t *_eqData[] = {
   eqBand50,
   eqBand200,
   eqBand1k,
   eqBand4k,
-  eqBand10k
+  eqBand10k,
+  eqBand14k
+
 };
 #endif
