@@ -71,6 +71,7 @@ int main(int argc, char **argv)
 	LOGI(TAG,"program started");
 	initServer();
 	serverRun();
+	Selector->finish();
 	LOGI(TAG,"program finished");
     return 0;
 

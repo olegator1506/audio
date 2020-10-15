@@ -12,6 +12,7 @@ protected:
 	char _errorMessage[255];
 public:
 	TSelector();
+	void finish(void);
 //	bool error(const char *message);
 	void selectNext();
 	void selectPrev();

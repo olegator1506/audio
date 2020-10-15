@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 // Классы моделей 
 export class ChannelConfig {
   constructor(
@@ -34,4 +36,3 @@ export class DacResponse {
     public data?:DacData
   ){}  
 }
-

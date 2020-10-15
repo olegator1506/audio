@@ -74,6 +74,10 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 	_channels[_selectedChNum]->select();
 	Eq = new TEq();
 }
+void TSelector::finish(void){
+	DBG(_tag,"Selector finished");
+	_channels[_selectedChNum]->unselect();
+}
 bool TSelector::select(int chNum, bool force){
 	if((chNum >= TOTAL_CHANNELS) || (chNum < 0)) {
 		LOGE(_tag,"Invalid channel number %d",chNum);
@@ -125,4 +129,5 @@ Json::Value TSelector::getStateJson(void){
 	_jsonState["eq"] = Eq->getStateJson();
 	return _jsonState;	
 }
+
 TSelector *Selector;

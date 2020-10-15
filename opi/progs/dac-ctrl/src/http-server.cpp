@@ -13,7 +13,7 @@
 #include "mongoose/mongoose.h"
 #include "config.h"
 
-
+static struct mg_serve_http_opts s_http_server_opts;
 static const char *commands[] = {
 	"ch_sel_next",
 	"ch_sel_prev",
@@ -22,6 +22,7 @@ static const char *commands[] = {
 	"adau_reload",
 	"eq_reset",
 	"get_state",
+	"pub",
 	NULL
 };
 
@@ -57,11 +58,55 @@ static void _sendSuccessResponse(struct mg_connection *connection, Json::Value d
 }
 
 
+static void _broadcast(struct mg_connection *nc, const char *query) {
+  struct mg_connection *c;
+/*
+  char addr[32];
+  mg_sock_addr_to_str(&nc->sa, addr, sizeof(addr),
+                      MG_SOCK_STRINGIFY_IP | MG_SOCK_STRINGIFY_PORT);
+
+  snprintf(buf, sizeof(buf), "%s %.*s", addr, (int) msg.len, msg.p);
+  printf("%s\n", buf); 
+*/
+  for (c = mg_next(nc->mgr, NULL); c != NULL; c = mg_next(nc->mgr, c)) {
+    if (c == nc) continue; /* Don't send to the sender. */
+    mg_send_websocket_frame(c, WEBSOCKET_OP_TEXT, query, strlen(query));
+  }
+}
+
+static void _publish(struct mg_connection *nc, const struct mg_str *query){
+	char topic[500];
+	if(mg_get_http_var(query,"topic",topic,500) <= 0) {
+		_sendErrorResponse(nc, 500, "Invalid request:topic not specified");
+		return;
+	}
+	int bufLen = query->len - strlen(topic);
+	char *msg = (char *)malloc(bufLen);
+	if(mg_get_http_var(query,"message",topic,bufLen-1) <= 0) {
+		_sendErrorResponse(nc, 500, "Invalid request:message not specified");
+		free(msg);
+		return;
+	}
+	Json::Value data;
+	data["topic"] = topic;
+	data["message"] = msg;
+	Json::StyledWriter styledWriter;
+	std::string s = styledWriter.write(data);
+	const char *c = s.c_str(); 
+	_broadcast(nc,c);
+	free(msg);
+}
+
+
 static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp){
 	char dst[256];
 	int cmdCode;
 	Json::Value data;
     const struct mg_str *query = &(pp->query_string);
+	if(!query->len) {
+		mg_serve_http(fd, pp, s_http_server_opts);
+		return;
+	}
     if(mg_get_http_var(query,"cmd",dst,255) <= 0) {
 		_sendErrorResponse(fd, 500, "Invalid request: command not specified");
 		return;
@@ -117,6 +162,10 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 				}
 				_sendSuccessResponse(fd, Selector->getStateJson());
 				break;
+			case CMD_PUB:
+				_publish(fd,query);
+				break;
+
 /*
 			case CMD_ADAU_RELOAD:
 				Selector->reload();	
@@ -132,6 +181,9 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 				data = Selector->getStateJson();
 				_sendSuccessResponse(fd, data);
 				break;
+				 
+
+
 	}
 
 }
@@ -157,6 +209,7 @@ bool serverRun(void) {
     mg_mgr_poll(&mgr, 1000);
   }
   mg_mgr_free(&mgr);
+  
   return true;    
 }
 
@@ -174,8 +227,8 @@ bool initServer(void){
 
   // Set up HTTP server parameters
   mg_set_protocol_http_websocket(nc);
-//  s_http_server_opts.document_root = ".";  // Serve current directory
-//  s_http_server_opts.enable_directory_listing = "yes";
+  s_http_server_opts.document_root = "/home/artem/work/audio/opi/html/sample-ng-material/dist/sample-ng-material";  // Serve current directory
+  s_http_server_opts.enable_directory_listing = "yes";
   signal(SIGTERM, signal_handler);
   signal(SIGINT, signal_handler);
   setvbuf(stdout, NULL, _IOLBF, 0);

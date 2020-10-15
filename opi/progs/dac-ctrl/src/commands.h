@@ -9,5 +9,6 @@
 #define CMD_ADAU_RELOAD 4
 #define CMD_EQ_RESET 5
 #define CMD_GET_STATE 6
+#define CMD_PUB 7
 
 #endif
