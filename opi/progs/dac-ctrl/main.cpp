@@ -23,7 +23,7 @@
 extern bool serverRun(void);
 extern bool initServer(void);
 
-#define LOCAL_DEBUG 1
+
 
 
 

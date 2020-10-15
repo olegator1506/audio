@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DacRqService,WsService } from './dac-rq.service';
+import { DacRqService } from './dac-rq.service';
 import { ChannelConfig, DacResponse, DacData } from './model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
@@ -17,7 +17,7 @@ export class AppComponent {
   dacConfig : DacData;
   source : any;
   selectedChannel:number;
-  constructor(private dataSource : DacRqService, private ws:WsService){
+  constructor(private dataSource : DacRqService){
   }
 /*
   onChannelGroupChange(obj){
