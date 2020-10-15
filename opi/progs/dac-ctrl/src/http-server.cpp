@@ -227,7 +227,7 @@ bool initServer(void){
 
   // Set up HTTP server parameters
   mg_set_protocol_http_websocket(nc);
-  s_http_server_opts.document_root = "/home/artem/work/audio/opi/html/sample-ng-material/dist/sample-ng-material";  // Serve current directory
+  s_http_server_opts.document_root = HTTP_SERVER_ROOT_PATH;  // Serve current directory
   s_http_server_opts.enable_directory_listing = "yes";
   signal(SIGTERM, signal_handler);
   signal(SIGINT, signal_handler);
