@@ -1,7 +1,7 @@
 /*
  * File:           E:\projects\test1_IC_1_REG.h
  *
- * Created:        Tuesday, October 06, 2020 10:16:48 PM
+ * Created:        Friday, October 16, 2020 8:56:25 AM
  * Description:    test1:IC 1 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,

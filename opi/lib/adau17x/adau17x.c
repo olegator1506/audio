@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <math.h>
 #include "i2c/i2c.h"
-#include "projects/my-project2_IC_1.h"
-#include "projects/my-project2_IC_1_PARAM.h"
-#include "eq/v3/eq.h"
+#include "projects/test1_IC_1.h"
+#include "projects/test1_IC_1_PARAM.h"
+#include "eq/v1/eq.h"
 
 float exp10f( float x ) {
     return powf( 10.f, x );
@@ -207,7 +207,7 @@ bool adauEqSet(uint8_t band, int8_t level) {
     LOGE(TAG,"Invalid EQ band number %d",band);
     return false;
   } 
-  paramAddr = 0x14 + (band * 5);
+  paramAddr = 0x12 + (band * 5);
   DBG(TAG,"EQ set band %d level %d",band,level);
   if(level < EQ_LEVEL_MIN) level = EQ_LEVEL_MIN;
   if(level > EQ_LEVEL_MAX) level = EQ_LEVEL_MAX;
