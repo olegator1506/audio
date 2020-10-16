@@ -294,3 +294,45 @@ bool adauInit(uint8_t chipAddress) {
     adauI2sOff();
   return true;
 }
+/**
+ * @summary Подключает указанный аналоговый вход
+ * @param chNum - номер канала, 0 - все выкл, 1 - AUX, 2 - LineN, 0 - LineP
+ * @param level - усиление, 0 - Mute 1 -12dB 2  -9dB ... 7 3dB
+ */ 
+bool adauSelectAnalogInput(uint8_t chNum, uint8_t level){
+  uint8_t b;
+  switch(chNum){
+    case 0: // Выключаем микшер
+      b = 0;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_1_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_1_ADDR, &b,1)) return false;
+      return true;
+    case 1: // AUX
+      b = 1; // Включаем микшер, громкость LineN, LineP = 0
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_1_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_1_ADDR, &b,1)) return false;
+      b = level & 7; // Задаем уровень усиления
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_1_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_1_ADDR, &b,1)) return false;
+      return true;
+    case 2: //LineN
+      b = 0; // Задаем уровень усиления AUX = 0
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_1_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_1_ADDR, &b,1)) return false;
+      b = ((level & 7) << 1) +1;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_1_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_1_ADDR, &b,1)) return false;
+      return true;
+    case 3: //LineP
+      b = 0; // Задаем уровень усиления AUX = 0
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_1_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_1_ADDR, &b,1)) return false;
+      b = ((level & 7) << 4) +1;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_1_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_1_ADDR, &b,1)) return false;
+      return true;
+    default:
+      LOGE(TAG,"SelectAnalogInput: invalid channel num %d",chNum);
+      return false;
+  }
+}

@@ -52,7 +52,7 @@ bool setup(void) {
 	}
 */
 	DBG(TAG,"AP session ID =%d\n", alsaSessionNum);
-	if(!pcfInit()) return false;
+//	if(!pcfInit()) return false;
 //	if(!pcfSelAnalogInput(1)) return false;
 	if(!adauInit(ADAU_CHIP_ADDRESS)) return false;
 	Selector = new TSelector();

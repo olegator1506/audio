@@ -35,8 +35,9 @@ public:
 class TAuxChannel : public TChannel {
 protected:
 	int _auxNum;
+	int _gain;
 public:
-	TAuxChannel(const char *name, int inputNum);
+	TAuxChannel(const char *name, int inputNum, int gain);
  	void select(void);
 };
 

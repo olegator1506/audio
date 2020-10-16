@@ -23,6 +23,7 @@ bool adauI2sOn(void);
 bool adauI2sOff(void);
 bool adauI2sGain(float val);
 bool adauLoadProgram(void);
+bool adauSelectAnalogInput(uint8_t chNum, int level);
 #ifdef __cplusplus
 }
 #endif

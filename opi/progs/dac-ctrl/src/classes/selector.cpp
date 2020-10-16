@@ -9,6 +9,7 @@ typedef struct {
     TChannelType type; 
     const char *name;//Символьное имя канала
 	int auxNum; // номер аудио выхода устройства (на выходном аналоговом коммутаторе)
+	int gain;
 } TChannelConfig;
 
 
@@ -17,33 +18,39 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
         .type = CH_TYPE_AUX,
         .name = "AUX1",
         .auxNum = 1,
+		.gain = 5
     },
     { // AUX #2 разъем на задней панели
         .type = CH_TYPE_AUX,
         .name = "AUX2",
         .auxNum = 2,
+		.gain = 5
     },
-/*
+
     { // AUX #2 разъем на задней панели
         .type = CH_TYPE_AUX,
         .name = "AUX3",
         .auxNum = 3,
+		.gain = 5
     },
-*/
+/*
     { // Линейный дифференциальный вход
         .type = CH_TYPE_LINEIN,
         .name = "LINE",
         .auxNum = 0,
     },
+*/
     { // Воспроизведение файлов через AlsaPlayer
         .type = CH_TYPE_ALSA,
         .name = "ALSA",
-        .auxNum = 0,
+        .auxNum = 0, // not used
+		.gain = 0
     },
     { // Воспроизведение аудиопотока Spotify
         .type = CH_TYPE_SPOTIFY,
         .name = "SPOTIFY",
-        .auxNum = 0,
+        .auxNum = 0, // not used
+		.gain = 0 // not used
     }
 
 
@@ -58,7 +65,7 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 	for(int i =0; i<TOTAL_CHANNELS; i++)
 		switch(_channelsConfig[i].type){
 			case CH_TYPE_AUX:
-				_channels[i] = new TAuxChannel(_channelsConfig[i].name, _channelsConfig[i].auxNum);
+				_channels[i] = new TAuxChannel(_channelsConfig[i].name, _channelsConfig[i].auxNum, _channelsConfig[i].gain);
 				break;
 			case CH_TYPE_LINEIN:
 				_channels[i] = new TDiffChannel(_channelsConfig[i].name);

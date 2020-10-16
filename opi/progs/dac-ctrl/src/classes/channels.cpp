@@ -51,16 +51,18 @@ int TChannel::_checkProcessRun(const char *pidFileName){
 	return 0;	
 }
 
-TAuxChannel::TAuxChannel(const char *name, int inputNum) : TChannel(name)
+TAuxChannel::TAuxChannel(const char *name, int inputNum, int gain) : TChannel(name)
 {
 	_tag = "AuxChannel";
 	_auxNum = inputNum;
+	_gain = gain;
 	_typeString = "aux";
 }	
 
 void TAuxChannel::select(void) {
 	adauI2sOff();
-	pcfSelAnalogInput(_auxNum);
+	adauSelectAnalogInput(_auxNum, _gain);
+//	pcfSelAnalogInput(_auxNum);
 	TChannel::select();
 }
 
@@ -86,6 +88,7 @@ TAlsaChannel::TAlsaChannel(const char *name) : TChannel(name)
 void TAlsaChannel::select(void)
 {
 	DBG(_tag,"select");
+	adauSelectAnalogInput(0, 0);
 	adauI2sOn();
 	adauI2sGain(0.5);
 }
@@ -101,6 +104,7 @@ void TSpotify::select(void){
 //	exec
 	TChannel::select();
 	DBG(_tag,"select");
+	adauSelectAnalogInput(0, 0);
 	adauI2sOn();
 	adauI2sGain(0.5);
 	_start();
