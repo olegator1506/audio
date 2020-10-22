@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sample-ng-material": {
+    "dac": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/sample-ng-material",
+            "outputPath": "dist/dac",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -63,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "sample-ng-material:build"
+            "browserTarget": "dac:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "sample-ng-material:build:production"
+              "browserTarget": "dac:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sample-ng-material:build"
+            "browserTarget": "dac:build"
           }
         },
         "test": {
@@ -123,5 +123,5 @@
       }
     }
   },
-  "defaultProject": "sample-ng-material"
+  "defaultProject": "dac"
 }
