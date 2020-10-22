@@ -4,9 +4,15 @@
 #include <stdio.h>
 #include <math.h>
 #include "i2c/i2c.h"
-#include "projects/test1_IC_1.h"
-#include "projects/test1_IC_1_PARAM.h"
+//#include "projects/test1_IC_1.h"
+//#include "projects/test1_IC_1_PARAM.h"
+#include "projects/project3_IC_2.h"
+#include "projects/project3_IC_2_PARAM.h"
+
 #include "eq/v1/eq.h"
+
+
+#define ADAU_EQ_BASE_ADDRESS 
 
 float exp10f( float x ) {
     return powf( 10.f, x );
@@ -140,8 +146,8 @@ bool  adauAuxInGain(uint8_t val)
 {
   uint8_t data[2];
   uint16_t regs[2] = {
-    REG_RECORD_MIXER_LEFT_CTRL_1_IC_1_ADDR, // 0x400b
-    REG_RECORD_MIXER_RIGHT_CTRL_1_IC_1_ADDR // 0x400d
+    REG_RECORD_MIXER_LEFT_CTRL_1_IC_2_ADDR, // 0x400
+    REG_RECORD_MIXER_RIGHT_CTRL_1_IC_2_ADDR // 0x400d
   };
   if(val>7) val =7;
   for(uint8_t i=0; i<2;i++) {
@@ -159,9 +165,9 @@ bool adauDspOff(void) {
     0x01, // 0x401e : Right mixer 4 enable, left & right dac Off
     0x60, // 0x401f ; Left bypass gain mute, Right bypass gain 0 dB
   }, b=0;
-  if(!adauWrite(REG_PLAYBACK_MIXER_LEFT_CONTROL_0_IC_1_ADDR,data,4) ) return false; // Переключаем вход с DAC- а на микшер
-  if(!adauWrite(REG_DSP_RUN_REGISTER_IC_1_ADDR,&b,1) ) return false; // Останавливаем DSP
-  if(!adauWrite(REG_DSP_ENABLE_REGISTER_IC_1_ADDR,&b,1) ) return false; // Блокируем DSP
+  if(!adauWrite(REG_PLAYBACK_MIXER_LEFT_CONTROL_0_IC_2_ADDR,data,4) ) return false; // Переключаем вход с DAC- а на микшер
+  if(!adauWrite(REG_DSP_RUN_REGISTER_IC_2_ADDR,&b,1) ) return false; // Останавливаем DSP
+  if(!adauWrite(REG_DSP_ENABLE_REGISTER_IC_2_ADDR,&b,1) ) return false; // Блокируем DSP
   return true;
 }
 bool adauDspOn(void) {
@@ -172,15 +178,15 @@ bool adauDspOn(void) {
     0x00, // 0x401f ; Left bypass gain mute, Right bypass gain 0 dB
   }, b = 1;
   DBG(TAG,"DSP On");
-  if(!adauWrite(REG_DSP_ENABLE_REGISTER_IC_1_ADDR,&b,1)) return false; // Разблокируем DSP
-  if(adauWrite(REG_DSP_RUN_REGISTER_IC_1_ADDR,&b,1)!= true ) return false; // Запускаем DSP
-  if(adauWrite(REG_PLAYBACK_MIXER_LEFT_CONTROL_0_IC_1_ADDR,data,4)!= true ) return false; // Переключаем вход с микшера на ЦАП 
+  if(!adauWrite(REG_DSP_ENABLE_REGISTER_IC_2_ADDR,&b,1)) return false; // Разблокируем DSP
+  if(adauWrite(REG_DSP_RUN_REGISTER_IC_2_ADDR,&b,1)!= true ) return false; // Запускаем DSP
+  if(adauWrite(REG_PLAYBACK_MIXER_LEFT_CONTROL_0_IC_2_ADDR,data,4)!= true ) return false; // Переключаем вход с микшера на ЦАП 
   return true;
 }
 
 bool adauDspReload(void) {
   DBG(TAG,"DSP reload program");
-  default_download_IC_1();
+  default_download_IC_2();
   return true;
 }
 // Устанавливает уровень уровень громкости 
@@ -192,7 +198,7 @@ bool adauOutVol(int level, bool line) {
   uint16_t addr;
   if(level > 0x3f) level = 0x3f;
   else if(level < 0) level = 0;
-  addr = line ? REG_PLAYBACK_LINE_OUT_LEFT_IC_1_ADDR : REG_PLAYBACK_HEADPHONE_LEFT_IC_1_ADDR;
+  addr = line ? REG_PLAYBACK_LINE_OUT_LEFT_IC_2_ADDR : REG_PLAYBACK_HEADPHONE_LEFT_IC_2_ADDR;
   if(!adauRead(addr,data,2) ) return false;
   b = ((level & 0x3f) << 2);
   for(int i=0;i<2;i++)  data[i] = (data[i] & 3) | b;
@@ -207,7 +213,7 @@ bool adauEqSet(uint8_t band, int8_t level) {
     LOGE(TAG,"Invalid EQ band number %d",band);
     return false;
   } 
-  paramAddr = 0x12 + (band * 5);
+  paramAddr = ADAU_EQ_BASE_ADDRESS + (band * 5);
   DBG(TAG,"EQ set band %d level %d",band,level);
   if(level < EQ_LEVEL_MIN) level = EQ_LEVEL_MIN;
   if(level > EQ_LEVEL_MAX) level = EQ_LEVEL_MAX;
@@ -271,7 +277,7 @@ bool adauI2sGain(float val) {
 bool adauLoadProgram(void){
     if(_adauLoadError) free(_adauLoadError);
     _adauLoadError = NULL;
-    default_download_IC_1();
+    default_download_IC_2();
     if(_adauLoadError) {
       LOGE(TAG,"Program load error: %s",_adauLoadError);
       free(_adauLoadError);
@@ -304,32 +310,32 @@ bool adauSelectAnalogInput(uint8_t chNum, uint8_t level){
   switch(chNum){
     case 0: // Выключаем микшер
       b = 0;
-      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_1_ADDR, &b, 1)) return false;
-      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_1_ADDR, &b,1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_2_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_2_ADDR, &b,1)) return false;
       return true;
     case 1: // AUX
       b = 1; // Включаем микшер, громкость LineN, LineP = 0
-      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_1_ADDR, &b, 1)) return false;
-      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_1_ADDR, &b,1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_2_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_2_ADDR, &b,1)) return false;
       b = level & 7; // Задаем уровень усиления
-      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_1_ADDR, &b, 1)) return false;
-      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_1_ADDR, &b,1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_2_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_2_ADDR, &b,1)) return false;
       return true;
     case 2: //LineN
       b = 0; // Задаем уровень усиления AUX = 0
-      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_1_ADDR, &b, 1)) return false;
-      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_1_ADDR, &b,1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_2_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_2_ADDR, &b,1)) return false;
       b = ((level & 7) << 1) +1;
-      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_1_ADDR, &b, 1)) return false;
-      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_1_ADDR, &b,1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_2_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_2_ADDR, &b,1)) return false;
       return true;
     case 3: //LineP
       b = 0; // Задаем уровень усиления AUX = 0
-      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_1_ADDR, &b, 1)) return false;
-      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_1_ADDR, &b,1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_1_IC_2_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_1_IC_2_ADDR, &b,1)) return false;
       b = ((level & 7) << 4) +1;
-      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_1_ADDR, &b, 1)) return false;
-      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_1_ADDR, &b,1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_LEFT_CTRL_0_IC_2_ADDR, &b, 1)) return false;
+      if(!adauWrite(REG_RECORD_MIXER_RIGHT_CTRL_0_IC_2_ADDR, &b,1)) return false;
       return true;
     default:
       LOGE(TAG,"SelectAnalogInput: invalid channel num %d",chNum);
