@@ -88,6 +88,13 @@ export class AppComponent {
       this.dacConfig = resp.data;
     });
   }
+  setBass(state){
+    this.dataSource.setBass(state)
+    .subscribe((resp : DacResponse) =>{
+      this.dacConfig.bass = state;
+    });
+
+  }
   testFunc(){
     this.dataSource.getConfig()
     .subscribe((resp : DacResponse) => {

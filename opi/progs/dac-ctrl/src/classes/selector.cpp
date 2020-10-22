@@ -80,6 +80,7 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 	_selectedChNum = 0;		
 	_channels[_selectedChNum]->select();
 	Eq = new TEq();
+	_superBass = false;
 }
 void TSelector::finish(void){
 	DBG(_tag,"Selector finished");
@@ -134,7 +135,14 @@ Json::Value TSelector::getStateJson(void){
 	_jsonState["channels"] = channels;	
 	_jsonState["selected_channel_num"] = _selectedChNum;
 	_jsonState["eq"] = Eq->getStateJson();
+	_jsonState["bass"] = _superBass;
 	return _jsonState;	
+}
+
+bool TSelector::superBass(bool state) {
+	if(!adauSuperBass(state)) return false;
+	_superBass = state;
+	return true;
 }
 
 TSelector *Selector;

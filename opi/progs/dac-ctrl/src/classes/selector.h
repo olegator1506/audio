@@ -10,6 +10,7 @@ protected:
 	const char *_tag; 
 	Json::Value _jsonState;
 	char _errorMessage[255];
+	bool _superBass;
 public:
 	TSelector();
 	void finish(void);
@@ -25,6 +26,8 @@ public:
 	bool eqReset(void);
 	Json::Value getStateJson(void);
 	char *lastError(void){ return _errorMessage;}
+	bool superBass(bool state); 
+	
 /*
     channelsEventHandler(uint8_t code,uint16_t param);
 	bool play(void);

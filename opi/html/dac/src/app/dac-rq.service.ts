@@ -29,4 +29,9 @@ export class DacRqService {
   selectChannel(num:number) {
     return this.http.get(this._baseUrl +"?cmd=ch_sel_num&num="+num);
   }
+  setBass(state:boolean){
+    var stateStr = state ? 'on':'off';
+    var url = this._baseUrl +"?cmd=bass&state="+stateStr;
+    return this.http.get(url);
+  }
 }

@@ -9,6 +9,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { DacRqService } from './dac-rq.service';
 import { WebSocketService } from './web-socket.service';
@@ -24,6 +25,7 @@ import { MatCardModule } from '@angular/material/card';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonToggleModule,

@@ -90,7 +90,7 @@ void TSpotify::select(void){
 	DBG(_tag,"select");
 	adauSelectAnalogInput(0, 0);
 	adauI2sOn();
-	adauI2sGain(0.5);
+//	adauI2sGain(0.5);
 	_start();
 }
     

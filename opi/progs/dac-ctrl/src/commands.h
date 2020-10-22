@@ -13,4 +13,5 @@
 #define CMD_PUB_SPOTIFY_STOP 8
 #define CMD_PUB_SPOTIFY_START 9
 #define CMD_PUB_SPOTIFY_CHANGE 10
+#define CMD_BASS 11
 #endif

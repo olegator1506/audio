@@ -26,6 +26,7 @@ static const char *commands[] = {
 	"pub_spotify_stop",
 	"pub_spotify_start",
 	"pub_spotify_change",
+	"bass",
 	NULL
 };
 
@@ -145,6 +146,14 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 			else 
 				_sendErrorResponse(fd, 500, Selector->lastError());	
 			break;
+			case CMD_BASS:
+				if(mg_get_http_var(query,"state",dst,255) <= 0) {
+					_sendErrorResponse(fd, 500, "Invalid request: bass state not specified");
+					return;
+				}
+				Selector->superBass((strcmp(dst,"on") == 0));
+				_sendSuccessResponse(fd, data);
+				break;
 
 			case CMD_EQ:
 				int bandNum,val;

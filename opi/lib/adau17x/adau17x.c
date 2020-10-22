@@ -252,6 +252,14 @@ static bool _i2sSwitch(bool state){
   return true;
 }
 
+bool adauSuperBass(bool state){
+    uint8_t paramOff[4] = {0,0x80,0,0}, paramOn[4] = {0,0,0,0};
+    uint8_t *param;
+    param = state ? paramOn : paramOff;
+    DBG(TAG,"Set super bass %s",state ? "ON":"OFF");
+    return adauWrite(MOD_SUPERBASS2_ALG0_SUPERBASSALGSWSLEW1BYPASS_ADDR,param,4);
+}
+
 bool adauI2sOn(void){
   return _i2sSwitch(true);
 }
