@@ -30,6 +30,18 @@ export class DacData {
 
 }
 
+export class TrackInfo {
+  constructor(
+    public trackId? : string,
+    public album? : string,
+    public artist? : string,
+    public track_name? :string,
+    public image? :string,
+    public duration_string? : string,
+    public duration? : number
+  ){}  
+}
+
 export class DacResponse {
   constructor(
     public result?:string,

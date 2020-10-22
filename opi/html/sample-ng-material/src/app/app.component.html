@@ -350,6 +350,7 @@
     </button>
   </div>  
 <!-- // Проигрыватель -->
+<app-track-info [model]="track"></app-track-info>
 <!-- Эквалайзер -->
 <div class="row">
     <mat-slider *ngFor="let ch of dacConfig.eq.labels;let num = index"

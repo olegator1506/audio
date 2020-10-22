@@ -78,22 +78,6 @@ void TDiffChannel::select(void) {
 
 }
 
-// Класс TAlsaChannel
-TAlsaChannel::TAlsaChannel(const char *name) : TChannel(name)
-{
-	_tag = "AlsaChannel";
-	_typeString = "file";
-}
-
-void TAlsaChannel::select(void)
-{
-	DBG(_tag,"select");
-	adauSelectAnalogInput(0, 0);
-	adauI2sOn();
-	adauI2sGain(0.5);
-}
-	
-
 // Класс TSpotify
 TSpotify::TSpotify(const char *name) : TChannel(name){
 	_tag = "Spotify";
@@ -120,28 +104,9 @@ bool TSpotify::_start(){
 	if(_checkProcessRun(SPOTIFY_PID_FILE)) // Spotify process already running
 		return true;
 	char cmd[1024];
-	sprintf(cmd, "%s --username %s --password %s --pid %s --device-name %s --device %s",
-	SPOTIFY_DAEMON_CMD,SPOTIFY_USERNAME,SPOTIFY_PASSWORD,SPOTIFY_PID_FILE,SPOTIFY_DEVICE_NAME,SPOTIFY_SOUND_DEVICE);
-/*	exec(SPOTIFY_DAEMON_CMD
-		SPOTIFY_DAEMON_CMD,
-		"--username", 
-		SPOTIFY_USERNAME, 
-		"--password",
-		SPOTIFY_PASSWORD,
-		"--pid",
-		SPOTIFY_PID_FILE,
-		"--device-name",
-		SPOTIFY_DEVICE_NAME,
-		"--device",
-		SPOTIFY_SOUND_DEVICE,
-		"--bitrate",
-		SPOTIFY_BITRATE,
-		"--backend",
-		SPOTIFY_BACKEND,
-		NULL
-	);
-*/
-  DBG(_tag,"Run cmd: %s",cmd);
+	sprintf(cmd, "%s --username %s --password %s --pid %s --device-name %s --device %s --on-song-change-hook %s",
+	SPOTIFY_DAEMON_CMD,SPOTIFY_USERNAME,SPOTIFY_PASSWORD,SPOTIFY_PID_FILE,SPOTIFY_DEVICE_NAME,SPOTIFY_SOUND_DEVICE,SPOTIFY_HOOK);
+    DBG(_tag,"Run cmd: %s",cmd);
 	system(cmd);
 	DBG(_tag,"Command finished");
 	return true;	

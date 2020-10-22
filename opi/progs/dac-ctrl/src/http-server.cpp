@@ -23,12 +23,16 @@ static const char *commands[] = {
 	"eq_reset",
 	"get_state",
 	"pub",
+	"pub_spotify_stop",
+	"pub_spotify_start",
+	"pub_spotify_change",
 	NULL
 };
 
 static const char *TAG ="httpServer";
 static struct mg_mgr mgr;
 static sig_atomic_t s_signal_received = 0;
+//static struct mg_connection *_wsConnection = NULL;
 
 static void signal_handler(int sig_num) {
   signal(sig_num, signal_handler);  // Reinstantiate signal handler
@@ -60,41 +64,38 @@ static void _sendSuccessResponse(struct mg_connection *connection, Json::Value d
 
 static void _broadcast(struct mg_connection *nc, const char *query) {
   struct mg_connection *c;
-/*
-  char addr[32];
-  mg_sock_addr_to_str(&nc->sa, addr, sizeof(addr),
-                      MG_SOCK_STRINGIFY_IP | MG_SOCK_STRINGIFY_PORT);
-
-  snprintf(buf, sizeof(buf), "%s %.*s", addr, (int) msg.len, msg.p);
-  printf("%s\n", buf); 
-*/
   for (c = mg_next(nc->mgr, NULL); c != NULL; c = mg_next(nc->mgr, c)) {
-    if (c == nc) continue; /* Don't send to the sender. */
+    if (c == nc) continue; // Don't send to the sender. 
     mg_send_websocket_frame(c, WEBSOCKET_OP_TEXT, query, strlen(query));
   }
 }
 
+/*
 static void _publish(struct mg_connection *nc, const struct mg_str *query){
-	char topic[500];
-	if(mg_get_http_var(query,"topic",topic,500) <= 0) {
-		_sendErrorResponse(nc, 500, "Invalid request:topic not specified");
-		return;
-	}
-	int bufLen = query->len - strlen(topic);
-	char *msg = (char *)malloc(bufLen);
-	if(mg_get_http_var(query,"message",topic,bufLen-1) <= 0) {
-		_sendErrorResponse(nc, 500, "Invalid request:message not specified");
-		free(msg);
-		return;
-	}
+	char *msg = (char*)malloc(query->len +1);
+	memcpy(msg,query->p,query->len);
+	msg[query->len] = '\0';
+	_broadcast(nc,msg);
+	free(msg);
+}
+*/
+
+static void _publish(struct mg_connection *nc, const struct mg_str *query,const char *params[]){
+	char param[501];
+//	if(!_wsConnection) return;
 	Json::Value data;
-	data["topic"] = topic;
-	data["message"] = msg;
-	Json::StyledWriter styledWriter;
-	std::string s = styledWriter.write(data);
+	for(int i=0;params[i];i++) {
+		if(mg_get_http_var(query,params[i],param,500) <= 0) {
+			_sendErrorResponse(nc, 500, "Invalid request: one or more params not specified");
+			return;
+		}
+		data[params[i]] = param;
+	}
+	Json::FastWriter Wr;
+	std::string s = Wr.write(data);
 	const char *c = s.c_str(); 
 	_broadcast(nc,c);
-	free(msg);
+//	mg_send_websocket_frame(_wsConnection, WEBSOCKET_OP_TEXT, c, strlen(c));
 }
 
 
@@ -102,6 +103,7 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 	char dst[256];
 	int cmdCode;
 	Json::Value data;
+	Json::StyledWriter styledWriter;
     const struct mg_str *query = &(pp->query_string);
 	if(!query->len) {
 		mg_serve_http(fd, pp, s_http_server_opts);
@@ -162,11 +164,8 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 				}
 				_sendSuccessResponse(fd, Selector->getStateJson());
 				break;
-			case CMD_PUB:
-				_publish(fd,query);
-				break;
 
-/*
+
 			case CMD_ADAU_RELOAD:
 				Selector->reload();	
 				_sendSuccessResponse(fd, data);
@@ -175,16 +174,20 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 				Selector->eqReset();
 				_sendSuccessResponse(fd, data);
 				break;
-*/
+
 			case CMD_GET_STATE:
-				Json::StyledWriter styledWriter;
 				data = Selector->getStateJson();
 				_sendSuccessResponse(fd, data);
 				break;
-				 
-
-
-	}
+			case CMD_PUB:
+			case CMD_PUB_SPOTIFY_CHANGE:
+			case CMD_PUB_SPOTIFY_STOP:
+			case CMD_PUB_SPOTIFY_START:
+				const char *params[] = {"cmd","track_id","album","artist","track_name","image","duration_string","duration",NULL};
+				_publish(fd,query,params);
+				_sendSuccessResponse(fd, data);
+				break;
+		}
 
 }
 
@@ -195,10 +198,13 @@ static void _handleRequest(struct mg_connection *fd, int ev, void *p){
 			return;
 		case MG_EV_WEBSOCKET_HANDSHAKE_DONE:
 			DBG(TAG,"Ws connection established");
+//			_wsConnection = fd;
 			return;	
 		case MG_EV_WEBSOCKET_FRAME:	
 			DBG(TAG,"Ws got new frame");
 			return;	
+//		case MG_EV_CLOSE:
+//			_wsConnection = NULL;	
 	}
 }
 

@@ -4,7 +4,8 @@
 -  устанавливаем пакеты xorg
     xorg Для работы XWin
     libasound-dev alsaplayer alsaplayer-daemon libalsaplayer-dev для компиляции программ использующих ALSA
-    
+    php php-memcached memcached
+- установить запуск memcached как службы    
 -  активируем I2S интерфейс
   armbian-add-overlay simple-i2s.dts
   здесь simple-i2s.dts - исходный файл оверлея

@@ -10,5 +10,7 @@
 #define CMD_EQ_RESET 5
 #define CMD_GET_STATE 6
 #define CMD_PUB 7
-
+#define CMD_PUB_SPOTIFY_STOP 8
+#define CMD_PUB_SPOTIFY_START 9
+#define CMD_PUB_SPOTIFY_CHANGE 10
 #endif

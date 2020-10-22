@@ -62,7 +62,16 @@ bool setup(void) {
 
 int main(int argc, char **argv)
 {
-
+	bool debugMode = false;
+	int opt;
+	while ((opt = getopt(argc, argv, "d")) != -1) {
+		switch(opt){
+			case 'd': 
+				debugMode = true;
+				break;
+		}
+	}
+	setLogLevelGlobal(debugMode ? LOG_DEBUG : LOG_ERROR);
 	setLogLevelGlobal(LOG_LEVEL);
 	LOGI(TAG,"program started");
  	if(!setup()) {
@@ -70,6 +79,8 @@ int main(int argc, char **argv)
 	}
 	LOGI(TAG,"program started");
 	initServer();
+	if(!debugMode)
+		daemon(0,0);
 	serverRun();
 	Selector->finish();
 	LOGI(TAG,"program finished");

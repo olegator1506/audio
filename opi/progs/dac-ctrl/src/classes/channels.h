@@ -53,9 +53,14 @@ public:
 // Воспроизведение файлов через AlsaPlayer
 class TAlsaChannel : public TChannel {
 protected:
+	bool _start(void);
+	bool _stop(void);
+	void _initPlayList(void);
 public:
 	TAlsaChannel(const char *name);
  	void select(void);
+	void unselect(void);
+	
 };
 
 class TSpotify : public TChannel {

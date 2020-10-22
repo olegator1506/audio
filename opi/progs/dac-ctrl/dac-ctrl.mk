@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Олег Артеменко
-Date                   :=11/10/20
+Date                   :=16/10/20
 CodeLitePath           :="/home/artem/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -39,8 +39,8 @@ LinkOptions            :=
 IncludePath            :=  $(IncludeSwitch). $(IncludeSwitch)../../lib $(IncludeSwitch). 
 IncludePCH             := 
 RcIncludePath          := 
-Libs                   := $(LibrarySwitch)alsaplayer  $(LibrarySwitch)pthread $(LibrarySwitch)jsoncpp 
-ArLibs                 :=  "alsaplayer" "pthread" "jsoncpp" 
+Libs                   := $(LibrarySwitch)alsaplayer $(LibrarySwitch)asound $(LibrarySwitch)pthread $(LibrarySwitch)jsoncpp 
+ArLibs                 :=  "alsaplayer" "asound" "pthread" "jsoncpp" 
 LibPath                := $(LibraryPathSwitch). 
 
 ##
@@ -50,8 +50,8 @@ LibPath                := $(LibraryPathSwitch).
 AR       := /usr/bin/ar rcu
 CXX      := /usr/bin/g++
 CC       := /usr/bin/gcc
-CXXFLAGS :=  -g -O0 -Wall $(Preprocessors)
-CFLAGS   :=  -g -O0 -Wall -Wno-write-strings $(Preprocessors)
+CXXFLAGS :=  -g -O0 -Wall $(Preprocessors) 
+CFLAGS   :=  -g -O0 -Wall -Wno-write-strings $(Preprocessors) 
 ASFLAGS  := 
 AS       := /usr/bin/as
 
@@ -61,7 +61,7 @@ AS       := /usr/bin/as
 ##
 CodeLiteDir:=/usr/share/codelite
 Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_http-server.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix) \
-	$(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) 
+	$(IntermediateDirectory)/classes_alsa-player.cpp$(ObjectSuffix) $(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) 
 
 
 
@@ -171,6 +171,14 @@ $(IntermediateDirectory)/classes_eq.cpp$(DependSuffix): src/classes/eq.cpp
 
 $(IntermediateDirectory)/classes_eq.cpp$(PreprocessSuffix): src/classes/eq.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_eq.cpp$(PreprocessSuffix) "src/classes/eq.cpp"
+
+$(IntermediateDirectory)/classes_alsa-player.cpp$(ObjectSuffix): src/classes/alsa-player.cpp $(IntermediateDirectory)/classes_alsa-player.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/alsa-player.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_alsa-player.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/classes_alsa-player.cpp$(DependSuffix): src/classes/alsa-player.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_alsa-player.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_alsa-player.cpp$(DependSuffix) -MM "src/classes/alsa-player.cpp"
+
+$(IntermediateDirectory)/classes_alsa-player.cpp$(PreprocessSuffix): src/classes/alsa-player.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_alsa-player.cpp$(PreprocessSuffix) "src/classes/alsa-player.cpp"
 
 $(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix): ../../lib/mongoose/mongoose.cpp $(IntermediateDirectory)/mongoose_mongoose.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/lib/mongoose/mongoose.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) $(IncludePath)

@@ -11,22 +11,27 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 
 import { DacRqService } from './dac-rq.service';
-
+import { WebSocketService } from './web-socket.service';
+import { TrackInfoComponent } from './track-info/track-info.component';
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TrackInfoComponent
   ],
   imports: [
     MatSliderModule,
     MatIconModule,
     MatButtonModule,
+    MatCardModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonToggleModule,
     HttpClientModule
   ],
   providers: [
-    DacRqService
+    DacRqService,
+    WebSocketService
   ],
   bootstrap: [AppComponent]
 })

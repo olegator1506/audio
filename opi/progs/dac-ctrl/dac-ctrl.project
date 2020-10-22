@@ -28,6 +28,7 @@
       <File Name="src/classes/selector.cpp"/>
       <File Name="src/classes/eq.h"/>
       <File Name="src/classes/eq.cpp"/>
+      <File Name="src/classes/alsa-player.cpp"/>
     </VirtualDirectory>
     <File Name="main.cpp"/>
     <File Name="src/commands.h"/>

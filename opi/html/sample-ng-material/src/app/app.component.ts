@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { DacRqService } from './dac-rq.service';
+import { WebSocketService } from './web-socket.service';
 import { ChannelConfig, DacResponse, DacData } from './model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-
+import { TrackInfo } from "./model";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,7 +18,8 @@ export class AppComponent {
   dacConfig : DacData;
   source : any;
   selectedChannel:number;
-  constructor(private dataSource : DacRqService){
+  track : TrackInfo;
+  constructor(private dataSource : DacRqService, private wsService: WebSocketService){
   }
 /*
   onChannelGroupChange(obj){
@@ -55,6 +57,26 @@ export class AppComponent {
     .subscribe((resp : DacResponse) => {
       this.dacConfig = resp.data;
     });
+    this.wsService.createSocket("ws://localhost:8000")
+    .subscribe(
+      ( data : string ) => {
+        let info = JSON.parse(data);
+        switch(info.cmd){
+          case 'pub_spotify_stop':
+          case 'pub_spotify_start':
+          case 'pub_spotify_change': 
+            this.track = info;
+            break;
+        }
+      },
+      (err : string) =>{
+        console.log(err)
+      },
+      () => {
+        console.log( 'The observable stream is complete')
+      }  
+    );
+
   }
   errorHandler(){
 
@@ -74,6 +96,4 @@ export class AppComponent {
   }
 
 }
-class Test extends AppComponent {
-
-}
+class Test extends AppComponent {}
