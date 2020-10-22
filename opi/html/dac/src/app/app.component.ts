@@ -57,7 +57,7 @@ export class AppComponent {
     .subscribe((resp : DacResponse) => {
       this.dacConfig = resp.data;
     });
-    this.wsService.createSocket("ws://localhost:8000")
+    this.wsService.createSocket( `ws://${location.hostname}:8000`)
     .subscribe(
       ( data : string ) => {
         let info = JSON.parse(data);
