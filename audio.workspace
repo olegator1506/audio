@@ -7,7 +7,7 @@
       <Project Name="i2c" ConfigName="Debug"/>
       <Project Name="dac-ctrl" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="yes">
+    <WorkspaceConfiguration Name="Release" Selected="no">
       <Environment/>
       <Project Name="i2c" ConfigName="Release"/>
       <Project Name="dac-ctrl" ConfigName="Release"/>

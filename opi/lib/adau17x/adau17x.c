@@ -12,7 +12,7 @@
 #include "eq/v1/eq.h"
 
 
-#define ADAU_EQ_BASE_ADDRESS 
+#define ADAU_EQ_BASE_ADDRESS 0x0056
 
 float exp10f( float x ) {
     return powf( 10.f, x );
