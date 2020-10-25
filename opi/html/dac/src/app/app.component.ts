@@ -40,6 +40,9 @@ export class AppComponent {
   isChannelSelected(chNum:number) {
     return (chNum == this.dacConfig.selected_channel_num);
   }
+  isFileChannel() : boolean {
+    return (this.dacConfig.channels[this.dacConfig.selected_channel_num].type == 'file');
+  }
   play(){
     this.isPlaying = true;
     this.playPauseIcon = 'pause';

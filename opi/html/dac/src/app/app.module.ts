@@ -15,10 +15,13 @@ import { DacRqService } from './dac-rq.service';
 import { WebSocketService } from './web-socket.service';
 import { TrackInfoComponent } from './track-info/track-info.component';
 import { MatCardModule } from '@angular/material/card';
+import { PlayListComponent } from './play-list/play-list.component';
+import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [
     AppComponent,
-    TrackInfoComponent
+    TrackInfoComponent,
+    PlayListComponent
   ],
   imports: [
     MatSliderModule,
@@ -26,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
+    MatSelectModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonToggleModule,

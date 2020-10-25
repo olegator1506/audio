@@ -8,6 +8,7 @@ export class ChannelConfig {
     public type?:string,
     public auxNum?:number,
     public support_tracks?:boolean
+    
   ){}  
 }
 
@@ -26,7 +27,8 @@ export class DacData {
     public channels?:ChannelConfig[],
     public eq?:EqState,
     public selected_channel_num?:number,
-    public bass? : boolean
+    public bass? : boolean,
+    public play_lists?: string[]
   ){}  
 
 }

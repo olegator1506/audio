@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <string>
 #include "selector.h"
 #include "log/log.h"
 #include "adau17x/adau17x.h"
 #include "eq.h"
+#include "playlist.h"
 
 typedef struct {
     TChannelType type; 
@@ -11,6 +13,10 @@ typedef struct {
 	int auxNum; // номер аудио выхода устройства (на выходном аналоговом коммутаторе)
 	int gain;
 } TChannelConfig;
+
+
+
+
 
 
 static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
@@ -81,6 +87,7 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 	_channels[_selectedChNum]->select();
 	Eq = new TEq();
 	_superBass = false;
+	playList = new PlayList();
 }
 void TSelector::finish(void){
 	DBG(_tag,"Selector finished");
@@ -128,11 +135,19 @@ bool TSelector::eqReset(void) {
 }
 
 Json::Value TSelector::getStateJson(void){
+	unsigned  i;
 	_jsonState.clear();
 	Json::Value channels;
-	for(int i=0;i<TOTAL_CHANNELS;i++)
+	Json::Value pl;
+	
+	for(i=0;i<TOTAL_CHANNELS;i++)
 		channels.append(_channels[i]->getStateJson());
+	for(i=0;i< playList->listNames.size();i++) {
+		std::string name = playList->listNames[i];
+		pl.append(name);
+	}
 	_jsonState["channels"] = channels;	
+	_jsonState["play_lists"] = pl;	
 	_jsonState["selected_channel_num"] = _selectedChNum;
 	_jsonState["eq"] = Eq->getStateJson();
 	_jsonState["bass"] = _superBass;

@@ -349,7 +349,9 @@
     </button>
   </div>  
 <!-- // Проигрыватель -->
-<app-track-info [model]="track"></app-track-info>
+<app-track-info *ngIf="dacConfig.channels[dacConfig.selected_channel_num].type == 'spotify'" [model]="track"></app-track-info>
+<!--<span *ngIf="dacConfig.channels[dacConfig.selected_channel_num].type == 'file'">File channel</span> -->
+<app-play-list *ngIf="dacConfig.channels[dacConfig.selected_channel_num].type == 'file'" [model]="dacConfig.play_lists"></app-play-list>
 <!-- Эквалайзер -->
 <div class="row">
     <mat-slider *ngFor="let ch of dacConfig.eq.labels;let num = index"
