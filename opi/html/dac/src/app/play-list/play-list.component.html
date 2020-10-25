@@ -1,0 +1,6 @@
+<mat-form-field appearance="fill">
+    <mat-label>Playlist</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let item of listNames" value="{{item}}">{{item}}</mat-option>
+    </mat-select>
+</mat-form-field>
