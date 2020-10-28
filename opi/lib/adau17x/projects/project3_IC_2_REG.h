@@ -1,7 +1,7 @@
 /*
  * File:           E:\projects\project3_IC_2_REG.h
  *
- * Created:        Thursday, October 22, 2020 10:29:00 PM
+ * Created:        Thursday, October 29, 2020 12:54:44 AM
  * Description:    project3:IC 2 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,

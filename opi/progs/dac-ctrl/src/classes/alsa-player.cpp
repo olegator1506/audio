@@ -168,7 +168,6 @@ void TAlsaChannel::select(void)
 	DBG(_tag,"select");
 	adauSelectAnalogInput(0, 0);
 	adauI2sOn();
-	adauI2sGain(0.5);
 	_start();
 	player->restoreState();	
 }
@@ -187,7 +186,7 @@ bool TAlsaChannel::_start(void){
 		DBG(_tag,"Run cmd: %s",cmd);
 		system(cmd);
 		DBG(_tag,"Command finished");
-		usleep(100000L); 
+		usleep(800000L); 
 		if(!_isRunning()) {
 			LOGE(_tag,"Can not start Alsa player");
 			return false;

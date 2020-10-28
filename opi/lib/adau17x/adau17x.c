@@ -292,6 +292,7 @@ bool adauLoadProgram(void){
       _adauLoadError = NULL;
       return false;
     }
+//    adauEqReset();
     return true;
 }
 
