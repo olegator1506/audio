@@ -332,26 +332,81 @@
   </div>
   <!-- // кнопки выбора канала -->
 <!-- Проигрыватель -->
+<div *ngIf="dacConfig.channels[dacConfig.selected_channel_num].type == 'file'">
   <div class="row">
 
-    <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
-
-    <button mat-raised-button [color]="btnColor" aria-label="Example icon button with a delete icon">
+<!-- Кнопка "назад"-->
+    <button mat-raised-button 
+      [color]="btnColor" 
+      [disabled]="playerButtonDisabled('prev')"
+      (click)="playerButtonClick('prev')"      
+      >
       <mat-icon>fast_rewind</mat-icon>
     </button>
-
-    <button mat-raised-button  aria-label="Play button" (click)="onPlayClick()">
-      <mat-icon>{{playPauseIcon}}</mat-icon>
+<!-- Кнопка "пауза"-->
+    <button mat-raised-button 
+      [color]="btnColor" 
+      [disabled]="playerButtonDisabled('pause')"
+      (click)="playerButtonClick('pause')">
+      <mat-icon>{{playerStatus.is_paused ? 'pause_circle_filled':'pause_circle_outline'}}</mat-icon>
     </button>
-
-    <button mat-raised-button  aria-label="Example icon button with a delete icon">
+<!-- Кнопка "play/stop"-->
+    <button mat-raised-button 
+      (click)="playerButtonClick('play')" 
+      [disabled]="playerButtonDisabled('play')">
+      <mat-icon>{{playerStatus.is_playing ? 'stop':'play_arrow'}}</mat-icon>
+    </button>
+<!-- Кнопка "вперед"-->
+    <button mat-raised-button 
+      [disabled]="playerButtonDisabled('next')"
+      (click)="playerButtonClick('next')">
       <mat-icon>fast_forward</mat-icon>
     </button>
-  </div>  
-<!-- // Проигрыватель -->
+  </div>
+  <div class="row">
+    <mat-slider thumbLabel tickInterval="1" min="0" [max]="playerStatus.track_length" step="1" [value]="playerStatus.track_position" (change)="onPlayerPositionChange($event)"></mat-slider>
+    <span>{{playerStatus.track_position}}</span>
+  </div>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>{{playerStatus.track_title}}</mat-card-title>
+      <mat-card-subtitle>{{playerStatus.track_artist}}</mat-card-subtitle>
+      <mat-card-subtitle>{{playerStatus.track_album}} {{playerStatus.track_year}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  <div class="row">
+    <button 
+      mat-mini-fab color="warn" 
+      title="Clear playlist"
+      (click)="playerRq('clear_playlist','')"
+      >
+      <mat-icon>clear</mat-icon>
+    </button>
+    &nbsp;
+    <mat-form-field appearance="fill">
+      <mat-label>Playlist</mat-label>
+      <mat-select (selectionChange)="onSelectPlayList($event)">
+        <mat-option *ngFor="let item of dacConfig.play_lists" value="{{item}}">{{item}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button 
+      *ngIf="selectedPlayList" 
+      mat-mini-fab color="primary" 
+      title="Load playlist"
+      (click)="playerRq('load_playlist',selectedPlayList)"
+      >
+      <mat-icon>input</mat-icon>
+    </button>
+    </div>
+    <mat-action-list dense>
+      <mat-list-item *ngFor="let item of playerStatus.tracks;let num = index" (click)="playerRq('track',num+1)">
+        <mat-icon *ngIf="playerStatus.track_num == (num+1)">play_arrow</mat-icon>{{num +1}}. {{item}}
+      </mat-list-item>
+     </mat-action-list>  
+</div>
+  <!-- // Проигрыватель -->
 <app-track-info *ngIf="dacConfig.channels[dacConfig.selected_channel_num].type == 'spotify'" [model]="track"></app-track-info>
-<!--<span *ngIf="dacConfig.channels[dacConfig.selected_channel_num].type == 'file'">File channel</span> -->
-<app-play-list *ngIf="dacConfig.channels[dacConfig.selected_channel_num].type == 'file'" [model]="dacConfig.play_lists"></app-play-list>
+
 <!-- Эквалайзер -->
 <div class="row">
     <mat-slider *ngFor="let ch of dacConfig.eq.labels;let num = index"

@@ -9,11 +9,13 @@ import { Component, OnInit, Input } from '@angular/core';
 export class PlayListComponent implements OnInit {
   @Input("model")
   listNames : string[];
-  public test : string;
+  public selectedItem : string = "";
   constructor() { }
 
   ngOnInit(): void {
-    this.test = this.listNames[0]
+  }
+  onSelectName($event){
+    
   }
 
 }

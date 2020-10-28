@@ -34,4 +34,8 @@ export class DacRqService {
     var url = this._baseUrl +"?cmd=bass&state="+stateStr;
     return this.http.get(url);
   }
+  playerRq(op:string,arg:string|"") {
+    var url = `${this._baseUrl}?cmd=player&op=${op}&arg=${arg}`;
+    return this.http.get(url);
+  }
 }

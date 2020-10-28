@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 
 // Классы моделей 
 export class ChannelConfig {
@@ -30,7 +31,6 @@ export class DacData {
     public bass? : boolean,
     public play_lists?: string[]
   ){}  
-
 }
 
 export class TrackInfo {
@@ -45,6 +45,30 @@ export class TrackInfo {
   ){}  
 }
 
+
+
+export class PlayerStatus {
+  constructor(
+    public tracks? : string[],
+    public is_playing? : boolean,
+    public is_paused? : boolean, 
+    public track_num? : number,
+    public track_length? : number,
+    public track_position? : number,
+    public track_title? : string,
+    public track_artist? : string,
+    public track_album? : string,
+    public track_year? : number
+  ){}
+}
+
+export class PlayerResponse {
+  constructor(
+    public result? : string,
+    public data? : PlayerStatus
+  ){}
+
+}
 export class DacResponse {
   constructor(
     public result?:string,

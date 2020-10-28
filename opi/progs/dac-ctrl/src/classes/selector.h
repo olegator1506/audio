@@ -27,6 +27,9 @@ public:
 	Json::Value getStateJson(void);
 	char *lastError(void){ return _errorMessage;}
 	bool superBass(bool state); 
+	bool loadPlayList(const char *listname);
+	bool getTrackList(void);
+	Player *player(void) {return _channels[_selectedChNum]->player;}
 	
 /*
     channelsEventHandler(uint8_t code,uint16_t param);
@@ -48,5 +51,7 @@ extern void channelBtSetAttr(int attrId, char *attrText);
 */	
 };
 extern TSelector *Selector;
+extern std::vector<std::string> playerTrackList;
+
 
 #endif

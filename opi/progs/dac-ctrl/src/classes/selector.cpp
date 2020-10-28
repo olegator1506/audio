@@ -33,12 +33,19 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 		.gain = 5
     },
 
-    { // AUX #2 разъем на задней панели
+    { // AUX #3 разъем на задней панели
         .type = CH_TYPE_AUX,
         .name = "AUX3",
         .auxNum = 3,
 		.gain = 5
     },
+    { // Воспроизведение файлов через AlsaPlayer
+        .type = CH_TYPE_ALSA,
+        .name = "ALSA",
+        .auxNum = 0, // not used
+		.gain = 0
+    },
+
 /*
     { // Линейный дифференциальный вход
         .type = CH_TYPE_LINEIN,
@@ -46,12 +53,6 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
         .auxNum = 0,
     },
 */
-    { // Воспроизведение файлов через AlsaPlayer
-        .type = CH_TYPE_ALSA,
-        .name = "ALSA",
-        .auxNum = 0, // not used
-		.gain = 0
-    },
     { // Воспроизведение аудиопотока Spotify
         .type = CH_TYPE_SPOTIFY,
         .name = "SPOTIFY",

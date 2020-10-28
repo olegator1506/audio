@@ -17,6 +17,7 @@ import { TrackInfoComponent } from './track-info/track-info.component';
 import { MatCardModule } from '@angular/material/card';
 import { PlayListComponent } from './play-list/play-list.component';
 import { MatSelectModule } from '@angular/material/select';
+import {MatListModule} from '@angular/material/list';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +31,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatCardModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatListModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonToggleModule,

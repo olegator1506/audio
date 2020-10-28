@@ -27,6 +27,7 @@ static const char *commands[] = {
 	"pub_spotify_start",
 	"pub_spotify_change",
 	"bass",
+	"player",
 	NULL
 };
 
@@ -81,7 +82,7 @@ static void _publish(struct mg_connection *nc, const struct mg_str *query){
 }
 */
 
-static void _publish(struct mg_connection *nc, const struct mg_str *query,const char *params[]){
+static void _publish(struct mg_connection *nc, const struct mg_str *query, const char *params[]){
 	char param[501];
 //	if(!_wsConnection) return;
 	Json::Value data;
@@ -98,14 +99,53 @@ static void _publish(struct mg_connection *nc, const struct mg_str *query,const 
 	_broadcast(nc,c);
 //	mg_send_websocket_frame(_wsConnection, WEBSOCKET_OP_TEXT, c, strlen(c));
 }
+static void _sendPlayerStatus(struct mg_connection *fd,Player *player){
+	Json::Value data,tracksJson;
+	int i,trackCount;
+//	player->updateStatus();
+	tracksJson.clear();
+	trackCount = playerStatus.trackList.size();
+	for(i=0;i<trackCount;i++){
+		tracksJson.append(playerStatus.trackList[i]);
+	}
+	data["tracks"] = tracksJson;
+	data["is_playing"] = playerStatus.isPlaying;
+	data["is_paused"] = playerStatus.isPaused;
+	data["track_num"] = playerStatus.curTrackNum;
+	data["track_length"] = playerStatus.curLength;
+	data["track_posifion"] = playerStatus.curPosition;
+	data["track_title"] = playerStatus.trackTitle;
+	data["track_artist"] = playerStatus.trackArtist;
+	data["track_album"] = playerStatus.trackAlbum;
+	data["track_year"] = playerStatus.trackYear;
+	_sendSuccessResponse(fd,data);
+}
 
+static void _execPlayerCmd(struct mg_connection *fd, const struct mg_str *query){
+	char dst[1024], op[255], *arg;
+	Player *player = Selector->player();
+	if(!player) {
+		_sendErrorResponse(fd, 500, "Invalid request: player not supported");
+	}
+	if(mg_get_http_var(query,"op",op,255) <= 0) {
+		_sendErrorResponse(fd, 500, "Invalid request: player operation not specified");
+		return;
+	}
+	arg = (mg_get_http_var(query,"arg",dst,255) > 0) ? dst : NULL;
+	if(!player->runCommand(op,arg)) {
+		_sendErrorResponse(fd, 500, "Error loading play list");
+		return;
+	}
+	_sendPlayerStatus(fd,player);
+}
 
 static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp){
 	char dst[256];
-	int cmdCode;
-	Json::Value data;
+	int cmdCode, i;
+	Json::Value data,tracksJson;
 	Json::StyledWriter styledWriter;
-    const struct mg_str *query = &(pp->query_string);
+     const struct mg_str *query = &(pp->query_string);
+	const char *params[] = {"cmd","track_id","album","artist","track_name","image","duration_string","duration",NULL};
 	if(!query->len) {
 		mg_serve_http(fd, pp, s_http_server_opts);
 		return;
@@ -116,7 +156,7 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 	}
 	
 	cmdCode = CMD_INVALID;
-	for(int i = 0; commands[i] !=NULL; i++) {
+	for(i = 0; commands[i] !=NULL; i++) {
 		if(strcmp(dst,commands[i]) == 0) {
 			cmdCode = i;
 			break;
@@ -192,9 +232,11 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 			case CMD_PUB_SPOTIFY_CHANGE:
 			case CMD_PUB_SPOTIFY_STOP:
 			case CMD_PUB_SPOTIFY_START:
-				const char *params[] = {"cmd","track_id","album","artist","track_name","image","duration_string","duration",NULL};
 				_publish(fd,query,params);
 				_sendSuccessResponse(fd, data);
+				break;
+			case CMD_PLAYER:
+				_execPlayerCmd(fd,query);
 				break;
 		}
 

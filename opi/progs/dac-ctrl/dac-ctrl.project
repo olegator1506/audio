@@ -28,7 +28,6 @@
       <File Name="src/classes/selector.cpp"/>
       <File Name="src/classes/eq.h"/>
       <File Name="src/classes/eq.cpp"/>
-      <File Name="src/classes/alsa-player.cpp"/>
       <File Name="src/classes/playlist.cpp"/>
       <File Name="src/classes/playlist.h"/>
     </VirtualDirectory>

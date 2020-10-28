@@ -12,9 +12,47 @@ typedef enum {
 //    CH_TYPE_BLUETOOTH,
 //    CH_TYPE_INET_RADIO,
 } TChannelType;
+
+typedef struct {
+	std::string 
+		path,
+		title,
+		genre,
+		artist,
+		album,
+		year;
+} TrackInfo;
+
+extern TrackInfo trackInfo;
+
+typedef struct {
+	std::vector<std::string> trackList;
+	bool isPlaying;
+	bool isPaused;
+	int curTrackNum;
+	int curLength;
+	int curPosition;
+	std::string trackTitle,trackArtist, trackAlbum;
+	int trackYear;
+} PlayerStatus;
+
+extern PlayerStatus playerStatus;
+
+
+class Player {
+public:
+	Player(void){}
+	virtual bool updateStatus(void) = 0;
+	virtual bool runCommand(const char *cmd, const char *arg) = 0;
+	virtual void saveState(void) = 0;
+	virtual void restoreState(void) = 0;
+protected:
+	virtual bool _loadPlayList(const char *listFileName) = 0;
+	virtual bool _clearPlayList(void) = 0;
+
+};
 //////////// Объявления классов каналов /////////////////////
 // Базовый класс для управления каналом
-
 class TChannel {
 protected:
 		const char *_tag;
@@ -23,8 +61,8 @@ protected:
 		bool _selected;
 		Json::Value _jsonState;
 		int _checkProcessRun(const char *fname);// Вертает ID процесса из файла fname если он запущен, иначе 0
-
 public:
+	Player *player;
 	TChannel(const char *name);
 	virtual void select(void) {_selected = true;}
 	virtual void unselect(void) {_selected = false;}
@@ -72,6 +110,7 @@ class TSpotify : public TChannel {
 		void select();
 		void unselect();
 };
+
 
 
 #endif

@@ -18,6 +18,7 @@ TChannel::TChannel(const char *name){
 	_name = name;
 	_selected = false;
 	_typeString = "";
+	player = NULL;
 	DBG(_tag,"Construct %s", name);
 
 };
