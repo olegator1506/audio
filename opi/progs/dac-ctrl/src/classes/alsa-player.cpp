@@ -19,13 +19,18 @@ PlayerStatus playerStatus;
 TrackInfo trackInfo;
 
 static int _isRunning(void){
-	int ss = -1;
+    int ss = -1;
+    for(int i = 0; i < 1000; i++){
 	int res = ap_find_session(ALSA_PLAYER_SESSION_NAME,&ss);
-	if(!res) 
-		return false;
-	if(ss < 0) return false;
-	_sNum = ss;	
-	return true;
+	if(!res) {
+	    usleep(1000);
+	    continue;
+	} else {
+	 _sNum = ss;
+	 return true;
+	}
+    }
+    return false;
 }
 
 
