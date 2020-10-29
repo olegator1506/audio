@@ -59,6 +59,7 @@ static void _sendSuccessResponse(struct mg_connection *connection, Json::Value d
 	Json::StyledWriter styledWriter;
 	std::string s = styledWriter.write(response);
 	const char *c = s.c_str(); 
+	printf("HTTP Response^ %s",c);
 	mg_send_head(connection, 200, strlen(c),"Access-Control-Allow-Origin: *\r\nContent-type: application/json");
 	mg_send(connection, c, strlen(c));
 }
