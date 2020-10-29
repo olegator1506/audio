@@ -39,7 +39,7 @@ arm-linux-gnueabi-gcc -static -march=armv7-a -mcpu=cortex-a7  -o ./Debug/dac-ctr
 - на основном компьютере должжен быть установлен пакет gdb-multiarch, а на Opi пакет gdbserver 
 - копируем скомпилированный исполняемый файл на Opi любым доступным способом, например по ssh
   scp my-prog opi:/home/user/work/ 
-- на Opi запускаем программe через gdbserver
+- на Opi запускаем программу через gdbserver
   gdbserver :1025 my-prog
 здесь 1025 - номер tcp порта на коором gdbserver слушает входящие соединения. Если указать порт меньше 1024,
  то потребуются права root-а

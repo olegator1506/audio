@@ -86,11 +86,14 @@ export class AppComponent {
         console.log( 'The observable stream is complete')
       }  
     );
+/*
     setInterval(() => {
       if(this.isFileChannel())
         this.playerRq("status","");
     }, 2000);  
+*/
   }
+
   errorHandler(message : string){
 
   }
