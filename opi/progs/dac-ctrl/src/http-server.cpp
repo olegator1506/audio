@@ -142,9 +142,15 @@ static void _execPlayerCmd(struct mg_connection *fd, const struct mg_str *query)
 static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp){
 	char dst[256];
 	int cmdCode, i;
+	static char *tmpStr;
 	Json::Value data,tracksJson;
 	Json::StyledWriter styledWriter;
-     const struct mg_str *query = &(pp->query_string);
+    const struct mg_str *query = &(pp->query_string);
+	tmpStr = (char*)malloc(query->len +1);
+	memcpy(tmpStr,query->p,query->len);
+	tmpStr[query->len] = '\n';
+	DBG(TAG,"HTTP Request %s",tmpStr);
+	free(tmpStr);
 	const char *params[] = {"cmd","track_id","album","artist","track_name","image","duration_string","duration",NULL};
 	if(!query->len) {
 		mg_serve_http(fd, pp, s_http_server_opts);
