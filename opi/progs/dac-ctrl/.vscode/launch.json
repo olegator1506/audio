@@ -44,8 +44,27 @@
             ],
             "preLaunchTask": "Build project",
             "miDebuggerPath": "/usr/bin/gdb"
+        },
+        {
+            "name": "Remote debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/Debug/dac-ctrl",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Включить автоматическое форматирование для gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "/usr/bin/gdb-multiarch",
+            "miDebuggerServerAddress": "pi2:1025",
         }
-
-
     ]
 }

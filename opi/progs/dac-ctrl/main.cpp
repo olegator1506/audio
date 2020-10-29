@@ -79,8 +79,7 @@ int main(int argc, char **argv)
 	}
 	LOGI(TAG,"program started");
 	initServer();
-	if(!debugMode)
-		daemon(0,0);
+//	if(!debugMode)		daemon(0,0);
 	serverRun();
 	Selector->finish();
 	LOGI(TAG,"program finished");
