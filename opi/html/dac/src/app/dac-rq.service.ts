@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { ChannelConfig } from './model'
 import { Observable } from 'rxjs';
 import { catchError, tap, switchAll } from 'rxjs/operators';
@@ -13,9 +13,12 @@ export class DacRqService {
     new ChannelConfig(2,"LINE",'LINEIN',0,false),
     new ChannelConfig(2,"ALSA",'ALSA',0,true)
   ];
-  constructor(private http: HttpClient) { 
+  constructor(public http: HttpClient) { 
     var l = location;
     this._baseUrl = `${location.protocol}//${location.hostname}:8000`;
+  }
+  request(params : string) {
+    return this.http.get(`${this._baseUrl}?${params}`);
   }
   getChannels() : ChannelConfig[]{
     return this._channels;

@@ -18,11 +18,15 @@ import { MatCardModule } from '@angular/material/card';
 import { PlayListComponent } from './play-list/play-list.component';
 import { MatSelectModule } from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
+import { SoundControlComponent } from './sound-control/sound-control.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 @NgModule({
   declarations: [
     AppComponent,
     TrackInfoComponent,
-    PlayListComponent
+    PlayListComponent,
+    SoundControlComponent
   ],
   imports: [
     MatSliderModule,
@@ -35,7 +39,9 @@ import {MatListModule} from '@angular/material/list';
     BrowserModule,
     BrowserAnimationsModule,
     MatButtonToggleModule,
-    HttpClientModule
+    MatSlideToggleModule,
+    HttpClientModule,
+    MatDialogModule
   ],
   providers: [
     DacRqService,

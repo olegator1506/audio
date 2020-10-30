@@ -97,6 +97,13 @@ bool TAlsaPlayer::runCommand(const char *cmd,const char *arg) {
 bool TAlsaPlayer::_loadPlayList(const char *listName){
 	char *path = (char *) malloc(strlen(ALSA_PLAYLIST_PATH) + strlen(listName) +5);
 	sprintf(path,"%s/%s",ALSA_PLAYLIST_PATH, listName);
+	FILE *fl = fopen(path,"r");
+	if(!fl){
+		LOGE("ALSA","Error loading play list file %s",path);
+		free(path);
+		return false;
+	}
+	fclose(fl);
 	if(ap_add_playlist(_sNum,path)) {
 		free(path); 
 		return true;
