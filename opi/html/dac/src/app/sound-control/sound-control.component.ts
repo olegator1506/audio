@@ -1,0 +1,50 @@
+import { Component, OnInit, Inject } from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { SoundControlConfig, SoundResponse } from '../model';
+import { DacRqService } from '../dac-rq.service';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
+@Component({
+  selector: 'app-sound-control',
+  templateUrl: './sound-control.component.html',
+  styleUrls: ['./sound-control.component.css'],
+  providers: [DacRqService]
+})
+export class SoundControlComponent implements OnInit {
+  public config : SoundControlConfig;
+  constructor(
+    public dialogRef: MatDialogRef<SoundControlComponent>,
+//    @Inject(MAT_DIALOG_DATA) public data: SoundControlConfig,
+    private rqService : DacRqService
+  ) { }
+
+  ngOnInit(): void {
+    this.rqService.request(`cmd=sound_control&op=state`)
+    .subscribe((resp : SoundResponse) =>{
+      this.config = resp.data;
+    });
+  }  
+  eqPreset(mode : number): void {
+    this.rqService.request(`cmd=sound_control&op=eq_preset&mode=${mode}`)
+    .subscribe((resp : SoundResponse) =>{
+      this.config = resp.data;
+    });
+  }  
+  onEqChange(event,num) {}
+  toggleBass(){
+    let v = this.config.bass ? 'off' : 'on';
+    this.rqService.request(`cmd=sound_control&op=bass&state=${v}`)
+    .subscribe((resp : SoundResponse) =>{
+      this.config = resp.data;
+    });
+
+  }
+  isEqAll(value:number) : boolean {
+    var all : boolean = true;
+    this.config.eq_values.forEach((element : number) => {
+      if(element != value) all = false;
+    });
+    return all;
+  }
+
+}

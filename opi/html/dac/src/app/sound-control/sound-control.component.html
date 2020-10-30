@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Hi </h1>
+<div mat-dialog-content>
+<mat-slide-toggle
+(click)="toggleBass()"
+[checked]="config.bass">
+     SuperBass       
+</mat-slide-toggle>
+<div class="mat-divider"></div>
+<!-- Эквалайзер -->
+<div class="example-flex-container">
+<!--
+   <button mat-mini-fab color="primary">
+      <mat-icon>minimize</mat-icon>
+    </button>
+    <button mat-mini-fab color="primary">
+      <mat-icon>maximize</mat-icon>
+    </button>
+    <button mat-mini-fab color="primary">
+      <mat-icon>remove</mat-icon>
+    </button>
+ -->
+<button mat-raised-button (click)="eqPreset(0)" color="primary">
+  Reset
+</button>
+<button mat-raised-button (click)="eqPreset(1)"color="primary">
+  Jazz
+</button>
+<button mat-raised-button (click)="eqPreset(2)"color="primary">
+  Rock
+</button>
+<button mat-raised-button (click)="eqPreset(3)"color="primary">
+  Classic
+</button>
+</div>    
+<div class="row">
+    <mat-slider *ngFor="let ch of config.eq_labels;let num = index"
+      thumbLabel tickInterval="1" vertical step="1"
+      min="{{config.eq_min_value}}" 
+      max="{{config.eq_max_value}}"  
+      value="{{config.eq_values[num]}}"
+      (change)="onEqChange($event,num)"
+      >
+    </mat-slider>
+  </div>
+  <div class="row">
+    <label *ngFor="let lab of config.eq_labels" >{{lab}}&nbsp;&nbsp;</label>
+  </div>
+<!-- // Эквалайзер -->
+</div>
+<div mat-dialog-actions>
+</div>
