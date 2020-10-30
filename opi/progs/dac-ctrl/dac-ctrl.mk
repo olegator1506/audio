@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Олег Артеменко
-Date                   :=24/10/20
+Date                   :=29/10/20
 CodeLitePath           :="/home/artem/.codelite"
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -60,8 +60,8 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_http-server.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix) \
-	$(IntermediateDirectory)/classes_alsa-player.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_playlist.cpp$(ObjectSuffix) $(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_http-server.cpp$(ObjectSuffix) $(IntermediateDirectory)/log_log.c$(ObjectSuffix) $(IntermediateDirectory)/pcf_pcf.c$(ObjectSuffix) $(IntermediateDirectory)/i2c_i2c.c$(ObjectSuffix) $(IntermediateDirectory)/adau17x_adau17x.c$(ObjectSuffix) $(IntermediateDirectory)/classes_channel-base.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_channels.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_selector.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_playlist.cpp$(ObjectSuffix) \
+	$(IntermediateDirectory)/classes_dac-control.cpp$(ObjectSuffix) $(IntermediateDirectory)/classes_alsa-player.cpp$(ObjectSuffix) $(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) 
 
 
 
@@ -164,13 +164,21 @@ $(IntermediateDirectory)/classes_selector.cpp$(DependSuffix): src/classes/select
 $(IntermediateDirectory)/classes_selector.cpp$(PreprocessSuffix): src/classes/selector.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_selector.cpp$(PreprocessSuffix) "src/classes/selector.cpp"
 
-$(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix): src/classes/eq.cpp $(IntermediateDirectory)/classes_eq.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/eq.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/classes_eq.cpp$(DependSuffix): src/classes/eq.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_eq.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_eq.cpp$(DependSuffix) -MM "src/classes/eq.cpp"
+$(IntermediateDirectory)/classes_playlist.cpp$(ObjectSuffix): src/classes/playlist.cpp $(IntermediateDirectory)/classes_playlist.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/playlist.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_playlist.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/classes_playlist.cpp$(DependSuffix): src/classes/playlist.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_playlist.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_playlist.cpp$(DependSuffix) -MM "src/classes/playlist.cpp"
 
-$(IntermediateDirectory)/classes_eq.cpp$(PreprocessSuffix): src/classes/eq.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_eq.cpp$(PreprocessSuffix) "src/classes/eq.cpp"
+$(IntermediateDirectory)/classes_playlist.cpp$(PreprocessSuffix): src/classes/playlist.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_playlist.cpp$(PreprocessSuffix) "src/classes/playlist.cpp"
+
+$(IntermediateDirectory)/classes_dac-control.cpp$(ObjectSuffix): src/classes/dac-control.cpp $(IntermediateDirectory)/classes_dac-control.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/dac-control.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_dac-control.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/classes_dac-control.cpp$(DependSuffix): src/classes/dac-control.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_dac-control.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_dac-control.cpp$(DependSuffix) -MM "src/classes/dac-control.cpp"
+
+$(IntermediateDirectory)/classes_dac-control.cpp$(PreprocessSuffix): src/classes/dac-control.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_dac-control.cpp$(PreprocessSuffix) "src/classes/dac-control.cpp"
 
 $(IntermediateDirectory)/classes_alsa-player.cpp$(ObjectSuffix): src/classes/alsa-player.cpp $(IntermediateDirectory)/classes_alsa-player.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/alsa-player.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_alsa-player.cpp$(ObjectSuffix) $(IncludePath)
@@ -179,14 +187,6 @@ $(IntermediateDirectory)/classes_alsa-player.cpp$(DependSuffix): src/classes/als
 
 $(IntermediateDirectory)/classes_alsa-player.cpp$(PreprocessSuffix): src/classes/alsa-player.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_alsa-player.cpp$(PreprocessSuffix) "src/classes/alsa-player.cpp"
-
-$(IntermediateDirectory)/classes_playlist.cpp$(ObjectSuffix): src/classes/playlist.cpp $(IntermediateDirectory)/classes_playlist.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/progs/dac-ctrl/src/classes/playlist.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/classes_playlist.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/classes_playlist.cpp$(DependSuffix): src/classes/playlist.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/classes_playlist.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/classes_playlist.cpp$(DependSuffix) -MM "src/classes/playlist.cpp"
-
-$(IntermediateDirectory)/classes_playlist.cpp$(PreprocessSuffix): src/classes/playlist.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/classes_playlist.cpp$(PreprocessSuffix) "src/classes/playlist.cpp"
 
 $(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix): ../../lib/mongoose/mongoose.cpp $(IntermediateDirectory)/mongoose_mongoose.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/artem/work/audio/opi/lib/mongoose/mongoose.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/mongoose_mongoose.cpp$(ObjectSuffix) $(IncludePath)

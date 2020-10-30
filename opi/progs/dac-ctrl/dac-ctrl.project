@@ -26,10 +26,10 @@
       <File Name="src/classes/channels.h"/>
       <File Name="src/classes/selector.h"/>
       <File Name="src/classes/selector.cpp"/>
-      <File Name="src/classes/eq.h"/>
-      <File Name="src/classes/eq.cpp"/>
       <File Name="src/classes/playlist.cpp"/>
       <File Name="src/classes/playlist.h"/>
+      <File Name="src/classes/dac-control.cpp"/>
+      <File Name="src/classes/alsa-player.cpp"/>
     </VirtualDirectory>
     <File Name="main.cpp"/>
     <File Name="src/commands.h"/>

@@ -4,7 +4,7 @@
 #include "selector.h"
 #include "log/log.h"
 #include "adau17x/adau17x.h"
-#include "eq.h"
+#include "channels.h"
 #include "playlist.h"
 
 typedef struct {
@@ -86,7 +86,7 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 		}
 	_selectedChNum = 0;		
 	_channels[_selectedChNum]->select();
-	Eq = new TEq();
+	dac = new DacCtrl;
 	_superBass = false;
 	playList = new PlayList();
 }
@@ -117,7 +117,7 @@ void TSelector::selectPrev(void){
 	int num = (_selectedChNum == 0) ? (TOTAL_CHANNELS - 1) : (_selectedChNum - 1);
 	select(num);
 }
-
+/*
 bool TSelector::setEq(int band, int value){
 	DBG(_tag,"Set equakizer band %d = %d",band,value);
 	if(!Eq->set(band, value)) {
@@ -126,6 +126,7 @@ bool TSelector::setEq(int band, int value){
 	}
 	return true;
 }
+*/ 
  bool TSelector::reload(void){
 	if(!adauLoadProgram()) return false;
 	select(_selectedChNum,true);
@@ -150,8 +151,6 @@ Json::Value TSelector::getStateJson(void){
 	_jsonState["channels"] = channels;	
 	_jsonState["play_lists"] = pl;	
 	_jsonState["selected_channel_num"] = _selectedChNum;
-	_jsonState["eq"] = Eq->getStateJson();
-	_jsonState["bass"] = _superBass;
 	return _jsonState;	
 }
 

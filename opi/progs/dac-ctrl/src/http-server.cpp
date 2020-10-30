@@ -18,15 +18,12 @@ static const char *commands[] = {
 	"ch_sel_next",
 	"ch_sel_prev",
 	"ch_sel_num",
-	"eq",
-	"adau_reload",
-	"eq_reset",
 	"get_state",
 	"pub",
 	"pub_spotify_stop",
 	"pub_spotify_start",
 	"pub_spotify_change",
-	"bass",
+	"sound_control",
 	"player",
 	NULL
 };
@@ -193,44 +190,13 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 			else 
 				_sendErrorResponse(fd, 500, Selector->lastError());	
 			break;
-			case CMD_BASS:
-				if(mg_get_http_var(query,"state",dst,255) <= 0) {
-					_sendErrorResponse(fd, 500, "Invalid request: bass state not specified");
-					return;
+			case CMD_SOUND_CONTROL:
+				if(!dac->runCommand(query)) {
+					_sendErrorResponse(fd, 500, dac->lastError);
 				}
-				Selector->superBass((strcmp(dst,"on") == 0));
+				data = dac->getStateJson();
 				_sendSuccessResponse(fd, data);
 				break;
-
-			case CMD_EQ:
-				int bandNum,val;
-				if(mg_get_http_var(query,"band",dst,255) <= 0) {
-					_sendErrorResponse(fd, 500, "Invalid request: band number not specified");
-					return;
-				}
-				bandNum = atoi(dst);
-				if(mg_get_http_var(query,"value",dst,255) <= 0) {
-					_sendErrorResponse(fd, 500, "Invalid request: EQ value not specified");
-					return;
-				}
-				val = atoi(dst);
-				if(!Selector->setEq(bandNum,val)) {
-					_sendErrorResponse(fd, 500, Selector->lastError());
-					return;
-				}
-				_sendSuccessResponse(fd, Selector->getStateJson());
-				break;
-
-
-			case CMD_ADAU_RELOAD:
-				Selector->reload();	
-				_sendSuccessResponse(fd, data);
-				break;
-			case CMD_EQ_RESET:
-				Selector->eqReset();
-				_sendSuccessResponse(fd, data);
-				break;
-
 			case CMD_GET_STATE:
 				data = Selector->getStateJson();
 				_sendSuccessResponse(fd, data);

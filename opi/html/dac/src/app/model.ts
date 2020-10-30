@@ -26,9 +26,7 @@ export class EqState {
 export class DacData {
   constructor(
     public channels?:ChannelConfig[],
-    public eq?:EqState,
     public selected_channel_num?:number,
-    public bass? : boolean,
     public play_lists?: string[]
   ){}  
 }
@@ -73,5 +71,22 @@ export class DacResponse {
   constructor(
     public result?:string,
     public data?:DacData
+  ){}  
+}
+
+export class SoundControlConfig {
+  constructor(
+    public eq_band_count? : number,
+    public eq_min_value? : number,
+    public eq_max_value? : number,
+    public eq_labels? : string[],
+    public eq_values? : number[], 
+    public bass?:boolean
+  ){}  
+}
+export class SoundResponse {
+  constructor(
+    public result?:string,
+    public data?: SoundControlConfig 
   ){}  
 }

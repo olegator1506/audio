@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { DacRqService } from './dac-rq.service';
 import { WebSocketService } from './web-socket.service';
-import { ChannelConfig, DacResponse, DacData, PlayerResponse } from './model';
+import { ChannelConfig, DacResponse, DacData, PlayerResponse, SoundControlConfig } from './model';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { TrackInfo, PlayerStatus } from "./model";
+import { SoundControlComponent } from './sound-control/sound-control.component';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'sample-ng-material';
+  title = 'DAC ctrl';
   test = 'This is test';
   playPauseIcon = 'play_arrow';
   isPlaying = false;
@@ -21,7 +23,11 @@ export class AppComponent {
   track : TrackInfo;
   selectedPlayList:string = "";
   playerStatus : PlayerStatus;
-  constructor(private dataSource : DacRqService, private wsService: WebSocketService){
+  constructor(
+    private dataSource : DacRqService, 
+    private wsService: WebSocketService,
+    public dialog: MatDialog
+  ){
   }
 /*
   onChannelGroupChange(obj){
@@ -104,19 +110,7 @@ export class AppComponent {
       this.dacConfig = resp.data;
     });
   }
-  setBass(state){
-    this.dataSource.setBass(state)
-    .subscribe((resp : DacResponse) =>{
-      this.dacConfig.bass = state;
-    });
-
-  }
-  testFunc(){
-    this.dataSource.getConfig()
-    .subscribe((resp : DacResponse) => {
-      this.dacConfig = resp.data;
-    });
-  }
+  
   onSelectPlayList($event) {
     let value = $event.value;
     this.selectedPlayList = $event.value;
@@ -176,6 +170,9 @@ export class AppComponent {
         this.playerRq('next','');
         return;
     }
+  }
+  openSoundControl() : void {
+    const dialogRef = this.dialog.open(SoundControlComponent);
   }
 }
 class Test extends AppComponent {}

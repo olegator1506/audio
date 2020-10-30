@@ -2,6 +2,9 @@
 #define _CHANNELS_H_
 #include <string>
 #include <jsoncpp/json/json.h>
+#include "mongoose/mongoose.h"
+#include "config.h"
+
 #define TOTAL_CHANNELS 5
 
 typedef enum {
@@ -38,6 +41,28 @@ typedef struct {
 
 extern PlayerStatus playerStatus;
 
+
+
+class DacCtrl {
+protected:
+	int _eqValues[EQ_TOTAL_CHANNELS];
+	const char *_eqLabels[EQ_TOTAL_CHANNELS];
+	bool _bass, _dspEnabled;
+	Json::Value _jsonState;
+	bool _eqSet(const struct mg_str *query);
+	void _eqReset(void);
+	void _setBass(bool state);
+	bool _setBass(const struct mg_str *query);
+	void _eqSetBandValue(int band, int value);
+	bool _eqPreset(const struct mg_str *query);
+public:
+	char lastError[1024];
+	DacCtrl(void);
+	bool runCommand(const struct mg_str *query);
+	Json::Value getStateJson(void);
+};
+
+extern DacCtrl *dac;
 
 class Player {
 public:
