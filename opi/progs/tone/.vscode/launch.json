@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/tone",
-            "args": ["hw:0,0","192000", "5"],
+            "args": ["hw:0,0","44100", "1000", "35000"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

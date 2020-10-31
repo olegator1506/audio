@@ -1,9 +1,11 @@
 #include <alsa/asoundlib.h>
 #include <iostream>
+#include <math.h>
 using namespace std;
-// Globals are generally a bad idea in code.  We're using one here to keep it simple.
-snd_pcm_t * _soundDevice;
+#define PI 3.14159265
+static snd_pcm_t * _soundDevice;
 unsigned int _actualRate;
+
 bool alsaInit(const char *name, unsigned int rate)
 {
   int err;
@@ -131,11 +133,21 @@ bool alsaRelease()
   return true;
 }
 
-void alsaGenSound(int duration) {
+void alsaSetValue(unsigned char *dst,uint16_t value){
+    unsigned char bl,bh;
+    bl = value & 0xff;
+    bh = value >> 8;
+    *(dst) = bl;
+    *(dst+1) = bh;
+    *(dst+2) = bl;
+    *(dst+3) = bh;
+}
+
+void alsaGenSound(void) {
 unsigned char *data;
     int pcmreturn, cycles, l2, l1;
     short s1, s2;
-    int frames;
+    int frames, duration = 0;
     snd_pcm_uframes_t periodsize = 8192 * 4; 
     data = (unsigned char *)malloc(periodsize);
 
@@ -157,5 +169,47 @@ unsigned char *data;
         snd_pcm_prepare(_soundDevice);
         fprintf(stderr, "<<<<<<<<<<<<<<< Buffer Underrun >>>>>>>>>>>>>>>\n");
       }
+    }
+}
+
+void meandr(int frequency, int amplitude){
+    int samples , pcmreturn;
+    uint16_t amp = amplitude;
+    samples = _actualRate / frequency;
+    if(samples % 2) samples++;
+    unsigned char *data = (unsigned char *)malloc(samples * 4);   
+    for(int i = 0;i< samples /2;i++){
+        alsaSetValue(data + i*4, 0);
+        alsaSetValue(data +(samples *2) + (i*4), amp);
+    }
+    while(1){
+        pcmreturn = snd_pcm_writei(_soundDevice, data, samples);
+        if(pcmreturn < 0) {
+            snd_pcm_prepare(_soundDevice);
+//            fprintf(stderr, "<<<<<<<<<<<<<<< Buffer Underrun >>>>>>>>>>>>>>>\n");
+        }
+    }
+}
+void sinus(int frequency, int amplitude){
+    int samples , pcmreturn;
+    uint16_t val;
+    double angl, anglStep,sinVal;
+
+    samples = _actualRate / frequency;
+    anglStep = 360. /(double)samples;
+    unsigned char *data = (unsigned char *)malloc(samples * 4);   
+    for(int i = 0;i< samples;i++){
+        angl = anglStep *i;
+        sinVal = sin(angl * PI / 180.);
+        val = (sinVal + 1.) * amplitude / 2;
+//        printf("Step %d Angle grad = %5f sinval = %5f out value %04X\n",i,angl, sinVal,val);
+        alsaSetValue(data + i*4, val);
+    }
+    while(1){
+        pcmreturn = snd_pcm_writei(_soundDevice, data, samples);
+        if(pcmreturn < 0) {
+            snd_pcm_prepare(_soundDevice);
+//            fprintf(stderr, "<<<<<<<<<<<<<<< Buffer Underrun >>>>>>>>>>>>>>>\n");
+        }
     }
 }
