@@ -30,7 +30,13 @@ export class SoundControlComponent implements OnInit {
       this.config = resp.data;
     });
   }  
-  onEqChange(event,num) {}
+  onEqChange(event,num) {
+    var val = event.value;
+    this.rqService.request(`cmd=sound_control&op=set_eq&band=${num}&value=${val}`)
+    .subscribe((resp : SoundResponse) =>{
+      this.config = resp.data;
+    });
+  }
   toggleBass(){
     let v = this.config.bass ? 'off' : 'on';
     this.rqService.request(`cmd=sound_control&op=bass&state=${v}`)
