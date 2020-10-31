@@ -80,12 +80,12 @@ bool DacCtrl::_setBass(const struct mg_str *query) {
 bool DacCtrl::_dspSwitch(bool value) {
 	uint8_t param0[4] = {0,0,0,0}, param1[4] = {0,0,0,0};
 
-	if(_dspEnabled == value) return true;
-  	if(value) param0[1] = 0x80;
-  	else      param1[1] = 0x80;
+  if(_dspEnabled == value) return true;
+  if(value) param0[1] = 0x80;
+  else      param1[1] = 0x80;
   DBG(_tag,"DSP %s",value ? "ON":"OFF");
-  if(!adauWrite(MOD_NX2_1_2_ALG0_STAGE0_STEREOSWITCHNOSLEW_ADDR,param0,4)  ) return false;
-  if(!adauWrite(MOD_NX2_1_2_ALG0_STAGE1_STEREOSWITCHNOSLEW_ADDR,param1,4)  ) return false;
+  adauWrite(MOD_NX2_1_2_ALG0_STAGE0_STEREOSWITCHNOSLEW_ADDR,param0,4);
+  adauWrite(MOD_NX2_1_2_ALG0_STAGE1_STEREOSWITCHNOSLEW_ADDR,param1,4);
   _dspEnabled = value;
   return true;	
 }
