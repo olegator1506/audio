@@ -45,6 +45,7 @@ extern PlayerStatus playerStatus;
 
 class DacCtrl {
 protected:
+	char *_tag;
 	int _eqValues[EQ_TOTAL_CHANNELS];
 	const char *_eqLabels[EQ_TOTAL_CHANNELS];
 	bool _bass, _dspEnabled;
@@ -55,6 +56,8 @@ protected:
 	bool _setBass(const struct mg_str *query);
 	void _eqSetBandValue(int band, int value);
 	bool _eqPreset(const struct mg_str *query);
+	bool _dspSwitch(const struct mg_str *query);
+	bool _dspSwitch(bool);
 public:
 	char lastError[1024];
 	DacCtrl(void);

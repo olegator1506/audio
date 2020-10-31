@@ -39,6 +39,14 @@ export class SoundControlComponent implements OnInit {
     });
 
   }
+  toggleDsp(){
+    let v = this.config.dsp ? 'off' : 'on';
+    this.rqService.request(`cmd=sound_control&op=dsp&state=${v}`)
+    .subscribe((resp : SoundResponse) =>{
+      this.config = resp.data;
+    });
+
+  }
   isEqAll(value:number) : boolean {
     var all : boolean = true;
     this.config.eq_values.forEach((element : number) => {
