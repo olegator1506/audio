@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 		}
 	}
 	setLogLevelGlobal(debugMode ? LOG_DEBUG : LOG_ERROR);
-	setLogLevelGlobal(LOG_LEVEL);
+//	setLogLevelGlobal(LOG_LEVEL);
 	LOGI(TAG,"program started");
  	if(!setup()) {
 		puts("Initialization error"); 
