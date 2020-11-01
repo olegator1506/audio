@@ -110,7 +110,14 @@ export class AppComponent {
       this.dacConfig = resp.data;
     });
   }
-  
+  muteSwitch() :void {
+    let state = this.dacConfig.mute ? "off":"on";
+    this.dataSource.request(`cmd=mute&state=${state}`)
+    .subscribe((resp : DacResponse) =>{
+      this.dacConfig = resp.data;
+    });
+
+  }
   onSelectPlayList($event) {
     let value = $event.value;
     this.selectedPlayList = $event.value;

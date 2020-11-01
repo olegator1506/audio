@@ -18,6 +18,7 @@ DacCtrl::DacCtrl(void){
 	_eqReset();
 	_bass = false;
 	_dspEnabled = true;
+	__mute = false;
 }
 
 void DacCtrl::_eqSetBandValue(int band, int value){
@@ -90,6 +91,30 @@ bool DacCtrl::_dspSwitch(bool value) {
   return true;	
 }
 
+bool DacCtrl::mute(bool value) {
+	uint8_t param[4] = {0,0,0,0};
+
+  if(__mute == value) return true;
+  if(!value) param[1] = 0x80;
+  DBG(_tag,"Mute %s",value ? "ON":"OFF");
+  adauWrite(MOD_MUTE1_ALG1_MUTENOSLEWALG2MUTE_ADDR,param,4);
+  adauWrite(MOD_MUTE1_ALG0_MUTENOSLEWALG1MUTE_ADDR,param,4);
+  __mute = value;
+  return true;	
+}
+
+bool DacCtrl::_mute(const struct mg_str *query) {
+    char arg[20];
+	bool value;
+   	if(mg_get_http_var(query,"state",arg,20) <= 0) return false;
+	if(strcmp(arg,"on") == 0)    value = true;
+	else if(strcmp(arg,"off") == 0)    value = false;
+	else return false;
+	mute(value);
+  return true;
+}
+
+
 bool DacCtrl::_dspSwitch(const struct mg_str *query) {
     char arg[20];
 	bool value;
@@ -110,6 +135,7 @@ bool DacCtrl::runCommand(const struct mg_str *query){
 	if(strcmp(op,"state") == 0) return true;
 	if(strcmp(op,"eq_preset") == 0) return _eqPreset(query);
 	if(strcmp(op,"dsp") == 0) return _dspSwitch(query);
+	if(strcmp(op,"mute") == 0) return _mute(query);
 	return false;
 }
 
@@ -127,6 +153,7 @@ Json::Value DacCtrl::getStateJson(){
 	_jsonState["eq_values"]= values;
 	_jsonState["bass"]= _bass;
 	_jsonState["dsp"]= _dspEnabled;
+	_jsonState["mute"]= __mute;
 	return _jsonState;
 }
 

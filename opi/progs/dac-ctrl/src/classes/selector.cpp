@@ -151,6 +151,7 @@ Json::Value TSelector::getStateJson(void){
 	_jsonState["channels"] = channels;	
 	_jsonState["play_lists"] = pl;	
 	_jsonState["selected_channel_num"] = _selectedChNum;
+	_jsonState["mute"] = dac->isMuted();
 	return _jsonState;	
 }
 

@@ -27,7 +27,8 @@ export class DacData {
   constructor(
     public channels?:ChannelConfig[],
     public selected_channel_num?:number,
-    public play_lists?: string[]
+    public play_lists?: string[],
+    public mute?:boolean
   ){}  
 }
 
@@ -82,7 +83,8 @@ export class SoundControlConfig {
     public eq_labels? : string[],
     public eq_values? : number[], 
     public bass?:boolean,
-    public dsp?:boolean
+    public dsp?:boolean,
+    public mute?:boolean
   ){}  
 }
 export class SoundResponse {

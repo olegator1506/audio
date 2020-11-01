@@ -48,7 +48,7 @@ protected:
 	char *_tag;
 	int _eqValues[EQ_TOTAL_CHANNELS];
 	const char *_eqLabels[EQ_TOTAL_CHANNELS];
-	bool _bass, _dspEnabled;
+	bool _bass, _dspEnabled,__mute;
 	Json::Value _jsonState;
 	bool _eqSet(const struct mg_str *query);
 	void _eqReset(void);
@@ -58,11 +58,14 @@ protected:
 	bool _eqPreset(const struct mg_str *query);
 	bool _dspSwitch(const struct mg_str *query);
 	bool _dspSwitch(bool);
+	bool _mute(const struct mg_str *query);
 public:
 	char lastError[1024];
 	DacCtrl(void);
 	bool runCommand(const struct mg_str *query);
 	Json::Value getStateJson(void);
+	bool mute(bool);
+	bool isMuted(void) {return __mute;}
 };
 
 extern DacCtrl *dac;

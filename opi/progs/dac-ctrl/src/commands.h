@@ -12,4 +12,5 @@
 #define CMD_PUB_SPOTIFY_CHANGE 7
 #define CMD_SOUND_CONTROL 8
 #define CMD_PLAYER 9
+#define CMD_MUTE 10
 #endif

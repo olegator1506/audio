@@ -43,7 +43,7 @@ export class SoundControlComponent implements OnInit {
     .subscribe((resp : SoundResponse) =>{
       this.config = resp.data;
     });
-
+    
   }
   toggleDsp(){
     let v = this.config.dsp ? 'off' : 'on';

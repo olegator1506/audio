@@ -25,6 +25,7 @@ static const char *commands[] = {
 	"pub_spotify_change",
 	"sound_control",
 	"player",
+	"mute",
 	NULL
 };
 
@@ -140,6 +141,7 @@ static void _execPlayerCmd(struct mg_connection *fd, const struct mg_str *query)
 static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp){
 	char dst[256];
 	int cmdCode, i;
+	bool boolVal;
 	static char *tmpStr;
 	Json::Value data,tracksJson;
 	Json::StyledWriter styledWriter;
@@ -210,6 +212,20 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 				break;
 			case CMD_PLAYER:
 				_execPlayerCmd(fd,query);
+				break;
+			case CMD_MUTE:
+				if(mg_get_http_var(query,"state",dst,255) <= 0) {
+					_sendErrorResponse(fd, 500, "Invalid request:state parameter not specifie");
+					return;
+				}
+				if(strcmp(dst,"on") == 0) boolVal = true;
+				else if(strcmp(dst,"off") == 0) boolVal = false;
+				else {
+					_sendErrorResponse(fd, 500, "Invalid request:invalid state parameter");
+					return;
+				}
+				dac->mute(boolVal);
+				_sendSuccessResponse(fd, Selector->getStateJson());
 				break;
 		}
 
