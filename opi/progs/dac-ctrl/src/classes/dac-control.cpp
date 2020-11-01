@@ -2,7 +2,7 @@
 #include "channels.h"
 #include "mongoose/mongoose.h"
 #include "adau17x/adau17x.h"
-#include "adau17x/projects/project3_IC_2_PARAM.h"
+#include "adau17x/projects/project4_IC_2_PARAM.h"
 
 static const char *__labels[EQ_TOTAL_CHANNELS] = EQ_LABELS;
 static const int _eqPpresets[4][EQ_TOTAL_CHANNELS] = {

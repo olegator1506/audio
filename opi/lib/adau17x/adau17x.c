@@ -6,13 +6,16 @@
 #include "i2c/i2c.h"
 //#include "projects/test1_IC_1.h"
 //#include "projects/test1_IC_1_PARAM.h"
-#include "projects/project3_IC_2.h"
-#include "projects/project3_IC_2_PARAM.h"
+//#include "projects/project3_IC_2.h"
+//#include "projects/project3_IC_2_PARAM.h"
+#include "projects/project4_IC_2.h"
+#include "projects/project4_IC_2_PARAM.h"
+
 
 #include "eq/v1/eq.h"
 
 
-#define ADAU_EQ_BASE_ADDRESS 0x0056
+#define ADAU_EQ_BASE_ADDRESS 0x0047
 
 float exp10f( float x ) {
     return powf( 10.f, x );
@@ -157,6 +160,7 @@ bool  adauAuxInGain(uint8_t val)
   }
   return true;
 }
+/*
 bool adauDspOff(void) {
   DBG(TAG,"DSP Off");
   uint8_t data[4] = {
@@ -170,6 +174,7 @@ bool adauDspOff(void) {
   if(!adauWrite(REG_DSP_ENABLE_REGISTER_IC_2_ADDR,&b,1) ) return false; // Блокируем DSP
   return true;
 }
+
 bool adauDspOn(void) {
   uint8_t data[4] = {
     0x21, // 0x401c : left mixer 3 enable, left dac  On (Unmute), right dac off (mute)
@@ -183,7 +188,7 @@ bool adauDspOn(void) {
   if(adauWrite(REG_PLAYBACK_MIXER_LEFT_CONTROL_0_IC_2_ADDR,data,4)!= true ) return false; // Переключаем вход с микшера на ЦАП 
   return true;
 }
-
+*/
 bool adauDspReload(void) {
   DBG(TAG,"DSP reload program");
   default_download_IC_2();
@@ -257,7 +262,7 @@ bool adauSuperBass(bool state){
     uint8_t *param;
     param = state ? paramOn : paramOff;
     DBG(TAG,"Set super bass %s",state ? "ON":"OFF");
-    return adauWrite(MOD_SUPERBASS2_ALG0_SUPERBASSALGSWSLEW1BYPASS_ADDR,param,4);
+    return adauWrite(MOD_SUPERBASS1_ALG0_SUPERBASSALGSWSLEW1BYPASS_ADDR,param,4);
 }
 
 bool adauI2sOn(void){
