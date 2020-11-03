@@ -21,12 +21,14 @@ import {MatListModule} from '@angular/material/list';
 import { SoundControlComponent } from './sound-control/sound-control.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { FileDialogComponent } from './file-dialog/file-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
     TrackInfoComponent,
     PlayListComponent,
-    SoundControlComponent
+    SoundControlComponent,
+    FileDialogComponent
   ],
   imports: [
     MatSliderModule,

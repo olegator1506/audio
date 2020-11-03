@@ -6,6 +6,7 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { TrackInfo, PlayerStatus } from "./model";
 import { SoundControlComponent } from './sound-control/sound-control.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { FileDialogComponent } from './file-dialog/file-dialog.component';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -180,6 +181,9 @@ export class AppComponent {
   }
   openSoundControl() : void {
     const dialogRef = this.dialog.open(SoundControlComponent);
+  }
+  openFileDialog() : void {
+    const dialogRef = this.dialog.open(FileDialogComponent);
   }
 }
 class Test extends AppComponent {}

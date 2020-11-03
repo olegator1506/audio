@@ -315,6 +315,9 @@
     <button mat-mini-fab color="primary" title="Sound control" (click)="openSoundControl()">
       <mat-icon>analytics</mat-icon>
     </button>
+    <button mat-mini-fab color="primary" title="Sound control" (click)="openFileDialog()">
+      <mat-icon>list</mat-icon>
+    </button>
     <button mat-mini-fab [color]="dacConfig.mute ? 'warn':'primary'" title="Mute" (click)="muteSwitch()">
       <mat-icon>{{dacConfig.mute ? 'volume_off':'volume_up'}}</mat-icon>
     </button>
