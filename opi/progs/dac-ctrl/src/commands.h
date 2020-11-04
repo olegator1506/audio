@@ -13,4 +13,5 @@
 #define CMD_SOUND_CONTROL 8
 #define CMD_PLAYER 9
 #define CMD_MUTE 10
+#define CMD_FILES 11
 #endif

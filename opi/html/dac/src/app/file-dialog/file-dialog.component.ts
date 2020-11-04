@@ -1,61 +1,62 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
-import {CdkTreeModule} from '@angular/cdk/tree';
-interface FoodNode {
+import {ArrayDataSource} from '@angular/cdk/collections';
+import {NestedTreeControl} from '@angular/cdk/tree';
+import { DacRqService } from '../dac-rq.service';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
+interface FileNode {
   name: string;
-  children?: FoodNode[];
-};
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    children: [
-      {name: 'Apple'},
-      {name: 'Banana'},
-      {name: 'Fruit loops'},
-    ]
-  }, {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [
-          {name: 'Broccoli'},
-          {name: 'Brussels sprouts'},
-        ]
-      }, {
-        name: 'Orange',
-        children: [
-          {name: 'Pumpkins'},
-          {name: 'Carrots'},
-        ]
-      },
-    ]
-  },
-];
-
-interface ExampleFlatNode {
-  expandable: boolean;
-  name: string;
-  level: number;
+  path: string,
+  folder:boolean,
+  size:number,
+  children?: FileNode[];
 }
+
+interface FileResponse {
+  data : FileNode[];
+}
+
 
 
 @Component({
   selector: 'app-file-dialog',
   templateUrl: './file-dialog.component.html',
-  styleUrls: ['./file-dialog.component.css']
+  styleUrls: ['./file-dialog.component.css'],
+  providers: [DacRqService]
 })
+
 export class FileDialogComponent implements OnInit {
-
-  constructor(
-    public dialogRef: MatDialogRef<FileDialogComponent>
-//    @Inject(MAT_DIALOG_DATA) public data: SoundControlConfig,
-  ) { }
-
-  ngOnInit(): void {
+  rootNode : FileNode = {
+    name:"ROOT",
+    path:"/home/artem/",
+    size:0,
+    folder:true,
+    children:[
+      {name:'node1',path:'/xxx/yyy',folder:false,size:1024}
+    ]
   }
+  treeControl : NestedTreeControl<FileNode>;
+  dataSource : ArrayDataSource<FileNode>;
+  constructor(
+    public dialogRef: MatDialogRef<FileDialogComponent>,
+//    @Inject(MAT_DIALOG_DATA) public data: SoundControlConfig,
+    private rqService : DacRqService
+  ) {
+    this.treeControl = new NestedTreeControl<FileNode>(node => this.rootNode.children);
+    this.dataSource = new ArrayDataSource<FileNode>(this.rootNode.children);
+//    this.dataSource = new MatTreeNestedDataSource(this.rootNode.children);
 
+   }
+   ngOnInit(){
+    this.rqService.request("cmd=files&path=/home/artem/")
+    .subscribe((resp : FileResponse) =>{
+      this.rootNode.children = resp.data;
+      this.treeControl = new NestedTreeControl<FileNode>(node => this.rootNode.children);
+      this.dataSource = new ArrayDataSource(this.rootNode.children);
+    });
+
+
+   }
+
+  hasChild = (_: number, node: FileNode) => !!node.children && node.children.length > 0;
 }

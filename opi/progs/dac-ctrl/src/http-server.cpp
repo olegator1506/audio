@@ -5,6 +5,8 @@
 #include <string.h>
 #include <string>
 #include <unistd.h>
+#include <dirent.h>
+#include <sys/stat.h>
 #include <jsoncpp/json/json.h>
 #include <iostream>
 #include "log/log.h"
@@ -26,6 +28,7 @@ static const char *commands[] = {
 	"sound_control",
 	"player",
 	"mute",
+	"files",
 	NULL
 };
 
@@ -138,6 +141,49 @@ static void _execPlayerCmd(struct mg_connection *fd, const struct mg_str *query)
 	_sendPlayerStatus(fd,player);
 }
 
+static void _execFileCmd(struct mg_connection *fd, const struct mg_str *query){
+	char path[1024],curPath[2048];
+	Json::Value data,jsonDirEnt;
+	struct dirent *pDirent;
+	struct stat statBuf;
+    DIR *pDir;
+	FILE *fl;
+
+
+	if(mg_get_http_var(query,"path",path,1023) <= 0) {
+		_sendErrorResponse(fd, 500, "Invalid request: file path not specified");
+		return;
+	}
+	pDir = opendir(path);
+	if(!pDir) {
+		_sendErrorResponse(fd, 500, "Path not found");
+		return;
+	}
+	if(!pDir) return;
+	while ((pDirent = readdir(pDir)) != NULL) {
+		jsonDirEnt["name"] = pDirent->d_name;
+		snprintf(curPath,2047,"%s/%s",path,pDirent->d_name);
+		jsonDirEnt["path"] = curPath;
+		if(pDirent->d_type  &  DT_DIR) {
+			jsonDirEnt["folder"] = true;
+			jsonDirEnt["size"] = 0;
+		} else {
+			fl = fopen(curPath,"r");
+			if(!fl) continue;
+			fstat(fileno(fl),&statBuf);
+			jsonDirEnt["folder"] = false;
+			sprintf(curPath,"%ld",statBuf.st_size);
+			jsonDirEnt["size"] = curPath;
+			fclose(fl);
+		}
+		
+		data.append(jsonDirEnt);
+    }
+	_sendSuccessResponse(fd,data);
+}
+
+
+
 static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp){
 	char dst[256];
 	int cmdCode, i;
@@ -226,6 +272,9 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 				}
 				dac->mute(boolVal);
 				_sendSuccessResponse(fd, Selector->getStateJson());
+				break;
+			case CMD_FILES:
+				_execFileCmd(fd,query);
 				break;
 		}
 

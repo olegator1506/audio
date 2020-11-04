@@ -22,6 +22,12 @@ import { SoundControlComponent } from './sound-control/sound-control.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { FileDialogComponent } from './file-dialog/file-dialog.component';
+
+// Tree modules
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {MatTreeModule} from   '@angular/material/tree';
+//import {FlatTreeControl} from '@angular/cdk/tree';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +37,8 @@ import { FileDialogComponent } from './file-dialog/file-dialog.component';
     FileDialogComponent
   ],
   imports: [
+    CdkTreeModule,
+    MatTreeModule,
     MatSliderModule,
     MatIconModule,
     MatButtonModule,
@@ -43,7 +51,7 @@ import { FileDialogComponent } from './file-dialog/file-dialog.component';
     MatButtonToggleModule,
     MatSlideToggleModule,
     HttpClientModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   providers: [
     DacRqService,
