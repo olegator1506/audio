@@ -46,10 +46,12 @@ extern PlayerStatus playerStatus;
 class DacCtrl {
 protected:
 	char *_tag;
-	int _eqValues[EQ_TOTAL_CHANNELS];
+	int _eqValues[EQ_TOTAL_CHANNELS],__inputGain;
 	const char *_eqLabels[EQ_TOTAL_CHANNELS];
 	bool _bass, _dspEnabled,__mute;
+
 	Json::Value _jsonState;
+	void _changeByteOrder(int32_t value, uint8_t *dst);
 	bool _eqSet(const struct mg_str *query);
 	void _eqReset(void);
 	void _setBass(bool state);
@@ -59,6 +61,8 @@ protected:
 	bool _dspSwitch(const struct mg_str *query);
 	bool _dspSwitch(bool);
 	bool _mute(const struct mg_str *query);
+	bool _inputGain(const struct mg_str *query);
+	bool _inputGain(int value );
 public:
 	char lastError[1024];
 	DacCtrl(void);
