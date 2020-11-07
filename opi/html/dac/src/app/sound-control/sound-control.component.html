@@ -12,9 +12,14 @@
   [checked]="config.bass">
      SuperBass       
 </mat-slide-toggle>
-
+<div class="example-flex-container">
+  <button mat-raised-button (click)="mode='eq'" color="{{(mode == 'eq')? 'primary':'default'}}">Equalizer</button>
+  <button mat-raised-button (click)="mode='gain'" color="{{(mode == 'gain')? 'primary':'default'}}">Gain</button>
+</div>    
+  
 <div class="mat-divider"></div>
 <!-- Эквалайзер -->
+<div *ngIf="mode =='eq'">
 <div class="example-flex-container">
 <button mat-raised-button (click)="eqPreset(0)" color="primary" [disabled]="!config.dsp">
   Reset
@@ -44,6 +49,24 @@
     <label *ngFor="let lab of config.eq_labels" >{{lab}}&nbsp;&nbsp;</label>
   </div>
 <!-- // Эквалайзер -->
+</div>
+<!-- Эквалайзер -->
+<div *ngIf="mode =='gain'">
+  <div class="row">
+      <mat-slider 
+        thumbLabel tickInterval="1" vertical step="1"
+        min="-24" 
+        max="24"  
+        value="{{config.eq_gain}}"
+        (change)="setGain($event,'input_gain')"
+        >
+      </mat-slider>
+    </div>
+    <div class="row">
+      <label>Input&nbsp;&nbsp;</label>
+    </div>
+  <!-- // Эквалайзер -->
+  
 </div>
 <div mat-dialog-actions>
 </div>

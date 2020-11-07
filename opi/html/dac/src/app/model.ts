@@ -28,7 +28,8 @@ export class DacData {
     public channels?:ChannelConfig[],
     public selected_channel_num?:number,
     public play_lists?: string[],
-    public mute?:boolean
+    public mute?:boolean,
+    public input_gain? : number
   ){}  
 }
 

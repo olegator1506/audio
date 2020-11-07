@@ -12,6 +12,7 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 })
 export class SoundControlComponent implements OnInit {
   public config : SoundControlConfig;
+  public mode:string = "eq";
   constructor(
     public dialogRef: MatDialogRef<SoundControlComponent>,
 //    @Inject(MAT_DIALOG_DATA) public data: SoundControlConfig,
@@ -37,6 +38,14 @@ export class SoundControlComponent implements OnInit {
       this.config = resp.data;
     });
   }
+  setGain(event, op) {
+    var val = event.value;
+    this.rqService.request(`cmd=sound_control&op=${op}&value=${val}`)
+    .subscribe((resp : SoundResponse) =>{
+      this.config = resp.data;
+    });
+  }
+
   toggleBass(){
     let v = this.config.bass ? 'off' : 'on';
     this.rqService.request(`cmd=sound_control&op=bass&state=${v}`)
