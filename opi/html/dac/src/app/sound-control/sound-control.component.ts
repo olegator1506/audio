@@ -69,5 +69,13 @@ export class SoundControlComponent implements OnInit {
     });
     return all;
   }
+  gainReset(){
+    this.rqService.request('cmd=sound_control&op=gain_reset')
+    .subscribe((resp : SoundResponse) =>{
+      this.config = resp.data;
+    });
+
+  }
+
 
 }

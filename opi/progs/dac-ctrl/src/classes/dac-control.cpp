@@ -205,6 +205,12 @@ bool DacCtrl::runCommand(const struct mg_str *query){
 	if(strcmp(op,"input_gain") == 0) return _inputGain(query);
 	if(strcmp(op,"line_level") == 0) return _lineLevel(query);
 	if(strcmp(op,"hp_level") == 0) return _hpLevel(query);
+	if(strcmp(op,"gain_reset") == 0) {
+		_inputGain(0);
+		_lineLevel(0);
+		_hpLevel(0);
+		return true;
+	}
 	return false;
 }
 
