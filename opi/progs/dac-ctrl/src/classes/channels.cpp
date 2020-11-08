@@ -111,8 +111,12 @@ bool TSpotify::_start(){
 	if(_checkProcessRun(SPOTIFY_PID_FILE)) // Spotify process already running
 		return true;
 	char cmd[1024];
+/*
 	sprintf(cmd, "%s --username %s --password %s --pid %s --device-name %s --device %s --on-song-change-hook %s &",
 	SPOTIFY_DAEMON_CMD,SPOTIFY_USERNAME,SPOTIFY_PASSWORD,SPOTIFY_PID_FILE,SPOTIFY_DEVICE_NAME,SPOTIFY_SOUND_DEVICE,SPOTIFY_HOOK);
+*/
+	sprintf(cmd, "%s --username %s --password %s --pid %s --device-name %s --device %s &",
+	SPOTIFY_DAEMON_CMD,SPOTIFY_USERNAME,SPOTIFY_PASSWORD,SPOTIFY_PID_FILE,SPOTIFY_DEVICE_NAME,SPOTIFY_SOUND_DEVICE);
     DBG(_tag,"Run cmd: %s",cmd);
 	system(cmd);
 	DBG(_tag,"Command finished");

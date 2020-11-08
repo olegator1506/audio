@@ -74,6 +74,7 @@ export class AppComponent {
         this.playerRq("status","");
 
     });
+/*    
     this.wsService.createSocket( `ws://${location.hostname}:8000`)
     .subscribe(
       ( data : string ) => {
@@ -93,6 +94,7 @@ export class AppComponent {
         console.log( 'The observable stream is complete')
       }  
     );
+*/    
 /*
     setInterval(() => {
       if(this.isFileChannel())
