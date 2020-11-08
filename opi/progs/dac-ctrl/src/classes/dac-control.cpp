@@ -3,6 +3,7 @@
 #include "mongoose/mongoose.h"
 #include "adau17x/adau17x.h"
 #include "adau17x/projects/project4_IC_2_PARAM.h"
+#include "adau17x/projects/project4_IC_2_REG.h"
 
 static const char *__labels[EQ_TOTAL_CHANNELS] = EQ_LABELS;
 static const int _eqPpresets[4][EQ_TOTAL_CHANNELS] = {
@@ -19,6 +20,8 @@ DacCtrl::DacCtrl(void){
 	_bass = false;
 	_dspEnabled = true;
 	__inputGain = 0;
+	__lineLevel = 0;
+	__hpLevel = 0;
 	apply();
 }
 
@@ -27,6 +30,8 @@ void DacCtrl::apply(void){
 		_eqSetBandValue(i,_eqValues[i],true);
 	_setBass(_bass,true);
 	_inputGain(__inputGain,true);
+	_lineLevel(__lineLevel, true);
+	_hpLevel(__hpLevel, true);
 	_dspSwitch(_dspEnabled, true);
 }
 
@@ -135,7 +140,47 @@ bool DacCtrl::_inputGain(int value, bool force ) {
   	return true;
 }
 
+bool DacCtrl::_lineLevel(const struct mg_str *query){
+    char arg[20];
+	int  value;
+   	if(mg_get_http_var(query,"value",arg,20) <= 0) return false;
+	value = atoi(arg);
+	_lineLevel(value);
+    return true;
+}
+bool DacCtrl::_lineLevel(int value, bool force ) {
+	uint8_t val;
+	if((__lineLevel == value) && !force) return true;
+	if(value < -57) value = -57;
+	if(value > 6) value = 6;
+	__lineLevel = value;
+	val = ((value+57) << 2) +2;
+	DBG(_tag,"Set line level %d dB register value= %02X", value,val);
+	adauWrite(REG_PLAYBACK_LINE_OUT_LEFT_IC_2_ADDR, &val, 1);
+    adauWrite(REG_PLAYBACK_LINE_OUT_RIGHT_IC_2_ADDR, &val,1);
+  	return true;
+}
 
+bool DacCtrl::_hpLevel(const struct mg_str *query){
+    char arg[20];
+	int  value;
+   	if(mg_get_http_var(query,"value",arg,20) <= 0) return false;
+	value = atoi(arg);
+	_hpLevel(value);
+    return true;
+}
+bool DacCtrl::_hpLevel(int value, bool force ) {
+	uint8_t val;
+	if((__hpLevel == value) && !force) return true;
+	if(value < -57) value = -57;
+	if(value > 6) value = 6;
+	__hpLevel = value;
+	val = ((value+57) << 2) +3;
+	DBG(_tag,"Set HP level %d dB register value= %02X", value,val);
+	adauWrite(REG_PLAYBACK_HEADPHONE_LEFT_IC_2_ADDR,  &val, 1);
+    adauWrite(REG_PLAYBACK_HEADPHONE_RIGHT_IC_2_ADDR, &val, 1);
+  	return true;
+}
 
 bool DacCtrl::_dspSwitch(const struct mg_str *query) {
     char arg[20];
@@ -158,6 +203,8 @@ bool DacCtrl::runCommand(const struct mg_str *query){
 	if(strcmp(op,"eq_preset") == 0) return _eqPreset(query);
 	if(strcmp(op,"dsp") == 0) return _dspSwitch(query);
 	if(strcmp(op,"input_gain") == 0) return _inputGain(query);
+	if(strcmp(op,"line_level") == 0) return _lineLevel(query);
+	if(strcmp(op,"hp_level") == 0) return _hpLevel(query);
 	return false;
 }
 
@@ -176,6 +223,8 @@ Json::Value DacCtrl::getStateJson(){
 	_jsonState["bass"]= _bass;
 	_jsonState["dsp"]= _dspEnabled;
 	_jsonState["input_gain"]= __inputGain;
+	_jsonState["line_level"]= __lineLevel;
+	_jsonState["hp_level"]= __hpLevel;
 	return _jsonState;
 }
 

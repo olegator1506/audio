@@ -46,7 +46,7 @@ extern PlayerStatus playerStatus;
 class DacCtrl {
 protected:
 	char *_tag;
-	int _eqValues[EQ_TOTAL_CHANNELS],__inputGain;
+	int _eqValues[EQ_TOTAL_CHANNELS],__inputGain, __lineLevel, __hpLevel;
 	const char *_eqLabels[EQ_TOTAL_CHANNELS];
 	bool _bass, _dspEnabled;
 
@@ -62,6 +62,10 @@ protected:
 	bool _dspSwitch(bool value, bool force = false);
 	bool _inputGain(const struct mg_str *query);
 	bool _inputGain(int value, bool force = false );
+	bool _lineLevel(const struct mg_str *query);
+	bool _lineLevel(int value, bool force = false );
+	bool _hpLevel(const struct mg_str *query);
+	bool _hpLevel(int value, bool force = false );
 public:
 	char lastError[1024];
 	DacCtrl(void);

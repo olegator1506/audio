@@ -61,9 +61,27 @@
         (change)="setGain($event,'input_gain')"
         >
       </mat-slider>
+      <mat-slider 
+        thumbLabel tickInterval="1" vertical step="1"
+        min="-57" 
+        max="6"  
+        value="{{config.line_level}}"
+        (change)="setGain($event,'line_level')"
+        >
+      </mat-slider>
+      <mat-slider 
+        thumbLabel tickInterval="1" vertical step="1"
+        min="-57" 
+        max="6"  
+        value="{{config.hp_level}}"
+        (change)="setGain($event,'hp_level')"
+        >
+      </mat-slider>
     </div>
     <div class="row">
       <label>Input&nbsp;&nbsp;</label>
+      <label>LineOut&nbsp;&nbsp;</label>
+      <label>Headphone&nbsp;&nbsp;</label>
     </div>
   <!-- // Эквалайзер -->
   

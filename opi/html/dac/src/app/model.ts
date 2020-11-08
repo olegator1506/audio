@@ -84,7 +84,9 @@ export class SoundControlConfig {
     public eq_values? : number[], 
     public bass?:boolean,
     public dsp?:boolean,
-    public input_gain? : number 
+    public input_gain? : number,
+    public line_level? :number,
+    public hp_level? : number
   ){}  
 }
 export class SoundResponse {
