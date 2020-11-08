@@ -83,7 +83,8 @@ export class SoundControlConfig {
     public eq_labels? : string[],
     public eq_values? : number[], 
     public bass?:boolean,
-    public dsp?:boolean
+    public dsp?:boolean,
+    public input_gain? : number 
   ){}  
 }
 export class SoundResponse {
