@@ -48,31 +48,28 @@ protected:
 	char *_tag;
 	int _eqValues[EQ_TOTAL_CHANNELS],__inputGain;
 	const char *_eqLabels[EQ_TOTAL_CHANNELS];
-	bool _bass, _dspEnabled,__mute;
+	bool _bass, _dspEnabled;
 
 	Json::Value _jsonState;
 	void _changeByteOrder(int32_t value, uint8_t *dst);
 	bool _eqSet(const struct mg_str *query);
 	void _eqReset(void);
-	void _setBass(bool state);
+	void _setBass(bool state, bool force = false);
 	bool _setBass(const struct mg_str *query);
-	void _eqSetBandValue(int band, int value);
+	void _eqSetBandValue(int band, int value, bool force = false);
 	bool _eqPreset(const struct mg_str *query);
 	bool _dspSwitch(const struct mg_str *query);
-	bool _dspSwitch(bool);
-	bool _mute(const struct mg_str *query);
+	bool _dspSwitch(bool value, bool force = false);
 	bool _inputGain(const struct mg_str *query);
-	bool _inputGain(int value );
+	bool _inputGain(int value, bool force = false );
 public:
 	char lastError[1024];
 	DacCtrl(void);
 	bool runCommand(const struct mg_str *query);
 	Json::Value getStateJson(void);
-	bool mute(bool);
-	bool isMuted(void) {return __mute;}
+	void apply(void);
 };
 
-extern DacCtrl *dac;
 
 class Player {
 public:
@@ -96,10 +93,12 @@ protected:
 		bool _selected;
 		Json::Value _jsonState;
 		int _checkProcessRun(const char *fname);// Вертает ID процесса из файла fname если он запущен, иначе 0
+
 public:
 	Player *player;
+	DacCtrl *dac;
 	TChannel(const char *name);
-	virtual void select(void) {_selected = true;}
+	virtual void select(void); 
 	virtual void unselect(void) {_selected = false;}
 	virtual Json::Value getStateJson();
 };

@@ -10,7 +10,7 @@ protected:
 	const char *_tag; 
 	Json::Value _jsonState;
 	char _errorMessage[255];
-	bool _superBass;
+	bool _superBass, _mute;
 public:
 	TSelector();
 	void finish(void);
@@ -29,8 +29,9 @@ public:
 	bool superBass(bool state); 
 	bool loadPlayList(const char *listname);
 	bool getTrackList(void);
+	bool mute(bool value, bool force = false);
 	Player *player(void) {return _channels[_selectedChNum]->player;}
-	
+	DacCtrl *dac(void) {return _channels[_selectedChNum]->dac;}	
 /*
     channelsEventHandler(uint8_t code,uint16_t param);
 	bool play(void);

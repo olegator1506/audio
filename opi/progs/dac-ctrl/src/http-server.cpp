@@ -189,6 +189,7 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 	int cmdCode, i;
 	bool boolVal;
 	static char *tmpStr;
+	DacCtrl *dac;
 	Json::Value data,tracksJson;
 	Json::StyledWriter styledWriter;
     const struct mg_str *query = &(pp->query_string);
@@ -239,6 +240,7 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 				_sendErrorResponse(fd, 500, Selector->lastError());	
 			break;
 			case CMD_SOUND_CONTROL:
+				dac = Selector->dac();
 				if(!dac->runCommand(query)) {
 					_sendErrorResponse(fd, 500, dac->lastError);
 				}
@@ -270,7 +272,7 @@ static void _handleHttpRequest(struct mg_connection *fd, struct http_message *pp
 					_sendErrorResponse(fd, 500, "Invalid request:invalid state parameter");
 					return;
 				}
-				dac->mute(boolVal);
+				Selector->mute(boolVal);
 				_sendSuccessResponse(fd, Selector->getStateJson());
 				break;
 			case CMD_FILES:

@@ -18,9 +18,18 @@ DacCtrl::DacCtrl(void){
 	_eqReset();
 	_bass = false;
 	_dspEnabled = true;
-	__mute = false;
 	__inputGain = 0;
+	apply();
 }
+
+void DacCtrl::apply(void){
+	for(int i=0;i<EQ_TOTAL_CHANNELS;i++) 
+		_eqSetBandValue(i,_eqValues[i],true);
+	_setBass(_bass,true);
+	_inputGain(__inputGain,true);
+	_dspSwitch(_dspEnabled, true);
+}
+
 
 void DacCtrl::_changeByteOrder(int32_t value, uint8_t *dst) {
 	uint8_t *bf,b;
@@ -31,9 +40,9 @@ void DacCtrl::_changeByteOrder(int32_t value, uint8_t *dst) {
     }
 }
 
-void DacCtrl::_eqSetBandValue(int band, int value){
+void DacCtrl::_eqSetBandValue(int band, int value, bool force){
 	if((band <0) || (band >= EQ_TOTAL_CHANNELS)) return;
-	if(value == _eqValues[band]) return;
+	if((value == _eqValues[band]) && !force) return;
 	if((value < EQ_LEVEL_MIN) || (value > EQ_LEVEL_MAX)) return;
 	_eqValues[band] = value;
 	adauEqSet(band, value);
@@ -71,8 +80,8 @@ bool DacCtrl::_eqSet(const struct mg_str *query) {
 	return true;
 } 
 
-void DacCtrl::_setBass(bool state){
-	if(state == _bass) return;
+void DacCtrl::_setBass(bool state, bool force){
+	if((state == _bass) && !force) return;
 	_bass = state;
 	adauSuperBass(state);
 }
@@ -88,10 +97,10 @@ bool DacCtrl::_setBass(const struct mg_str *query) {
 	return true;
 }
 
-bool DacCtrl::_dspSwitch(bool value) {
+bool DacCtrl::_dspSwitch(bool value, bool force) {
 	uint8_t param0[4] = {0,0,0,0}, param1[4] = {0,0,0,0};
 
-  if(_dspEnabled == value) return true;
+  if((_dspEnabled == value) && !force) return true;
   if(value) param0[1] = 0x80;
   else      param1[1] = 0x80;
   DBG(_tag,"DSP %s",value ? "ON":"OFF");
@@ -101,28 +110,6 @@ bool DacCtrl::_dspSwitch(bool value) {
   return true;	
 }
 
-bool DacCtrl::mute(bool value) {
-	uint8_t param[4] = {0,0,0,0};
-
-  if(__mute == value) return true;
-  if(!value) param[1] = 0x80;
-  DBG(_tag,"Mute %s",value ? "ON":"OFF");
-  adauWrite(MOD_MUTE1_ALG1_MUTENOSLEWALG2MUTE_ADDR,param,4);
-  adauWrite(MOD_MUTE1_ALG0_MUTENOSLEWALG1MUTE_ADDR,param,4);
-  __mute = value;
-  return true;	
-}
-
-bool DacCtrl::_mute(const struct mg_str *query) {
-    char arg[20];
-	bool value;
-   	if(mg_get_http_var(query,"state",arg,20) <= 0) return false;
-	if(strcmp(arg,"on") == 0)    value = true;
-	else if(strcmp(arg,"off") == 0)    value = false;
-	else return false;
-	mute(value);
-  return true;
-}
 
 bool DacCtrl::_inputGain(const struct mg_str *query){
     char arg[20];
@@ -132,15 +119,16 @@ bool DacCtrl::_inputGain(const struct mg_str *query){
 	_inputGain(value);
     return true;
 }
-bool DacCtrl::_inputGain(int value) {
+bool DacCtrl::_inputGain(int value, bool force ) {
 	uint8_t bytes[4];
 	int32_t intVal; 
-	float fVal;
+
+	if((__inputGain == value) && !force) return true;
 	if(value < -24) value = -24;
 	if(value > 24) value = 24;
 	__inputGain = value;
 	intVal = dbToDsp(float(value));
-	DBG(_tag,"Set Input gain %d dB = %f", value, exp10f( value / 20.f ) );
+	DBG(_tag,"Set Input gain %d dB ", value);
 	_changeByteOrder(intVal, bytes);
 	adauWrite(MOD_GAIN2_2_GAIN1940ALGNS2_ADDR, bytes,4);
 	adauWrite(MOD_GAIN2_GAIN1940ALGNS1_ADDR, bytes,4);
@@ -169,7 +157,6 @@ bool DacCtrl::runCommand(const struct mg_str *query){
 	if(strcmp(op,"state") == 0) return true;
 	if(strcmp(op,"eq_preset") == 0) return _eqPreset(query);
 	if(strcmp(op,"dsp") == 0) return _dspSwitch(query);
-	if(strcmp(op,"mute") == 0) return _mute(query);
 	if(strcmp(op,"input_gain") == 0) return _inputGain(query);
 	return false;
 }
@@ -188,10 +175,8 @@ Json::Value DacCtrl::getStateJson(){
 	_jsonState["eq_values"]= values;
 	_jsonState["bass"]= _bass;
 	_jsonState["dsp"]= _dspEnabled;
-	_jsonState["mute"]= __mute;
 	_jsonState["input_gain"]= __inputGain;
 	return _jsonState;
 }
 
-DacCtrl *dac;
 

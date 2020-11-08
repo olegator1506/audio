@@ -19,9 +19,14 @@ TChannel::TChannel(const char *name){
 	_selected = false;
 	_typeString = "";
 	player = NULL;
+	dac = new DacCtrl;
 	DBG(_tag,"Construct %s", name);
 
 };
+void TChannel::select(void){
+	_selected = true;
+	dac->apply();
+}
 
 Json::Value TChannel::getStateJson(){
 	_jsonState.clear();
@@ -65,6 +70,7 @@ void TAuxChannel::select(void) {
 	adauSelectAnalogInput(_auxNum, _gain);
 //	pcfSelAnalogInput(_auxNum);
 	TChannel::select();
+	dac->apply();
 }
 
 // Класс TDiffChannel

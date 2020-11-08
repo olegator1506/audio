@@ -4,6 +4,7 @@
 #include "selector.h"
 #include "log/log.h"
 #include "adau17x/adau17x.h"
+#include "adau17x/projects/project4_IC_2_PARAM.h"
 #include "channels.h"
 #include "playlist.h"
 
@@ -86,8 +87,8 @@ static TChannelConfig _channelsConfig[TOTAL_CHANNELS] = {
 		}
 	_selectedChNum = 0;		
 	_channels[_selectedChNum]->select();
-	dac = new DacCtrl;
 	_superBass = false;
+	_mute = false;
 	playList = new PlayList();
 }
 void TSelector::finish(void){
@@ -151,9 +152,21 @@ Json::Value TSelector::getStateJson(void){
 	_jsonState["channels"] = channels;	
 	_jsonState["play_lists"] = pl;	
 	_jsonState["selected_channel_num"] = _selectedChNum;
-	_jsonState["mute"] = dac->isMuted();
+	_jsonState["mute"] = _mute;
 	return _jsonState;	
 }
+
+bool TSelector::mute(bool value, bool force) {
+	uint8_t param[4] = {0,0,0,0};
+  if((_mute == value) && !force) return true;
+  if(!value) param[1] = 0x80;
+  DBG(_tag,"Mute %s",value ? "ON":"OFF");
+  adauWrite(MOD_MUTE1_ALG1_MUTENOSLEWALG2MUTE_ADDR,param,4);
+  adauWrite(MOD_MUTE1_ALG0_MUTENOSLEWALG1MUTE_ADDR,param,4);
+  _mute = value;
+  return true;	
+}
+
 
 bool TSelector::superBass(bool state) {
 	if(!adauSuperBass(state)) return false;
