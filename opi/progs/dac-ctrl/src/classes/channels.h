@@ -5,13 +5,14 @@
 #include "mongoose/mongoose.h"
 #include "config.h"
 
-#define TOTAL_CHANNELS 5
+#define TOTAL_CHANNELS 6
 
 typedef enum {
     CH_TYPE_AUX, // Дополнительные входы ( один на передней панели и два на задней
 	CH_TYPE_LINEIN, // Дифференциальный вход
     CH_TYPE_ALSA, // Воспроизведение файлов через AlsaPlayer
-		CH_TYPE_SPOTIFY,
+	CH_TYPE_SPOTIFY,
+	CH_TYPE_MPD
 //    CH_TYPE_BLUETOOTH,
 //    CH_TYPE_INET_RADIO,
 } TChannelType;
@@ -113,7 +114,7 @@ protected:
 	int _auxNum;
 	int _gain;
 public:
-	TAuxChannel(const char *name, int inputNum, int gain);
+	TAuxChannel(const char *name, int inputNum);
  	void select(void);
 };
 
@@ -149,6 +150,15 @@ class TSpotify : public TChannel {
 		void unselect();
 };
 
+class TMpdChannel : public TChannel {
+protected:
+	bool _start(void);
+	bool _stop(void);
+public:
+	TMpdChannel(const char *name);
+	void select();
+	void unselect();
+};
 
 
 #endif

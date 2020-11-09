@@ -57,17 +57,16 @@ int TChannel::_checkProcessRun(const char *pidFileName){
 	return 0;	
 }
 
-TAuxChannel::TAuxChannel(const char *name, int inputNum, int gain) : TChannel(name)
+TAuxChannel::TAuxChannel(const char *name, int inputNum) : TChannel(name)
 {
 	_tag = "AuxChannel";
 	_auxNum = inputNum;
-	_gain = gain;
 	_typeString = "aux";
 }	
 
 void TAuxChannel::select(void) {
 	adauI2sOff();
-	adauSelectAnalogInput(_auxNum, _gain);
+	adauSelectAnalogInput(_auxNum,5);
 //	pcfSelAnalogInput(_auxNum);
 	TChannel::select();
 	dac->apply();
@@ -135,4 +134,51 @@ bool TSpotify::_stop(){
 	DBG(_tag,"Kill Spotifyd process with PID = %d",pid);
 	return true;	
 }
+
+// TMpd Channel
+TMpdChannel::TMpdChannel(const char *name) : TChannel(name){
+	_tag = "Mpd";
+	_typeString = "mpd";
+}
+void TMpdChannel::select(void){
+	TChannel::select();
+	DBG(_tag,"select");
+	adauSelectAnalogInput(0,0);
+	adauI2sOn();
+	_start();
+}
+    
+void TMpdChannel::unselect(void){
+//	exec
+	TChannel::unselect();
+	_stop();
+}
+
+bool TMpdChannel::_start(){
+	if(_checkProcessRun(MPD_PID_FILE)) // Spotify process already running
+		return true;
+	char cmd[1024];
+	sprintf(cmd, "%s",MPD_DAEMON_CMD);
+    DBG(_tag,"Run cmd: %s",cmd);
+	system(cmd);
+	DBG(_tag,"Command finished");
+	return true;	
+}
+
+bool TMpdChannel::_stop(){
+	char cmd[1024];
+
+	DBG(_tag,"Stop MPD daemon");
+	int pid = _checkProcessRun(MPD_PID_FILE);
+	if(!pid) {// Spotify process not running
+		DBG(_tag,"MPD not running");
+		return true;
+	}	
+	sprintf(cmd, "%s --kill",MPD_DAEMON_CMD);
+    DBG(_tag,"Run cmd: %s",cmd);
+	system(cmd);
+	DBG(_tag,"Kill MPD process with");
+	return true;	
+}
+
 

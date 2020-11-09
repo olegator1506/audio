@@ -58,5 +58,9 @@ export class FileDialogComponent implements OnInit {
 
    }
 
-  hasChild = (_: number, node: FileNode) => !!node.children && node.children.length > 0;
+//  hasChild = (_: number, node: FileNode) => !!node.children && node.children.length > 0;
+  hasChild = (_: number, node: FileNode) => node.folder ;
+  expandNode(node : FileNode){
+    this.treeControl.expand(node);
+  }
 }
