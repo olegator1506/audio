@@ -54,6 +54,15 @@ export class SoundControlComponent implements OnInit {
     });
     
   }
+  toggleCompress(){
+    let v = this.config.bass ? 'off' : 'on';
+    this.rqService.request(`cmd=sound_control&op=compress&state=${v}`)
+    .subscribe((resp : SoundResponse) =>{
+      this.config = resp.data;
+    });
+    
+  }
+
   toggleDsp(){
     let v = this.config.dsp ? 'off' : 'on';
     this.rqService.request(`cmd=sound_control&op=dsp&state=${v}`)

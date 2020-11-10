@@ -1,7 +1,7 @@
 /*
  * File:           E:\projects\project4_IC_2_REG.h
  *
- * Created:        Sunday, November 08, 2020 9:29:01 PM
+ * Created:        Tuesday, November 10, 2020 10:39:06 PM
  * Description:    project4:IC 2 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -248,22 +248,22 @@
 /* CRC Ideal_1  - Registers (IC 2) */
 #define REG_CRC_IDEAL_1_IC_2_ADDR                 0x40C0
 #define REG_CRC_IDEAL_1_IC_2_BYTE                 1
-#define REG_CRC_IDEAL_1_IC_2_VALUE                0x7F
+#define REG_CRC_IDEAL_1_IC_2_VALUE                0x4
 
 /* CRC Ideal_2  - Registers (IC 2) */
 #define REG_CRC_IDEAL_2_IC_2_ADDR                 0x40C1
 #define REG_CRC_IDEAL_2_IC_2_BYTE                 1
-#define REG_CRC_IDEAL_2_IC_2_VALUE                0x7F
+#define REG_CRC_IDEAL_2_IC_2_VALUE                0x5B
 
 /* CRC Ideal_3  - Registers (IC 2) */
 #define REG_CRC_IDEAL_3_IC_2_ADDR                 0x40C2
 #define REG_CRC_IDEAL_3_IC_2_BYTE                 1
-#define REG_CRC_IDEAL_3_IC_2_VALUE                0x4F
+#define REG_CRC_IDEAL_3_IC_2_VALUE                0x6
 
 /* CRC Ideal_4  - Registers (IC 2) */
 #define REG_CRC_IDEAL_4_IC_2_ADDR                 0x40C3
 #define REG_CRC_IDEAL_4_IC_2_BYTE                 1
-#define REG_CRC_IDEAL_4_IC_2_VALUE                0x61
+#define REG_CRC_IDEAL_4_IC_2_VALUE                0x7F
 
 /* CRC Enable  - Registers (IC 2) */
 #define REG_CRC_ENABLE_IC_2_ADDR                  0x40C4
@@ -875,22 +875,22 @@
 #define R44_DEJITTER_IC_2_SHIFT                   0
 
 /* CRC Ideal_1 (IC 2) */
-#define R45_CRC_IDEAL_1_IC_2                      0x7F   /* 01111111b	[7:0] */
+#define R45_CRC_IDEAL_1_IC_2                      0x04   /* 00000100b	[7:0] */
 #define R45_CRC_IDEAL_1_IC_2_MASK                 0xFF
 #define R45_CRC_IDEAL_1_IC_2_SHIFT                0
 
 /* CRC Ideal_2 (IC 2) */
-#define R46_CRC_IDEAL_2_IC_2                      0x7F   /* 01111111b	[7:0] */
+#define R46_CRC_IDEAL_2_IC_2                      0x5B   /* 01011011b	[7:0] */
 #define R46_CRC_IDEAL_2_IC_2_MASK                 0xFF
 #define R46_CRC_IDEAL_2_IC_2_SHIFT                0
 
 /* CRC Ideal_3 (IC 2) */
-#define R47_CRC_IDEAL_3_IC_2                      0x4F   /* 01001111b	[7:0] */
+#define R47_CRC_IDEAL_3_IC_2                      0x06   /* 00000110b	[7:0] */
 #define R47_CRC_IDEAL_3_IC_2_MASK                 0xFF
 #define R47_CRC_IDEAL_3_IC_2_SHIFT                0
 
 /* CRC Ideal_4 (IC 2) */
-#define R48_CRC_IDEAL_4_IC_2                      0x61   /* 01100001b	[7:0] */
+#define R48_CRC_IDEAL_4_IC_2                      0x7F   /* 01111111b	[7:0] */
 #define R48_CRC_IDEAL_4_IC_2_MASK                 0xFF
 #define R48_CRC_IDEAL_4_IC_2_SHIFT                0
 

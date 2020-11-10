@@ -49,7 +49,7 @@ protected:
 	char *_tag;
 	int _eqValues[EQ_TOTAL_CHANNELS],__inputGain, __lineLevel, __hpLevel;
 	const char *_eqLabels[EQ_TOTAL_CHANNELS];
-	bool _bass, _dspEnabled;
+	bool _bass, _dspEnabled,__compress;
 
 	Json::Value _jsonState;
 	void _changeByteOrder(int32_t value, uint8_t *dst);
@@ -61,6 +61,8 @@ protected:
 	bool _eqPreset(const struct mg_str *query);
 	bool _dspSwitch(const struct mg_str *query);
 	bool _dspSwitch(bool value, bool force = false);
+	bool _compressSwitch(const struct mg_str *query);
+	bool _compressSwitch(bool value, bool force = false);
 	bool _inputGain(const struct mg_str *query);
 	bool _inputGain(int value, bool force = false );
 	bool _lineLevel(const struct mg_str *query);

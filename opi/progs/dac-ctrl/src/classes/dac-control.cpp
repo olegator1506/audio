@@ -19,6 +19,7 @@ DacCtrl::DacCtrl(void){
 	_eqReset();
 	_bass = false;
 	_dspEnabled = true;
+	__compress = false;
 	__inputGain = 0;
 	__lineLevel = 0;
 	__hpLevel = 0;
@@ -32,6 +33,7 @@ void DacCtrl::apply(void){
 	_inputGain(__inputGain,true);
 	_lineLevel(__lineLevel, true);
 	_hpLevel(__hpLevel, true);
+	_compressSwitch(__compress, true);
 	_dspSwitch(_dspEnabled, true);
 }
 
@@ -109,8 +111,8 @@ bool DacCtrl::_dspSwitch(bool value, bool force) {
   if(value) param0[1] = 0x80;
   else      param1[1] = 0x80;
   DBG(_tag,"DSP %s",value ? "ON":"OFF");
-  adauWrite(MOD_NX2_1_2_ALG0_STAGE0_STEREOSWITCHNOSLEW_ADDR,param0,4);
-  adauWrite(MOD_NX2_1_2_ALG0_STAGE1_STEREOSWITCHNOSLEW_ADDR,param1,4);
+  adauWrite(MOD_DSPSWITCH_ALG0_STAGE0_STEREOSWITCHNOSLEW_ADDR,param0,4);
+  adauWrite(MOD_DSPSWITCH_ALG0_STAGE1_STEREOSWITCHNOSLEW_ADDR,param1,4);
   _dspEnabled = value;
   return true;	
 }
@@ -202,6 +204,7 @@ bool DacCtrl::runCommand(const struct mg_str *query){
 	if(strcmp(op,"state") == 0) return true;
 	if(strcmp(op,"eq_preset") == 0) return _eqPreset(query);
 	if(strcmp(op,"dsp") == 0) return _dspSwitch(query);
+	if(strcmp(op,"compress") == 0) return _compressSwitch(query);
 	if(strcmp(op,"input_gain") == 0) return _inputGain(query);
 	if(strcmp(op,"line_level") == 0) return _lineLevel(query);
 	if(strcmp(op,"hp_level") == 0) return _hpLevel(query);
@@ -228,10 +231,33 @@ Json::Value DacCtrl::getStateJson(){
 	_jsonState["eq_values"]= values;
 	_jsonState["bass"]= _bass;
 	_jsonState["dsp"]= _dspEnabled;
+	_jsonState["compress"]= __compress;
 	_jsonState["input_gain"]= __inputGain;
 	_jsonState["line_level"]= __lineLevel;
 	_jsonState["hp_level"]= __hpLevel;
 	return _jsonState;
 }
 
+bool DacCtrl::_compressSwitch(bool value, bool force) {
+	uint8_t param0[4] = {0,0,0,0}, param1[4] = {0,0,0,0};
 
+  if((__compress == value) && !force) return true;
+  if(value) param0[1] = 0x80;
+  else      param1[1] = 0x80;
+  DBG(_tag,"Compress %s",value ? "ON":"OFF");
+  adauWrite(MOD_COMPRESSSWITCH_ALG0_STAGE0_STEREOSWITCHNOSLEW_ADDR,param0,4);
+  adauWrite(MOD_COMPRESSSWITCH_ALG0_STAGE1_STEREOSWITCHNOSLEW_ADDR,param1,4);
+  __compress = value;
+  return true;	
+}
+
+bool DacCtrl::_compressSwitch(const struct mg_str *query) {
+    char arg[20];
+	bool value;
+   	if(mg_get_http_var(query,"state",arg,20) <= 0) return false;
+	if(strcmp(arg,"on") == 0)    value = true;
+	else if(strcmp(arg,"off") == 0)    value = false;
+	else return false;
+	_compressSwitch(value);
+  return true;
+}

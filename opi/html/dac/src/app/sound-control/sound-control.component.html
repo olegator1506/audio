@@ -12,6 +12,11 @@
   [checked]="config.bass">
      SuperBass       
 </mat-slide-toggle>
+<mat-slide-toggle
+  (click)="toggleCompress()"
+  [checked]="config.compress">
+     Compress       
+</mat-slide-toggle>
 <div class="example-flex-container">
   <button mat-raised-button (click)="mode='eq'" color="{{(mode == 'eq')? 'primary':'default'}}">Equalizer</button>
   <button mat-raised-button (click)="mode='gain'" color="{{(mode == 'gain')? 'primary':'default'}}">Gain</button>
