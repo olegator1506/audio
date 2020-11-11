@@ -1,7 +1,7 @@
 /*
  * File:           E:\projects\project4_IC_2.h
  *
- * Created:        Tuesday, November 10, 2020 10:39:06 PM
+ * Created:        Wednesday, November 11, 2020 7:38:23 PM
  * Description:    project4:IC 2 program data.
  *
  * This software is distributed in the hope that it will be useful,
@@ -732,8 +732,8 @@ ADI_REG_TYPE Param_Data_IC_2[PARAM_SIZE_IC_2] = {
 0x00, 0x80, 0x00, 0x00, 
 0x00, 0x00, 0x00, 0x00, 
 0x00, 0x00, 0x00, 0x12, 
-0x00, 0x00, 0x00, 0x00, 
 0x00, 0x80, 0x00, 0x00, 
+0x00, 0x00, 0x00, 0x00, 
 0x00, 0x80, 0x00, 0x00, 
 0x00, 0x80, 0x00, 0x00, 
 0x00, 0x80, 0x00, 0x00, 
@@ -828,7 +828,7 @@ ADI_REG_TYPE R5_SERIAL_PORT_CONTROL_REGISTERS_IC_2_Default[R5_SERIAL_PORT_CONTRO
 /* Register Default - IC 2.ALC Control Registers */
 #define R6_ALC_CONTROL_REGISTERS_IC_2_SIZE 4
 ADI_REG_TYPE R6_ALC_CONTROL_REGISTERS_IC_2_Default[R6_ALC_CONTROL_REGISTERS_IC_2_SIZE] = {
-0xFB, 0x3B, 0x68, 0x31
+0xF8, 0x3B, 0x68, 0x31
 };
 
 /* Register Default - IC 2.Microphone Control Register */
@@ -839,7 +839,7 @@ ADI_REG_TYPE R7_MICCTRLREGISTER_IC_2_Default[REG_MICCTRLREGISTER_IC_2_BYTE] = {
 /* Register Default - IC 2.Record Input Signal Path Registers */
 #define R8_RECORD_INPUT_SIGNAL_PATH_REGISTERS_IC_2_SIZE 8
 ADI_REG_TYPE R8_RECORD_INPUT_SIGNAL_PATH_REGISTERS_IC_2_Default[R8_RECORD_INPUT_SIGNAL_PATH_REGISTERS_IC_2_SIZE] = {
-0x00, 0x01, 0x0F, 0x01, 0x0F, 0xFF, 0xFF, 0x00
+0x00, 0x01, 0x00, 0x01, 0x00, 0xFC, 0xFC, 0x00
 };
 
 /* Register Default - IC 2.ADC Control Registers */
