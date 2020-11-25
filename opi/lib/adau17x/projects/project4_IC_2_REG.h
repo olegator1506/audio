@@ -1,7 +1,7 @@
 /*
  * File:           E:\projects\project4_IC_2_REG.h
  *
- * Created:        Monday, November 16, 2020 10:02:38 PM
+ * Created:        Wednesday, November 25, 2020 9:37:32 PM
  * Description:    project4:IC 2 control register definitions.
  *
  * This software is distributed in the hope that it will be useful,
@@ -298,7 +298,7 @@
 /* Watchdog Register Value 1  - Registers (IC 2) */
 #define REG_WATCHDOG_REGISTER_VALUE_1_IC_2_ADDR   0x40D1
 #define REG_WATCHDOG_REGISTER_VALUE_1_IC_2_BYTE   1
-#define REG_WATCHDOG_REGISTER_VALUE_1_IC_2_VALUE  0x0
+#define REG_WATCHDOG_REGISTER_VALUE_1_IC_2_VALUE  0x4
 
 /* Watchdog Register Value 2  - Registers (IC 2) */
 #define REG_WATCHDOG_REGISTER_VALUE_2_IC_2_ADDR   0x40D2
@@ -925,7 +925,7 @@
 #define R54_WATCHDOG_ENABLE_IC_2_SHIFT            0
 
 /* Watchdog Register Value 1 (IC 2) */
-#define R55_WATCHDOG_VALUE_1_IC_2                 0x00   /* 00000000b	[7:0] */
+#define R55_WATCHDOG_VALUE_1_IC_2                 0x04   /* 00000100b	[7:0] */
 #define R55_WATCHDOG_VALUE_1_IC_2_MASK            0xFF
 #define R55_WATCHDOG_VALUE_1_IC_2_SHIFT           0
 
