@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Workspace Name="audio" Database="" Version="10.0.0">
-  <Project Name="dac-ctrl" Path="opi/progs/dac-ctrl/dac-ctrl.project" Active="Yes"/>
+  <Project Name="dac-ctrl" Path="opi/progs/dac-ctrl/dac-ctrl.project" Active="No"/>
+  <Project Name="ir-daemon" Path="opi/progs/ir-daemon/ir-daemon.project" Active="Yes"/>
   <BuildMatrix>
     <WorkspaceConfiguration Name="Debug" Selected="yes">
       <Environment/>
       <Project Name="i2c" ConfigName="Debug"/>
       <Project Name="dac-ctrl" ConfigName="Debug"/>
+      <Project Name="ir-daemon" ConfigName="Debug"/>
     </WorkspaceConfiguration>
-    <WorkspaceConfiguration Name="Release" Selected="no">
+    <WorkspaceConfiguration Name="Release" Selected="yes">
       <Environment/>
       <Project Name="i2c" ConfigName="Release"/>
       <Project Name="dac-ctrl" ConfigName="Release"/>
+      <Project Name="ir-daemon" ConfigName="Release"/>
     </WorkspaceConfiguration>
   </BuildMatrix>
 </CodeLite_Workspace>
