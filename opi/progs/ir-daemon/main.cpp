@@ -15,7 +15,10 @@
 #define TIME_ONE 2250
 #define TIME_REPEAT 11250
 #define TIME_ERROR 100
+#define FRAME_TIMEOUT 100000L
+#define PULSE_TIMEOUT 20000L
 
+unsigned char address,command;
 typedef enum {PULSE_PREAMBLE,PULSE_ZERO,PULSE_ONE,PULSE_REPEAT,PULSE_ERROR} PulseType;
 
 static struct timeval _lastPulseTime = {0,0}; // время последнего отрицаельного фронта
@@ -65,6 +68,11 @@ static unsigned long _savePulse(void){
     return 0;
   }
   diff = _timeDiff(_lastPulseTime, t);
+  if(diff > PULSE_TIMEOUT) { // Длительность больше длины пакета, считаем что это новый пакет
+   _reset();
+   _lastPulseTime = t; 
+   return 0;
+  }
   _lastPulseTime = t;
   return diff;
 }
@@ -110,6 +118,17 @@ void _myInterrupt(void) {
         _resultVal = _resultVal<< 1;
         if(pulseType == PULSE_ONE) _resultVal++; 
         _bitNum++;
+	if(_bitNum == 32) {
+	    _pause();
+	    unsigned char b[4];
+	    b[0] = _resultVal & 0xff;
+	    b[1] = (_resultVal>>8) & 0xff;
+	    b[2] = (_resultVal>>16) & 0xff;
+	    b[3] = (_resultVal>>24) & 0xff;
+	    if(((b[0] ^ b[1]) != 0xff) || ((b[2] ^ b[3]) != 0xff))
+		_error("Invalid command bytes",0);
+
+	}
       } else _error("Bit pulse before preamble",diff);      
   }
 }
@@ -121,22 +140,8 @@ void check(void) {
   }
 }
 
-// -------------------------------------------------------------------------
-// main
-int main(void) {
-  // sets up the wiringPi library
-/*  if (wiringPiSetup () < 0) {
-      fprintf (stderr, "Unable to setup wiringPi: %s\n", strerror (errno));
-      return 1;
-  }
-  _pulseNum = 0;	
-  // set Pin 17/0 generate an interrupt on high-to-low transitions
-  // and attach myInterrupt() to the interrupt
-  if ( wiringPiISR (BUTTON_PIN, INT_EDGE_FALLING, &_myInterrupt) < 0 ) {
-      fprintf (stderr, "Unable to setup ISR: %s\n", strerror (errno));
-      return 1;
-  }
-*/
+
+void emulate(void){
   unsigned long val = 0xf00fa55a;
   _resume();
 // Преамбула
@@ -157,4 +162,40 @@ int main(void) {
   if(_resultVal != val) 
     printf("data not equal send %X receive %X\n",val,_resultVal);
   printf("Ok\n");
+}
+
+// -------------------------------------------------------------------------
+// main
+int main(void) {
+  // sets up the wiringPi library
+  if (wiringPiSetup () < 0) {
+      fprintf (stderr, "Unable to setup wiringPi: %s\n", strerror (errno));
+      return 1;
+  }
+  if ( wiringPiISR (BUTTON_PIN, INT_EDGE_FALLING, &_myInterrupt) < 0 ) {
+      fprintf (stderr, "Unable to setup ISR: %s\n", strerror (errno));
+      return 1;
+  }
+  while(1){
+    _resume();
+    while(!_paused);
+    if(strlen(_errMess)) 
+	printf("ERROR: %s\n",_errMess);
+    else {
+	unsigned char b[4];
+	b[0] = _resultVal & 0xff;
+	b[1] = (_resultVal>>8) & 0xff;
+	b[2] = (_resultVal>>16) & 0xff;
+	b[3] = (_resultVal>>24) & 0xff;
+	if(((b[0] ^ b[1]) != 0xff) || ((b[2] ^ b[3]) != 0xff))
+    	    printf("Invalid data received %08X",_resultVal);
+	else {
+	    address = b[3];
+	    command = b[1];
+	    printf("Got value  %08X -> %02X:%02X\n",_resultVal,address,command);
+	}	    
+    }
+            	
+  }          
+
 }
