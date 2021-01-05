@@ -5,6 +5,7 @@ disp_mode=1920x1080p60
 overlay_prefix=sun8i-h3
 rootdev=UUID=88adacec-2194-4cfc-abc4-67cd6ef7fdf4
 rootfstype=ext4
-overlays=i2c0
-user_overlays=simple-i2s
+overlays=i2c0 spi-spidev
+param_spidev_spi_bus=0
+user_overlays=simple-i2s 
 usbstoragequirks=0x2537:0x1066:u,0x2537:0x1068:u

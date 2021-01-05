@@ -19,6 +19,12 @@
   overlays=i2c0
   таким образом после перезагрузки появится устройство /dev/i2c-0
   контакты 3 - SDA 5 - SCL
+- Активируем SPI порт
+  в файле  /boot/armbianEnv.txt в строчку overlays добавляем spi-spidev
+  overlays=i2c0 spi-spidev
+  и там же указываем номер устройства 0
+  param_spidev_spi_bus=0
+  после перезагрузки появляется устройство /dev/spidev0.0
 - для работы с GPIO устанавливаем библиотеку WiringOP
   git clone https://github.com/zhaolei/WiringOP.git -b h3
   Заходим в папку и компилируем библиотеку
